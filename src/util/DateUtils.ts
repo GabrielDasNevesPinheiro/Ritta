@@ -1,10 +1,10 @@
 import { IUser } from "../database/models/User";
 import moment from "moment";
 
-export function cooldownCheck (user: IUser, cooldown: number, resethours: boolean = false): { allowed: boolean, time: number, textTime: string } {
+export function cooldownCheck (user: IUser, cooldown: number, cmpDate: Date, resethours: boolean = false): { allowed: boolean, time: number, textTime: string } {
     
     const currentTime = new Date();
-    const lastVoteDate = user.dailydate;
+    const lastVoteDate = cmpDate;
 
     if(!lastVoteDate) {
         return { allowed: true, time: 0, textTime: "" };
