@@ -10,7 +10,7 @@ export function cooldownCheck (user: IUser, cooldown: number): { allowed: boolea
         return { allowed: true, time: 0, textTime: "" };
     }
     
-    const nextVoteDate = new Date(lastVoteDate.getTime() + 24 * 60 * 60 * 1000);
+    const nextVoteDate = new Date(lastVoteDate.getTime() + cooldown * 60 * 60 * 1000);
     nextVoteDate.setHours(0);
     nextVoteDate.setMinutes(0, 0, 0);
 
