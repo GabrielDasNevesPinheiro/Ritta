@@ -2,6 +2,7 @@ import { Client, GatewayIntentBits } from "discord.js";
 import { config } from "dotenv";
 import connectDatabase from "./database/Connection";
 import { Settings } from "./database/models/Settings";
+import postSlashCommands from "./api/Register";
 
 config()
 const token = process.env.BOT_TOKEN;
@@ -32,5 +33,6 @@ client.on("messageCreate", async (message) => {
 });
 
 client.login(token);
+postSlashCommands();
 
 export { cashname }
