@@ -1,7 +1,7 @@
 import { IUser } from "../database/models/User";
 import moment from "moment";
 
-export function cooldownCheck (user: IUser, cooldown: number, cmpDate: Date, resethours: boolean = false): { allowed: boolean, time: number, textTime: string } {
+export function cooldownCheck (cooldown: number, cmpDate: Date, resethours: boolean = false): { allowed: boolean, time: number, textTime: string } {
     
     const currentTime = new Date();
     const lastVoteDate = cmpDate;

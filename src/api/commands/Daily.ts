@@ -30,7 +30,7 @@ export default class Daily extends Command {
             });
         }
 
-        let dailyCheck = cooldownCheck(user, 24, user.dailydate, true);
+        let dailyCheck = cooldownCheck(24, user.dailydate, true);
         
         if (dailyCheck.allowed) {
 
