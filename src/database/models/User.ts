@@ -7,21 +7,22 @@ interface IUser {
     about?: String
     partner?: ObjectId
     coins?: Number
-    vip: Boolean
-    reps: [typeof reputationSchema]
-    transactions: [typeof transactionSchema]
-    dailydate: Date
-    workdate: Date
-    crimedate: Date
-    votedate: Date
-    weeklydate: Date
+    vip?: Boolean
+    reps?: [typeof reputationSchema]
+    transactions?: [typeof transactionSchema]
+    dailydate?: Date
+    workdate?: Date
+    crimedate?: Date
+    votedate?: Date
+    weeklydate?: Date
 }
 
 
 const userSchema = new mongoose.Schema<IUser>({
     userId: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     about: {
         type: String,
