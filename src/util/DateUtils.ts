@@ -1,7 +1,7 @@
 import { IUser } from "../database/models/User";
 import moment from "moment";
 
-export function cooldownCheck (user: IUser, cooldown: number): { allowed: boolean, time: number, textTime: string } {
+export function cooldownCheck (user: IUser, cooldown: number, resethours: boolean = false): { allowed: boolean, time: number, textTime: string } {
     
     const currentTime = new Date();
     const lastVoteDate = user.dailydate;
@@ -11,8 +11,11 @@ export function cooldownCheck (user: IUser, cooldown: number): { allowed: boolea
     }
     
     const nextVoteDate = new Date(lastVoteDate.getTime() + cooldown * 60 * 60 * 1000);
-    nextVoteDate.setHours(0);
-    nextVoteDate.setMinutes(0, 0, 0);
+
+    if(resethours) {
+        nextVoteDate.setHours(0);
+        nextVoteDate.setMinutes(0,0,0);
+    }
 
     const offset = moment(currentTime).diff(lastVoteDate, 'hours');
     

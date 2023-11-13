@@ -30,7 +30,7 @@ export default class Daily extends Command {
             });
         }
 
-        let dailyCheck = cooldownCheck(user, 24);
+        let dailyCheck = cooldownCheck(user, 24, true);
         
         if (dailyCheck.allowed) {
 
@@ -52,7 +52,7 @@ export default class Daily extends Command {
             }
 
         } else {
-            await interaction.reply({ content: `**⏰ | <@${user.userId}>**, volte em <t:${dailyCheck.time}> (${dailyCheck.textTime}) para coletar sua recompensa novamente.`});
+            await interaction.reply({ content: `**⏰ | <@${user.userId}>**, volte em <t:${dailyCheck.time}> para coletar sua recompensa novamente.`});
         }
 
     }
