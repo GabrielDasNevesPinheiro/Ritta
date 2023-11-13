@@ -13,8 +13,8 @@ let commands: RESTPostAPIChatInputApplicationCommandsJSONBody[] = [];
 
 for (let cmd in cmdList) {
 
-    if(cmd !== "announce")
-        commands.push(cmdList[cmd].command.toJSON());
+    commands.push(cmdList[cmd].command.toJSON());
+
 }
 
 
