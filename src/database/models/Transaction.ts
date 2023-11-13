@@ -23,6 +23,6 @@ const transactionSchema = new mongoose.Schema<ITransaction>({
     }
 });
 
-const Transaction = mongoose.models.Transaction || mongoose.model<ITransaction>("Transaction", transactionSchema);
+const Transaction: mongoose.Model<ITransaction> = mongoose.models.Transaction || mongoose.model<ITransaction>("Transaction", transactionSchema);
 
 export { Transaction, type ITransaction, transactionSchema }

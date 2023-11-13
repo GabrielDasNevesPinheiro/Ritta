@@ -22,6 +22,6 @@ const raffleSchema = new mongoose.Schema<IRaffle>({
     }
 });
 
-const Raffle = mongoose.models.Raffle || mongoose.model<IRaffle>("Raffle", raffleSchema);
+const Raffle: mongoose.Model<IRaffle> = mongoose.models.Raffle || mongoose.model<IRaffle>("Raffle", raffleSchema);
 
 export { Raffle, type IRaffle }

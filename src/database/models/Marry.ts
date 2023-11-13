@@ -27,6 +27,6 @@ const marrySchema = new mongoose.Schema<IMarry>({
     }
 });
 
-const Marry = mongoose.models.Marry || mongoose.model<IMarry>("Marry", marrySchema);
+const Marry: mongoose.Model<IMarry> = mongoose.models.Marry || mongoose.model<IMarry>("Marry", marrySchema);
 
 export { Marry, type IMarry }

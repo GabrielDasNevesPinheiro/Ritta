@@ -12,6 +12,6 @@ const guildSchema = new mongoose.Schema<IGuild>({
     }
 });
 
-const Guild = mongoose.models.Guild || mongoose.model<IGuild>("Guild", guildSchema);
+const Guild: mongoose.Model<IGuild> = mongoose.models.Guild || mongoose.model<IGuild>("Guild", guildSchema);
 
 export { Guild, type IGuild }

@@ -22,6 +22,6 @@ const reputationSchema = new mongoose.Schema<IReputation>({
     }
 });
 
-const Reputation = mongoose.models.Reputation || mongoose.model<IReputation>("Reputation", reputationSchema);
+const Reputation: mongoose.Model<ISettings> = mongoose.models.Reputation || mongoose.model<IReputation>("Reputation", reputationSchema);
 
 export { Reputation, type IReputation, reputationSchema }
