@@ -2,14 +2,14 @@ import mongoose, { ObjectId } from "mongoose";
 
 
 interface IRaffle {
-    winner: ObjectId,
+    winner: String,
     bet: Number,
     won: Number,
 }
 
 const raffleSchema = new mongoose.Schema<IRaffle>({
     winner: {
-        type: mongoose.Types.ObjectId,
+        type: String,
         required: true,
     },
     bet: {

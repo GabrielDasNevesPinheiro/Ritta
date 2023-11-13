@@ -21,8 +21,7 @@ interface IUser {
 const userSchema = new mongoose.Schema<IUser>({
     userId: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     about: {
         type: String,

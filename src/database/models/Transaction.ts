@@ -2,19 +2,19 @@ import mongoose, { ObjectId } from "mongoose";
 
 
 interface ITransaction {
-    to: ObjectId
-    from: ObjectId
+    to: String,
+    from: String,
     ammount: Number
 
 }
 
 const transactionSchema = new mongoose.Schema<ITransaction>({
     to: {
-        type: mongoose.Types.ObjectId,
+        type: String,
         required: true,
     },
     from: {
-        type: mongoose.Types.ObjectId,
+        type: String,
         required: true,
     },
     ammount: {

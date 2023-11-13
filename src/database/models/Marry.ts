@@ -2,19 +2,19 @@ import mongoose, { ObjectId } from "mongoose";
 
 
 interface IMarry {
-    lover: ObjectId,
-    lover2: ObjectId,
+    lover: String,
+    lover2: String,
     divorce: Boolean
     date: Date
 }
 
 const marrySchema = new mongoose.Schema<IMarry>({
     lover: {
-        type: mongoose.Types.ObjectId,
+        type: String,
         required: true,
     },
     lover2: {
-        type: mongoose.Types.ObjectId,
+        type: String,
         required: true,
     },
     divorce: {

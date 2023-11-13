@@ -2,18 +2,18 @@ import mongoose, { ObjectId } from "mongoose";
 
 
 interface IReputation {
-    to: ObjectId
-    from: ObjectId
+    to: String
+    from: String
     message: String
 }
 
 const reputationSchema = new mongoose.Schema<IReputation>({
     to: {
-        type: mongoose.Types.ObjectId,
+        type: String,
         required: true
     },
     from: {
-        type: mongoose.Types.ObjectId,
+        type: String,
         required: true
     },
     message: {
