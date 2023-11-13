@@ -37,7 +37,7 @@ export default abstract class Say extends Command {
 
         });
 
-        await interaction.editReply({ content: `> Aviso enviado para todos os servidores.` })
+        await interaction.editReply({ content: `> Aviso enviado para todos os servidores.` });
     }
 
 }
