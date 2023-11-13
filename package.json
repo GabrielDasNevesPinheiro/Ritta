@@ -9,6 +9,7 @@
     "typescript": "^5.2.2"
   },
   "scripts": {
-    "test": "ts-node src/test.ts"
+    "test": "ts-node src/test.ts",
+    "start": "ts-node src/app.ts"
   }
 }
