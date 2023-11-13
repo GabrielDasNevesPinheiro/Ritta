@@ -3,6 +3,7 @@ import { config } from "dotenv";
 import connectDatabase from "./database/Connection";
 import { Settings } from "./database/models/Settings";
 import postSlashCommands from "./api/Register";
+import executeAction from "./handlers/InteractionHandler";
 
 config()
 const token = process.env.BOT_TOKEN;
@@ -31,6 +32,18 @@ client.on("ready", async (bot) => {
 client.on("messageCreate", async (message) => {
     
 });
+
+client.on('interactionCreate', async (interaction) => {
+
+    if (!interaction.isChatInputCommand()) return;
+    if (!interaction.channel) {
+        return;
+    }
+
+    executeAction(interaction.commandName, interaction);
+
+});
+
 
 client.login(token);
 postSlashCommands();
