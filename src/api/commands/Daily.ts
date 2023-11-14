@@ -2,10 +2,9 @@ import { CacheType, CommandInteraction, SlashCommandBuilder } from "discord.js";
 import Command from "./Command";
 import UserController from "../../database/controllers/UserController";
 import { cooldownCheck } from "../../util/DateUtils";
-import { ITransaction, transactionSchema } from "../../database/models/Transaction";
+import { ITransaction } from "../../database/models/Transaction";
 import TransactionController from "../../database/controllers/TransactionController";
-import { Schema } from "mongoose";
-import { cashname } from "../../app";
+import { botConfig } from "../../app";
 
 export default class Daily extends Command {
     
@@ -46,7 +45,7 @@ export default class Daily extends Command {
             let res = UserController.updateUser(user.userId as string, user);
 
             if(transaction && res) {
-                await interaction.reply({ content: `**Ótimo** <@${trans.to}>, você ganhou <:biscoito:1173719565335810198> **${cash.toLocaleString("pt-BR")} ${cashname}** na **recompensa diária**, volte amanhã`})
+                await interaction.reply({ content: `**Ótimo** <@${trans.to}>, você ganhou <:biscoito:1173719565335810198> **${cash.toLocaleString("pt-BR")} ${botConfig.cashname}** na **recompensa diária**, volte amanhã`})
             } else {
                 await interaction.reply({ content: "ocorreu um erro, tente novamente" });
             }

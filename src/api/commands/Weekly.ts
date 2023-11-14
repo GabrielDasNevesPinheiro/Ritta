@@ -4,7 +4,7 @@ import UserController from "../../database/controllers/UserController";
 import { cooldownCheck } from "../../util/DateUtils";
 import { ITransaction } from "../../database/models/Transaction";
 import TransactionController from "../../database/controllers/TransactionController";
-import { cashname } from "../../app";
+import { botConfig } from "../../app";
 
 export default class Weekly extends Command {
 
@@ -43,7 +43,7 @@ export default class Weekly extends Command {
                 weeklyCheck = cooldownCheck(168, user.weeklydate);
 
                 let embed = new EmbedBuilder().setTitle("Semanal resgatado")
-                    .setDescription(`> **Espetacular** ein <@${transaction.to}>, você resgatou sua recompensa semanal e ganhou **${transaction.ammount.toLocaleString("pt-BR")} ${cashname}** como recompensa`)
+                    .setDescription(`> **Espetacular** ein <@${transaction.to}>, você resgatou sua recompensa semanal e ganhou **${transaction.ammount.toLocaleString("pt-BR")} ${botConfig.cashname}** como recompensa`)
                     .setColor(Colors.Yellow).addFields([
                         { name: "**Próxima Recompensa**", value: `<t:${weeklyCheck.time}>` }
                     ])

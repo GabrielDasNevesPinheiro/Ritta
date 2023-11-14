@@ -1,6 +1,6 @@
-import { CacheType, CommandInteraction, SlashCommandBuilder } from "discord.js"
-import Command from "./Command"
-import { cashname } from "../../app"
+import { CacheType, CommandInteraction, SlashCommandBuilder } from "discord.js";
+import { botConfig } from "../../app";
+import Command from "./Command";
 import UserController from "../../database/controllers/UserController";
 
 export default class EditUser extends Command {
@@ -40,7 +40,7 @@ export default class EditUser extends Command {
                 try {
                     user.coins = cash as number;
                 }   catch(error) {
-                    return await interaction.editReply({ content: `Insira um valor numérico para definir os ${cashname}.`});
+                    return await interaction.editReply({ content: `Insira um valor numérico para definir os ${botConfig.cashname}.`});
                 }
             }
             if(vip) user.vip = vip === "true" ? true :  false;

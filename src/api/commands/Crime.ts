@@ -1,6 +1,6 @@
 import { CacheType, Colors, CommandInteraction, Embed, EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import Command from "./Command";
-import { cashname } from "../../app";
+import { botConfig } from "../../app";
 import UserController from "../../database/controllers/UserController";
 import { cooldownCheck } from "../../util/DateUtils";
 import TransactionController from "../../database/controllers/TransactionController";
@@ -40,7 +40,7 @@ export default class Crime extends Command {
                 });
 
                 embed = new EmbedBuilder().setTitle("<:stonks:1173773269913063545> Crime Impedido")
-                    .setDescription(`> **Perfeito** <@${transaction.to}>, você conseguiu prender um criminoso sem ninguém se machucar e ganhou **${transaction.ammount.toLocaleString("pt-BR")} ${cashname}** como recompensa, volte em **1 hora**`)
+                    .setDescription(`> **Perfeito** <@${transaction.to}>, você conseguiu prender um criminoso sem ninguém se machucar e ganhou **${transaction.ammount.toLocaleString("pt-BR")} ${botConfig.cashname}** como recompensa, volte em **1 hora**`)
                     .setColor(Colors.White)
                 return await interaction.reply({ embeds: [embed] });
             }

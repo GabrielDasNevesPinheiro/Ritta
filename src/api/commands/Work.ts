@@ -1,6 +1,6 @@
 import { CacheType, Colors, CommandInteraction, EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import Command from "./Command";
-import { cashname } from "../../app";
+import { botConfig } from "../../app";
 import UserController from "../../database/controllers/UserController";
 import { cooldownCheck } from "../../util/DateUtils";
 import TransactionController from "../../database/controllers/TransactionController";
@@ -40,7 +40,7 @@ export default class Work extends Command {
             });
 
             embed = new EmbedBuilder().setTitle("<:stonks:1173773269913063545> Trabalho Concluído")
-                .setDescription(`> **Ótimo** <@${transaction.to}>, completou seu trabalho com sucesso e ganhou **${transaction.ammount.toLocaleString("pt-BR")} ${cashname}** como salário, volte em **1 hora**`)
+                .setDescription(`> **Ótimo** <@${transaction.to}>, completou seu trabalho com sucesso e ganhou **${transaction.ammount.toLocaleString("pt-BR")} ${botConfig.cashname}** como salário, volte em **1 hora**`)
                 .setColor(Colors.Yellow)
             return await interaction.reply({ embeds: [embed] });
         }
