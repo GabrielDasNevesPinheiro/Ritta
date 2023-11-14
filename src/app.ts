@@ -26,6 +26,7 @@ client.on("ready", async (bot) => {
     let settings = (await Settings.find())[0];
     bot.user.setUsername(settings.botname as string);
     cashname = settings.cashname as string;
+    postSlashCommands();
 
 });
 
@@ -46,6 +47,5 @@ client.on('interactionCreate', async (interaction) => {
 
 
 client.login(token);
-postSlashCommands();
 
 export { cashname }
