@@ -47,6 +47,7 @@ export default class BotConfig {
     FRIGHT = "<:LZ_fright:1173761134097076325>"
     FACEPALM = "<:LZ_facepalm:1173761110457978940>"
     WAITING = "<:LZ_waiting:1174084916951126096>"
+    CRYING = "<:LZ_crying:1174084287734231100>"
 
 
     //assets images consts
@@ -73,6 +74,9 @@ export default class BotConfig {
     IMG_FBI = "https://i.imgur.com/5HdE197.png"
     IMG_GUN = "https://i.imgur.com/o5dGAU4.png"
     IMG_RAINMONEY = "https://i.imgur.com/5urPHlx.jpg"
+
+    normalBetChances = 0.5;
+    vipBetChances = 0.7;
 
     public constructor(config: ISettings) {
         this._name = config.botname as string;
