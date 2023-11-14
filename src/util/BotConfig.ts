@@ -72,6 +72,7 @@ export default class BotConfig {
     IMG_TASK = "https://i.imgur.com/aC4quov.png"
     IMG_FBI = "https://i.imgur.com/5HdE197.png"
     IMG_GUN = "https://i.imgur.com/o5dGAU4.png"
+    IMG_RAINMONEY = "https://i.imgur.com/5urPHlx.jpg"
 
     public constructor(config: ISettings) {
         this._name = config.botname as string;
