@@ -1,6 +1,11 @@
 import { IUser } from "../database/models/User";
 import moment from "moment";
 
+
+export function isVipExpired(user: IUser) {
+  return cooldownCheck(720, user.vipDate, false);
+}
+
 export function cooldownCheck (cooldown: number, cmpDate: Date, resethours: boolean = false): { allowed: boolean, time: number, textTime: string } {
     
     const currentTime = new Date();
