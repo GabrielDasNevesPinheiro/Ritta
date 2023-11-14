@@ -24,7 +24,7 @@ export default class Crime extends Command {
         let crimeCheck = cooldownCheck(1, user.crimedate, false)
 
         if (!crimeCheck.allowed) {
-            return await interaction.reply({ content: `**⏰ |** <@${user.userId}>, volte em <t:${crimeCheck.time}> para prender outro criminoso novamente.`});
+            return await interaction.reply({ content: `**${botConfig.WAITING} |** <@${user.userId}>, volte em <t:${crimeCheck.time}> para prender outro criminoso novamente.`});
         }
 
             user.coins = user.coins as number + cash;

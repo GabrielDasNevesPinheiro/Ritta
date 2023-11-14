@@ -51,7 +51,7 @@ export default class Daily extends Command {
             }
 
         } else {
-            await interaction.reply({ content: `**⏰ | <@${user.userId}>**, volte em <t:${dailyCheck.time}> para coletar sua recompensa novamente.`});
+            await interaction.reply({ content: `**${botConfig.WAITING} | <@${user.userId}>**, volte em <t:${dailyCheck.time}> para coletar sua recompensa novamente.`});
         }
 
     }

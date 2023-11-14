@@ -25,7 +25,7 @@ export default class Work extends Command {
         let workCheck = cooldownCheck(2, user.workdate, false);
 
         if (!workCheck.allowed) {
-            return await interaction.reply({ content: `**⏰ |** <@${user.userId}>, volte em <t:${workCheck.time}> para trabalhar novamente.` });
+            return await interaction.reply({ content: `**${botConfig.WAITING} |** <@${user.userId}>, volte em <t:${workCheck.time}> para trabalhar novamente.` });
         }
 
         user.coins = user.coins as number + cash;

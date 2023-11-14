@@ -46,6 +46,7 @@ export default class BotConfig {
     SAD = "<:LZ_sad:1173761151629279284>"
     FRIGHT = "<:LZ_fright:1173761134097076325>"
     FACEPALM = "<:LZ_facepalm:1173761110457978940>"
+    WAITING = "<:LZ_waiting:1174084916951126096>"
 
 
     //assets images consts

@@ -55,7 +55,7 @@ export default class Weekly extends Command {
             }
 
         } else {
-            await interaction.reply({ content: `**⏰ | <@${user.userId}>**, volte em <t:${weeklyCheck.time}> para coletar sua recompensa novamente.` });
+            await interaction.reply({ content: `**${botConfig.WAITING} | <@${user.userId}>**, volte em <t:${weeklyCheck.time}> para coletar sua recompensa novamente.` });
         }
 
     }
