@@ -17,7 +17,7 @@ export default class EditUser extends Command {
                 .setDescription("Ative ou desative o vip aqui")
         ).addStringOption(option =>
             option.setName("money")
-                .setDescription(`Modifique a quantidade de ${cashname} do usuário`)
+                .setDescription(`Modifique a quantidade de pontos do usuário`)
         )
         .setDescription("Modifique os dados de algum usuário");
 
