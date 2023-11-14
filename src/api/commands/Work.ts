@@ -13,7 +13,7 @@ export default class Work extends Command {
 
     static async execute(interaction: CommandInteraction<CacheType>) {
 
-        let cash = Math.floor(Math.random() * (500 - 170 + 1) + 170);
+        let cash = Math.floor(Math.random() * (1000 - 500 + 1) + 500);
         let user = await UserController.getUserById(interaction.user.id)
         let embed: EmbedBuilder = null;
 
@@ -21,10 +21,10 @@ export default class Work extends Command {
             user = await UserController.createUser({ userId: interaction.user.id });
         }
 
-        let crimeCheck = cooldownCheck(1, user.workdate, false);
+        let workCheck = cooldownCheck(1, user.workdate, false);
 
-        if (!crimeCheck.allowed) {
-            return await interaction.reply({ content: `**⏰ |** <@${user.userId}>, volte em <t:${crimeCheck.time}> para prender outro criminoso novamente` });
+        if (!workCheck.allowed) {
+            return await interaction.reply({ content: `**⏰ |** <@${user.userId}>, volte em <t:${workCheck.time}> para trabalhar novamente.` });
         }
 
         user.coins = user.coins as number + cash;
@@ -35,12 +35,12 @@ export default class Work extends Command {
         if (user) {
             let transaction = await TransactionController.createTransaction({
                 to: user.userId as String,
-                from: "prendendo bandidos",
+                from: "trabalhando",
                 ammount: cash,
             });
 
-            embed = new EmbedBuilder().setTitle("<:stonks:1173773269913063545> Crime Impedido")
-                .setDescription(`> **Perfeito** <@${transaction.to}>, você conseguiu prender um criminoso sem ninguém se machucar e ganhou **${transaction.ammount} ${cashname}** como recompensa, volte em <t:10000000>`)
+            embed = new EmbedBuilder().setTitle("<:stonks:1173773269913063545> Trabalho Concluído")
+                .setDescription(`> **Ótimo** <@${transaction.to}>, completou seu trabalho com sucesso e ganhou **${transaction.ammount} ${cashname}** como salário, volte em **1 hora**`)
                 .setColor(Colors.Yellow)
             return await interaction.reply({ embeds: [embed] });
         }
