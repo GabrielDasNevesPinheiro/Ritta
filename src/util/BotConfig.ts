@@ -35,7 +35,7 @@ export default class BotConfig {
     PEPE = "<:LZ_pepe:1173761467774935150>"
     PAT = "<:LZ_pat:1173761448036532348>"
     NOOOO = "<:LZ_nOoOo:1173761427903889408>"
-    KEKW =  "<:LZ_kekw:1173761402754846720>"
+    KEKW = "<:LZ_kekw:1173761402754846720>"
     AWN = "<:LZ_kekw:1173761402754846720>"
     PEPEHEART = "<:LZ_pepeheart:1173761342604324894>"
     BRIGHT = "<:LZ_pepeheart:1173761342604324894>"
@@ -46,6 +46,29 @@ export default class BotConfig {
     SAD = "<:LZ_sad:1173761151629279284>"
     FRIGHT = "<:LZ_fright:1173761134097076325>"
     FACEPALM = "<:LZ_facepalm:1173761110457978940>"
+
+
+    //assets images consts
+    IMG_BRIGHT = "src\\assets\\bright.jpg"
+    IMG_FLOWER = "src\\assets\\flower.jpg"
+    IMG_HEART = "src\\assets\\heart.jpg"
+    IMG_HEARTS = "src\\assets\\hearts.jpg"
+    IMG_HEY = "src\\assets\\hey.jpg"
+    IMG_HYPE = "src\\assets\\hype.jpg"
+    IMG_INDIGNATED = "src\\assets\\indignated.jpg"
+    IMG_LAUGH = "src\\assets\\laugh.jpg"
+    IMG_LOVE = "src\\assets\\love.jpg"
+    IMG_NOSTONKS = "src\\assets\\nostonks.jpg"
+    IMG_NOTED = "src\\assets\\noted.jpg"
+    IMG_PEACE = "src\\assets\\peace.jpg"
+    IMG_PLEASE = "src\\assets\\please.jpg"
+    IMG_PLEASE2 = "src\\assets\\please2.jpg"
+    IMG_QI = "src\\assets\\qi.jpg"
+    IMG_SONG = "src\\assets\\song.jpg"
+    IMG_STONKS = "src\\assets\\stonks.jpg"
+    IMG_THEROCK = "src\\assets\\therock.jpg"
+    IMG_TIME = "src\\assets\\time.jpg"
+    IMG_TONGLE = "src\\assets\\tongle.jpg"
 
     public constructor(config: ISettings) {
         this._name = config.botname as string;
