@@ -1,7 +1,7 @@
 import { CacheType, Colors, CommandInteraction, EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import Command from "./Command";
 import UserController from "../../database/controllers/UserController";
-import { cooldownCheck } from "../../util/DateUtils";
+import { cooldownCheck, isVipExpired } from "../../util/DateUtils";
 import { ITransaction } from "../../database/models/Transaction";
 import TransactionController from "../../database/controllers/TransactionController";
 import { botConfig } from "../../app";
@@ -14,7 +14,9 @@ export default class Weekly extends Command {
 
     static async execute(interaction: CommandInteraction<CacheType>) {
 
-        let cash = Math.floor(Math.random() * (10000 - 5000 + 1) + 5000);
+        let min = 4000;
+        let max = 7000;
+        let prob = 0.3;
 
         let user = await UserController.getUserById(interaction.user.id);
 
@@ -23,6 +25,20 @@ export default class Weekly extends Command {
                 userId: interaction.user.id,
             });
         }
+
+        if(!isVipExpired(user).allowed) {
+            min = 10000;
+            max = 16000;
+            prob = 0.9;
+        }
+
+        let cash = 0;
+        if(Math.random() <= prob) { 
+            cash = max;
+        } else {
+            cash = Math.floor(Math.random() * (max - min + 1) + min);
+        }
+
 
         let weeklyCheck = cooldownCheck(168, user.weeklydate, true);
 
@@ -43,7 +59,7 @@ export default class Weekly extends Command {
                 weeklyCheck = cooldownCheck(168, user.weeklydate);
 
                 let embed = new EmbedBuilder().setTitle(`${botConfig.GG} Semanal Resgatado`)
-                    .setThumbnail(`${botConfig.IMG_STONKS}`)
+                    .setThumbnail(`${botConfig.IMG_RAINMONEY}`)
                     .setDescription(`> **Espetacular** ein <@${transaction.to}>, você resgatou sua recompensa semanal e ganhou ${botConfig.getCashString(cash)} como recompensa.`)
                     .setColor(Colors.Blue).addFields([
                         { name: "**Próxima Recompensa**", value: `<t:${weeklyCheck.time}>` }

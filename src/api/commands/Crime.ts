@@ -2,7 +2,7 @@ import { CacheType, Colors, CommandInteraction, Embed, EmbedBuilder, SlashComman
 import Command from "./Command";
 import { botConfig } from "../../app";
 import UserController from "../../database/controllers/UserController";
-import { cooldownCheck } from "../../util/DateUtils";
+import { cooldownCheck, isVipExpired } from "../../util/DateUtils";
 import TransactionController from "../../database/controllers/TransactionController";
 
 export default class Crime extends Command {
@@ -13,13 +13,30 @@ export default class Crime extends Command {
 
     static async execute(interaction: CommandInteraction<CacheType>) {
 
-        let cash = Math.floor(Math.random() * (500 - 170 + 1) + 170);
+        let min = 750;
+        let max = 2000;
+        let prob = 0.3;
+        
         let user = await UserController.getUserById(interaction.user.id)
         let embed: EmbedBuilder = null;
 
         if (!user) {
             user = await UserController.createUser({ userId: interaction.user.id });
         }
+
+        if(!isVipExpired(user).allowed) {
+            min = 3500;
+            max = 6000;
+            prob = 0.9;
+        }
+
+        let cash = 0;
+        if(Math.random() <= prob) { 
+            cash = max;
+        } else {
+            cash = Math.floor(Math.random() * (max - min + 1) + min);
+        }
+
 
         let crimeCheck = cooldownCheck(1, user.crimedate, false)
 

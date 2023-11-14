@@ -2,7 +2,7 @@ import { CacheType, Colors, CommandInteraction, EmbedBuilder, SlashCommandBuilde
 import Command from "./Command";
 import { botConfig } from "../../app";
 import UserController from "../../database/controllers/UserController";
-import { cooldownCheck } from "../../util/DateUtils";
+import { cooldownCheck, isVipExpired } from "../../util/DateUtils";
 import TransactionController from "../../database/controllers/TransactionController";
 import path from "path";
 
@@ -14,12 +14,27 @@ export default class Work extends Command {
 
     static async execute(interaction: CommandInteraction<CacheType>) {
 
-        let cash = Math.floor(Math.random() * (1000 - 500 + 1) + 500);
+        let min = 850;
+        let max = 2100;
+        let prob = 0.3;
+
         let user = await UserController.getUserById(interaction.user.id)
         let embed: EmbedBuilder = null;
 
         if (!user) {
             user = await UserController.createUser({ userId: interaction.user.id });
+        }
+        if(!isVipExpired(user).allowed) {
+            min = 4500;
+            max = 7000;
+            prob = 0.9;
+        }
+
+        let cash = 0;
+        if(Math.random() <= prob) { 
+            cash = max;
+        } else {
+            cash = Math.floor(Math.random() * (max - min + 1) + min);
         }
 
         let workCheck = cooldownCheck(2, user.workdate, false);
@@ -41,7 +56,7 @@ export default class Work extends Command {
             });
 
             embed = new EmbedBuilder().setTitle(`${botConfig.GG} Trabalho Concluído`)
-                .setThumbnail(`${botConfig.IMG_STONKS}`)
+                .setThumbnail(`${botConfig.IMG_RAINMONEY}`)
                 .setDescription(`> **Ótimo** <@${transaction.to}>, completou seu trabalho com sucesso e ganhou ${botConfig.getCashString(cash)} como salário, volte em **2 horas**.`)
                 .setColor(Colors.Blue).setTimestamp(Date.now());
             return await interaction.reply({ embeds: [embed] });

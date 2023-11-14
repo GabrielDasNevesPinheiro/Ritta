@@ -1,7 +1,7 @@
 import { CacheType, CommandInteraction, SlashCommandBuilder } from "discord.js";
 import Command from "./Command";
 import UserController from "../../database/controllers/UserController";
-import { cooldownCheck } from "../../util/DateUtils";
+import { cooldownCheck, isVipExpired } from "../../util/DateUtils";
 import { ITransaction } from "../../database/models/Transaction";
 import TransactionController from "../../database/controllers/TransactionController";
 import { botConfig } from "../../app";
@@ -14,12 +14,9 @@ export default class Daily extends Command {
 
     static async execute(interaction: CommandInteraction<CacheType>) {
         
-        let cash = 0;
-        if(Math.random() <= 0.01) { 
-            cash = 2000;
-        } else {
-            cash = Math.floor(Math.random() * (3000 - 950 + 1) + 950);
-        }
+        let min = 1000;
+        let max = 2500;
+        let prob = 0.3;
 
         let user = await UserController.getUserById(interaction.user.id);
 
@@ -28,6 +25,20 @@ export default class Daily extends Command {
                 userId: interaction.user.id,
             });
         }
+
+        if(!isVipExpired(user).allowed) {
+            min = 8000;
+            max = 13000;
+            prob = 0.9;
+        }
+
+        let cash = 0;
+        if(Math.random() <= prob) { 
+            cash = max;
+        } else {
+            cash = Math.floor(Math.random() * (max - min + 1) + min);
+        }
+
 
         let dailyCheck = cooldownCheck(24, user.dailydate, true);
         
