@@ -43,10 +43,11 @@ export default class Weekly extends Command {
                 weeklyCheck = cooldownCheck(168, user.weeklydate);
 
                 let embed = new EmbedBuilder().setTitle("Semanal resgatado")
+                    .setThumbnail(`${botConfig.IMG_STONKS}`)
                     .setDescription(`> **Espetacular** ein <@${transaction.to}>, você resgatou sua recompensa semanal e ganhou **${transaction.ammount.toLocaleString("pt-BR")} ${botConfig.cashname}** como recompensa`)
                     .setColor(Colors.Yellow).addFields([
                         { name: "**Próxima Recompensa**", value: `<t:${weeklyCheck.time}>` }
-                    ])
+                    ]).setTimestamp(Date.now())
                 return await interaction.reply({ embeds: [embed] });
 
             } else {
