@@ -9,7 +9,7 @@ export default class BotConfig {
     // LZ server
     NO_STONKS = "<:LZ_nostonks:1173954364432461854>"
     STONKS = "<:LZ_stonks:1173954341342818365>"
-    CASH = "<:LZ_cookie:1173796905306816593>"
+    CASH = "<:LZ_fichas:1174026554075005020>"
     FLOWER = "<:LZ_flower:1173778878825771008>"
     FEAR = "<:LZ_fear:1173778853060153385>"
     THINKING = "<:LZ_thinking:1173778773586477156>"
@@ -18,7 +18,7 @@ export default class BotConfig {
     NO = "<:LZ_no:1173778191412899860>"
     ANNOUNCE = "<:LZ_Announce:1173770336265834569>"
     EYES = "<:LZ_eyes:1173763570274668554>"
-    MONEY = "<:LZ_fichas:1174026554075005020>"
+    MONEY = "<:LZ_money:1173761910873796618>"
     NERVOUS = "<:LZ_nervous:1173761881845022830>"
     CHARMING = "<:LZ_charming:1173761858860224512>"
     GG = "<:LZ_gg:1173761815600173087>"
