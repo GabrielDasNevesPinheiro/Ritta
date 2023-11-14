@@ -2,6 +2,7 @@
   "dependencies": {
     "@types/mongoose": "^5.11.97",
     "@types/node": "^20.9.0",
+    "canvas": "^2.11.2",
     "discord.js": "^14.14.1",
     "dotenv": "^16.3.1",
     "moment": "^2.29.4",
