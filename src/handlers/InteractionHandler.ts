@@ -5,6 +5,7 @@ import Say from "../api/commands/Say";
 import Daily from "../api/commands/Daily";
 import Crime from "../api/commands/Crime";
 import Work from "../api/commands/Work";
+import Weekly from "../api/commands/Weekly";
 
 
 export const commands: { [key: string]: typeof Command } = {
@@ -13,6 +14,7 @@ export const commands: { [key: string]: typeof Command } = {
     "daily": Daily,
     "crime": Crime,
     "work": Work,
+    "weekly": Weekly
 }
 
 export default function executeAction(cmdName: string, interaction: Interaction<CacheType>) {
