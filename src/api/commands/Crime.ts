@@ -39,7 +39,7 @@ export default class Crime extends Command {
                     ammount: cash,
                 });
 
-                embed = new EmbedBuilder().setTitle("<:stonks:1173773269913063545> Crime Impedido")
+                embed = new EmbedBuilder().setTitle(`${botConfig.GG} Crime Impedido`)
                     .setThumbnail(botConfig.IMG_GUN)
                     .setDescription(`> **Perfeito** <@${transaction.to}>, você conseguiu prender um criminoso sem ninguém se machucar e ganhou **${transaction.ammount.toLocaleString("pt-BR")} ${botConfig.cashname}** como recompensa, volte em **1 hora**`)
                     .setColor(Colors.White)

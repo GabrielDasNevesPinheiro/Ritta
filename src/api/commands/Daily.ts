@@ -45,7 +45,7 @@ export default class Daily extends Command {
             let res = UserController.updateUser(user.userId as string, user);
 
             if(transaction && res) {
-                await interaction.reply({ content: `**Ótimo** <@${trans.to}>, você ganhou <:biscoito:1173719565335810198> **${cash.toLocaleString("pt-BR")} ${botConfig.cashname}** na **recompensa diária**, volte amanhã`})
+                await interaction.reply({ content: `**Ótimo** <@${trans.to}>, você ganhou ${botConfig.CASH} **${cash.toLocaleString("pt-BR")} ${botConfig.cashname}** na **recompensa diária**, volte amanhã`})
             } else {
                 await interaction.reply({ content: "ocorreu um erro, tente novamente" });
             }
