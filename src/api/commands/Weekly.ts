@@ -44,7 +44,7 @@ export default class Weekly extends Command {
 
                 let embed = new EmbedBuilder().setTitle(`${botConfig.GG} Semanal resgatado`)
                     .setThumbnail(`${botConfig.IMG_STONKS}`)
-                    .setDescription(`> **Espetacular** ein <@${transaction.to}>, você resgatou sua recompensa semanal e ganhou **${transaction.ammount.toLocaleString("pt-BR")} ${botConfig.cashname}** como recompensa`)
+                    .setDescription(`> **Espetacular** ein <@${transaction.to}>, você resgatou sua recompensa semanal e ganhou ${botConfig.getCashString(cash)} como recompensa.`)
                     .setColor(Colors.Blue).addFields([
                         { name: "**Próxima Recompensa**", value: `<t:${weeklyCheck.time}>` }
                     ]).setTimestamp(Date.now())

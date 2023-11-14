@@ -24,7 +24,7 @@ export default class Crime extends Command {
         let crimeCheck = cooldownCheck(1, user.crimedate, false)
 
         if (!crimeCheck.allowed) {
-            return await interaction.reply({ content: `**⏰ |** <@${user.userId}>, volte em <t:${crimeCheck.time}> para prender outro criminoso novamente`});
+            return await interaction.reply({ content: `**⏰ |** <@${user.userId}>, volte em <t:${crimeCheck.time}> para prender outro criminoso novamente.`});
         }
 
             user.coins = user.coins as number + cash;
@@ -41,7 +41,7 @@ export default class Crime extends Command {
 
                 embed = new EmbedBuilder().setTitle(`${botConfig.GG} Crime Impedido`)
                     .setThumbnail(botConfig.IMG_GUN)
-                    .setDescription(`> **Perfeito** <@${transaction.to}>, você conseguiu prender um criminoso sem ninguém se machucar e ganhou **${transaction.ammount.toLocaleString("pt-BR")} ${botConfig.cashname}** como recompensa, volte em **1 hora**`)
+                    .setDescription(`> **Perfeito** <@${transaction.to}>, você conseguiu prender um criminoso sem ninguém se machucar e ganhou ${botConfig.getCashString(cash)} como recompensa, volte em **1 hora**.`)
                     .setColor(Colors.White).setTimestamp(Date.now())
                 return await interaction.reply({ embeds: [embed] });
             }

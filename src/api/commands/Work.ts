@@ -42,7 +42,7 @@ export default class Work extends Command {
 
             embed = new EmbedBuilder().setTitle(`${botConfig.GG} Trabalho Concluído`)
                 .setThumbnail(`${botConfig.IMG_STONKS}`)
-                .setDescription(`> **Ótimo** <@${transaction.to}>, completou seu trabalho com sucesso e ganhou **${transaction.ammount.toLocaleString("pt-BR")} ${botConfig.cashname}** como salário, volte em **2 horas**`)
+                .setDescription(`> **Ótimo** <@${transaction.to}>, completou seu trabalho com sucesso e ganhou ${botConfig.getCashString(cash)} como salário, volte em **2 horas**.`)
                 .setColor(Colors.Blue).setTimestamp(Date.now());
             return await interaction.reply({ embeds: [embed] });
         }
