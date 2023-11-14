@@ -32,8 +32,6 @@ export default class EditUser extends Command {
             const cash = interaction.options.get("money")?.value;
             const vip = interaction.options.get("vip")?.value;
 
-            console.log(user);
-
             if(!user) return await interaction.editReply({ content: "Não encontrei esse usuário." });
 
             if(cash) {
@@ -43,7 +41,10 @@ export default class EditUser extends Command {
                     return await interaction.editReply({ content: `Insira um valor numérico para definir os ${botConfig.cashname}.`});
                 }
             }
-            if(vip) user.vip = vip === "true" ? true :  false;
+            if(vip) {
+                user.vip = vip === "true" ? true :  false;
+                user.vipDate = vip === "true" ? new Date() : null;
+            }
 
             const res = await UserController.updateUser(user.userId as string, user);
             
