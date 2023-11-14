@@ -40,7 +40,7 @@ export default class Work extends Command {
             });
 
             embed = new EmbedBuilder().setTitle("<:stonks:1173773269913063545> Trabalho Concluído")
-                .setDescription(`> **Ótimo** <@${transaction.to}>, completou seu trabalho com sucesso e ganhou **${transaction.ammount} ${cashname}** como salário, volte em **1 hora**`)
+                .setDescription(`> **Ótimo** <@${transaction.to}>, completou seu trabalho com sucesso e ganhou **${transaction.ammount.toLocaleString("pt-BR")} ${cashname}** como salário, volte em **1 hora**`)
                 .setColor(Colors.Yellow)
             return await interaction.reply({ embeds: [embed] });
         }
