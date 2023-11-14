@@ -7,6 +7,7 @@ import Crime from "../api/commands/Crime";
 import Work from "../api/commands/Work";
 import Weekly from "../api/commands/Weekly";
 import Atm from "../api/commands/Atm";
+import { Cooldowns } from '../api/commands/Cooldowns';
 
 
 export const commands: { [key: string]: typeof Command } = {
@@ -16,7 +17,8 @@ export const commands: { [key: string]: typeof Command } = {
     "crime": Crime,
     "work": Work,
     "weekly": Weekly,
-    "atm": Atm
+    "atm": Atm,
+    "cooldowns": Cooldowns,
 }
 
 export default function executeAction(cmdName: string, interaction: Interaction<CacheType>) {
