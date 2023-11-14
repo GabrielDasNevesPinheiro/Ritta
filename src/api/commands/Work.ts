@@ -1,9 +1,10 @@
-import { CacheType, Colors, CommandInteraction, EmbedBuilder, SlashCommandBuilder } from "discord.js";
+import { CacheType, Colors, CommandInteraction, EmbedBuilder, SlashCommandBuilder, BufferResolvable } from "discord.js";
 import Command from "./Command";
 import { botConfig } from "../../app";
 import UserController from "../../database/controllers/UserController";
 import { cooldownCheck } from "../../util/DateUtils";
 import TransactionController from "../../database/controllers/TransactionController";
+import path from "path";
 
 export default class Work extends Command {
 
@@ -21,7 +22,7 @@ export default class Work extends Command {
             user = await UserController.createUser({ userId: interaction.user.id });
         }
 
-        let workCheck = cooldownCheck(1, user.workdate, false);
+        let workCheck = cooldownCheck(2, user.workdate, false);
 
         if (!workCheck.allowed) {
             return await interaction.reply({ content: `**⏰ |** <@${user.userId}>, volte em <t:${workCheck.time}> para trabalhar novamente.` });
@@ -40,8 +41,9 @@ export default class Work extends Command {
             });
 
             embed = new EmbedBuilder().setTitle("<:stonks:1173773269913063545> Trabalho Concluído")
-                .setDescription(`> **Ótimo** <@${transaction.to}>, completou seu trabalho com sucesso e ganhou **${transaction.ammount.toLocaleString("pt-BR")} ${botConfig.cashname}** como salário, volte em **1 hora**`)
-                .setColor(Colors.Yellow)
+                .setThumbnail(`${botConfig.IMG_STONKS}`)
+                .setDescription(`> **Ótimo** <@${transaction.to}>, completou seu trabalho com sucesso e ganhou **${transaction.ammount.toLocaleString("pt-BR")} ${botConfig.cashname}** como salário, volte em **2 horas**`)
+                .setColor(Colors.Blue).setTimestamp(Date.now());
             return await interaction.reply({ embeds: [embed] });
         }
 
