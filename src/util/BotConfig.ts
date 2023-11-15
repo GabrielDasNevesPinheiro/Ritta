@@ -82,7 +82,7 @@ export default class BotConfig {
     LOCAL_IMG_DOUBLE_COIN= "./src/assets/coin_double.png"
 
     normalBetChances = 0.5;
-    vipBetChances = 0.7;
+    vipBetChances = 0.65;
 
     public constructor(config: ISettings) {
         this._name = config.botname as string;
