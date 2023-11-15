@@ -49,7 +49,9 @@ export default class BotConfig {
     WAITING = "<:LZ_waiting:1174084916951126096>"
     CRYING = "<:LZ_crying:1174084287734231100>"
     VIP_NO = "<:LZ_no:1174321296516059176>"
-    VIP_YES = "<:LZ_si:1174321267424374834>" 
+    VIP_YES = "<:LZ_si:1174321267424374834>"
+    IDK = "<:LZ_idk:1174368319579627634>"
+    HI = "<:LZ_hi:1174082831169880197>"
 
 
     //assets images consts
@@ -85,6 +87,9 @@ export default class BotConfig {
     vipBetChances = 0.65;
     vipPassiveEarning = 7;
     vipPassiveEarningCooldown = 60;
+
+    repsLimit = 10000;
+    payLimit = 10000;
 
     public constructor(config: ISettings) {
         this._name = config.botname as string;
