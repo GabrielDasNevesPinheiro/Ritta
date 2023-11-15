@@ -19,6 +19,6 @@ export async function checkPayValues(interaction: CommandInteraction<CacheType>)
 }
 
 export function getIntegerOption(interaction: CommandInteraction<CacheType>) {
-    let ammount: number = Number(Number(interaction.options.get("ammount").value).toFixed(0));
+    let ammount: number = Number(Number(interaction.options.get("ammount")?.value).toFixed(0));
     return ammount;
 } 
