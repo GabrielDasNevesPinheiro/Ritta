@@ -7,6 +7,7 @@ interface IUser {
     about?: String
     partner?: ObjectId
     coins?: Number
+    boosterDate?: Date
     tasksDate?: Date
     repDate?: Date
     vipDate?: Date
@@ -47,6 +48,11 @@ const userSchema = new mongoose.Schema<IUser>({
         type: Date,
         required: false,
         default: null
+    },
+    boosterDate: {
+        type: Date,
+        required: false,
+        default: null,
     },
     dailydate: {
         type: Date,

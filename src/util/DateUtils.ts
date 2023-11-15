@@ -6,6 +6,10 @@ export function isVipExpired(user: IUser) {
   return cooldownCheck(720, user.vipDate, false);
 }
 
+export function isBoosterExpired(user: IUser) {
+  return cooldownCheck(360, user.boosterDate, false);
+}
+
 export function sortCooldownCheck(minutes: number, cmpDate: Date) {
   const currentDate = moment(); 
   const comparisonDate = moment(cmpDate);

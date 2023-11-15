@@ -28,7 +28,7 @@ export class Cooldowns extends Command {
         let weeklyCooldown = cooldownCheck(168, user.weeklydate);
         let workCooldown = cooldownCheck(2, user.workdate);
         let crimeCooldown = cooldownCheck(1, user.crimedate);
-        let voteCooldown = cooldownCheck(12, user.votedate);
+        let boosterCooldown = cooldownCheck(360, user.boosterDate);
         let vipCooldown = cooldownCheck(720, user.vipDate);
 
         let dailyString = dailyCooldown.allowed ? `${botConfig.OK} Disponível.` : `${botConfig.WAITING} ` + `<t:${dailyCooldown.time}:R>`;
@@ -36,6 +36,7 @@ export class Cooldowns extends Command {
         let crimeString = crimeCooldown.allowed ? `${botConfig.OK} Disponível.` : `${botConfig.WAITING} ` + `<t:${crimeCooldown.time}:R>`;
         let weeklyString = weeklyCooldown.allowed ? `${botConfig.OK} Disponível.` : `${botConfig.WAITING} ` + `<t:${weeklyCooldown.time}:R>`;
         let vipString = !vipCooldown.allowed ? `${botConfig.VIP_YES} Válido até <t:${vipCooldown.time}:d>` : `${botConfig.VIP_NO} Desativado. `;
+        let boosterString = !boosterCooldown.allowed ? `${botConfig.OK} Válido até <t:${boosterCooldown.time}:d>` : `${botConfig.WAITING} Desativado. `;
 
         let embed = new EmbedBuilder()
             .setTitle(`${botConfig.WAITING} Tempos de Espera`)
@@ -47,6 +48,7 @@ export class Cooldowns extends Command {
                 { name: "Semanal", value: weeklyString, inline: true },
                 { name: "VIP", value: vipString, inline: true },
                 { name: "Voto", value: `${botConfig.CRYING} Em manutenção.`, inline: true },
+                { name: "Server Booster", value: boosterString, }
             ]).setThumbnail(`${botConfig.IMG_TIME}`).setTimestamp(new Date()).setColor(Colors.White);
 
         await interaction.reply({ embeds: [embed]});

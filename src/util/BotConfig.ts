@@ -93,6 +93,7 @@ export default class BotConfig {
     vipBetChances = 0.65;
     vipPassiveEarning = 7;
     vipPassiveEarningCooldown = 60;
+    boosterPassiveEarning = 3;
 
     repsLimit = 10000;
     payLimit = 10000;

@@ -1,7 +1,7 @@
 import { Client } from "discord.js";
 import { botConfig } from "../app";
 import UserController from "../database/controllers/UserController";
-import { cooldownCheck, isVipExpired, sortCooldownCheck } from "./DateUtils";
+import { cooldownCheck, isBoosterExpired, isVipExpired, sortCooldownCheck } from "./DateUtils";
 import RaffleManager from "./RaffleManager";
 
 
@@ -12,6 +12,19 @@ export async function countVipPassiveCash() {
     users.forEach(async (user) => {
         if (!isVipExpired(user).allowed) {
             user.coins = Number(user.coins) + botConfig.vipPassiveEarning;
+            await UserController.updateUser(String(user.userId), user);
+        }
+    });
+
+}
+
+export async function countBoosterPassiveCash() {
+
+    let users = await UserController.getAllUsers();
+
+    users.forEach(async (user) => {
+        if (!isBoosterExpired(user).allowed) {
+            user.coins = Number(user.coins) + botConfig.boosterPassiveEarning;
             await UserController.updateUser(String(user.userId), user);
         }
     });
@@ -52,7 +65,7 @@ export async function sortRaffle(client: Client) {
 
 
     let winnerId = getWinner(sortArray);
-    
+
     if(!winnerId) {
         RaffleManager.resetGameNoWinner();
         return;

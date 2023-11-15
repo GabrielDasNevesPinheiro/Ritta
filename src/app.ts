@@ -5,7 +5,7 @@ import { Settings } from "./database/models/Settings";
 import postSlashCommands from "./api/Register";
 import executeAction from "./handlers/InteractionHandler";
 import BotConfig from "./util/BotConfig";
-import { countVipPassiveCash, sortRaffle } from './util/PassiveSystems';
+import { countBoosterPassiveCash, countVipPassiveCash, sortRaffle } from './util/PassiveSystems';
 import UserController from './database/controllers/UserController';
 
 config()
@@ -33,9 +33,10 @@ client.on("ready", async (bot) => {
     bot.user.setUsername(botConfig.name);
     postSlashCommands();
 
-    //vip passive cash earning system
+    //passive systems
     setInterval(countVipPassiveCash, botConfig.vipPassiveEarningCooldown * 1000);
     setInterval(sortRaffle, 10000, client);
+    setInterval(countBoosterPassiveCash, botConfig.vipPassiveEarningCooldown * 1000);
 
 });
 
@@ -63,11 +64,13 @@ client.on("guildMemberUpdate", async(old, now) => {
         let user = await UserController.getUserById(now.user.id);
 
         if(!user) user = await UserController.createUser({ userId: now.user.id });
+        user.boosterDate = new Date();
         await UserController.addCash(user, {
             from: "buffando o servidor oficial do bot",
             to: user.userId,
             ammount: 25000
         });
+        await UserController.updateUser(String(user.userId), user);
         let channel = now.client.channels.cache.get("1174342112565805088") as TextChannel;
 
         await channel.send(`${botConfig.GG} <@${now.user.id}> Impulsionou o servidor e ganhou ${botConfig.getCashString(25000)}!`);
