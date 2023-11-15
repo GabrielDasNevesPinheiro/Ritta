@@ -7,9 +7,6 @@ interface IUser {
     about?: String
     partner?: ObjectId
     coins?: Number
-    vip?: Boolean
-    reps?: [typeof reputationSchema]
-    transactions?: [typeof transactionSchema]
     tasksDate?: Date
     vipDate?: Date
     dailydate?: Date
@@ -39,19 +36,6 @@ const userSchema = new mongoose.Schema<IUser>({
         type: Number,
         required: false,
         default: 0
-    },
-    vip: {
-        type: Boolean,
-        required: false,
-        default: false,
-    },
-    reps: {
-        type: [reputationSchema],
-        required: false,
-    },
-    transactions: {
-        type: [transactionSchema],
-        required: false,
     },
     tasksDate: {
         type: Date,
