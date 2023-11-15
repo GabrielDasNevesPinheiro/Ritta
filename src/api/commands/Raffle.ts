@@ -37,7 +37,7 @@ export default class Raffle extends Command {
         
             await UserController.removeCash(user, {
                 from: user.userId,
-                to: "comprando riffas",
+                to: "comprando rifas",
                 ammount: RaffleManager.rafflePrice * ammount
             });
 

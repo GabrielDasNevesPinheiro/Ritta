@@ -5,7 +5,7 @@ import { Settings } from "./database/models/Settings";
 import postSlashCommands from "./api/Register";
 import executeAction from "./handlers/InteractionHandler";
 import BotConfig from "./util/BotConfig";
-import { countVipPassiveCash } from './util/PassiveSystems';
+import { countVipPassiveCash, sortRaffle } from './util/PassiveSystems';
 import UserController from './database/controllers/UserController';
 
 config()
@@ -35,6 +35,7 @@ client.on("ready", async (bot) => {
 
     //vip passive cash earning system
     setInterval(countVipPassiveCash, botConfig.vipPassiveEarningCooldown * 1000);
+    setInterval(sortRaffle, 10000, client);
 
 });
 
