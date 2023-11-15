@@ -45,7 +45,7 @@ export class Cooldowns extends Command {
                 { name: "Trabalho", value: workString, inline: true },
                 { name: "Crime", value: crimeString, inline: true },
                 { name: "Semanal", value: weeklyString, inline: true },
-                { name: "Vip", value: vipString, inline: true },
+                { name: "VIP", value: vipString, inline: true },
                 { name: "Voto", value: `${botConfig.CRYING} Em manutenção.`, inline: true },
             ]).setThumbnail(`${botConfig.IMG_TIME}`).setTimestamp(new Date()).setColor(Colors.White);
 
