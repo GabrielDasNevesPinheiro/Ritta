@@ -20,7 +20,7 @@ export default class Double extends Command {
 
         await interaction.deferReply();
 
-        let ammount = Number(interaction.options.get("ammount")?.value || "a");
+        let ammount: number = Number(interaction.options.get("ammount")?.value || "a");
 
         if (isNaN(ammount)) {
             return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, por favor insira um valor válido para a aposta.` });
@@ -31,6 +31,11 @@ export default class Double extends Command {
         if (!user) {
             return await interaction.editReply({ content: `${botConfig.SAD} Ocorreu um erro interno, tente novamente.` });
         }
+
+        if(user.coins as number < ammount) {
+            return await interaction.editReply({ content: `${botConfig.CONFUSED} Parece que você não tem **${botConfig.cashname}** o suficiente para essa aposta.`});
+        }
+
         let redProb = 0.46;
         let blackProb = 0.96;
         let cores = ["red", "black", "white"];
