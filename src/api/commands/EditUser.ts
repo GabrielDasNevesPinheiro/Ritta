@@ -42,7 +42,6 @@ export default class EditUser extends Command {
                 }
             }
             if(vip) {
-                user.vip = vip === "true" ? true :  false;
                 user.vipDate = vip === "true" ? new Date() : null;
             }
 
