@@ -4,7 +4,7 @@ import { botConfig } from "../../app";
 import { CanvasRenderingContext2D, createCanvas, loadImage } from "canvas";
 import { getDouble } from "../../util/ImageUtils";
 import UserController from "../../database/controllers/UserController";
-import { isVipExpired } from "../../util/DateUtils";
+import { isBoosterExpired, isVipExpired } from "../../util/DateUtils";
 
 export default class Double extends Command {
 
@@ -53,6 +53,10 @@ export default class Double extends Command {
         if (!isVipExpired(user).allowed) {
             redProb = 0.32;
             blackProb = 0.64;
+            tax = 0;
+        }
+
+        if(!isBoosterExpired(user).allowed) {
             tax = 0;
         }
 
