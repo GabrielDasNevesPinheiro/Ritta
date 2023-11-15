@@ -53,14 +53,14 @@ export default class Claim extends Command {
             user = await UserController.updateUser(user.userId as string, user);
 
             let embed = new EmbedBuilder()
-                .setTitle("✅ Tarefas Concluídas!")
+                .setTitle(`${botConfig.HI} Tarefas Concluídas!`)
                 .setThumbnail(`${botConfig.IMG_RAINMONEY}`)
                 .setDescription(`> Você coletou ${botConfig.getCashString(cash)} como recompensa por ter completado as tarefas diárias. Volte em breve para fazer as tarefas novamente.`)
                 .setTimestamp(Date.now()).setColor(Colors.Green)
 
             await interaction.reply({ embeds: [embed] });
         } else {
-            await interaction.reply({ content: `${botConfig.CLOWN} Você precisa completar todas as suas tarefas antes.` });
+            await interaction.reply({ content: `${botConfig.IDK} Você precisa completar todas as suas tarefas antes.` });
         }
         
 
