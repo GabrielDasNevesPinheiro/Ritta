@@ -91,6 +91,8 @@ export default class BotConfig {
     repsLimit = 10000;
     payLimit = 10000;
 
+    vipPrice = 10.00;
+
     public constructor(config: ISettings) {
         this._name = config.botname as string;
         this._cashname = config.cashname as string;
