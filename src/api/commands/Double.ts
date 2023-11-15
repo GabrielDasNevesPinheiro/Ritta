@@ -112,7 +112,7 @@ export default class Double extends Command {
     
                 await confirmation.update({
                     content:
-                        `> ${botConfig.NO_STONKS} | <@${interaction.user.id}>, você apostou no __${betColor}__ e o jogo sorteou __${sorted}__. Você perdeu ${botConfig.getCashString(bet)}!`,
+                        `> ${botConfig.NO_STONKS} | <@${interaction.user.id}>, Você apostou no __${betColor}__ e o jogo sorteou __${sorted}__. Você perdeu ${botConfig.getCashString(bet)}!`,
                     files: [doubleResult],
                     components: []
                 });
@@ -130,7 +130,7 @@ export default class Double extends Command {
     
             await confirmation.update({
                 content:
-                    `> ${botConfig.STONKS} | <@${interaction.user.id}>, você apostou no __${betColor}__ e o jogo sorteou __${sorted}__. Você ganhou ${botConfig.getCashString(ammount)} **(${bet}x${selectedMultiplier})!**\n ${botConfig.getCashString(taxVal)} de taxa.`,
+                    `> ${botConfig.STONKS} | <@${interaction.user.id}>, Você apostou no __${betColor}__ e o jogo sorteou __${sorted}__. Você ganhou ${botConfig.getCashString(ammount)} **(${bet}x${selectedMultiplier})!**\n ${botConfig.getCashString(taxVal)} de taxa.`,
                 files: [doubleResult],
                 components: []
             });
