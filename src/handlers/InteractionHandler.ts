@@ -8,6 +8,7 @@ import Work from "../api/commands/Work";
 import Weekly from "../api/commands/Weekly";
 import Atm from "../api/commands/Atm";
 import { Cooldowns } from '../api/commands/Cooldowns';
+import Tasks from '../api/commands/Tasks';
 
 
 export const commands: { [key: string]: typeof Command } = {
@@ -19,6 +20,7 @@ export const commands: { [key: string]: typeof Command } = {
     "weekly": Weekly,
     "atm": Atm,
     "cooldowns": Cooldowns,
+    "tasks": Tasks
 }
 
 export default function executeAction(cmdName: string, interaction: Interaction<CacheType>) {
