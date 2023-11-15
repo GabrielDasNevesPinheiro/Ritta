@@ -83,6 +83,8 @@ export default class BotConfig {
 
     normalBetChances = 0.5;
     vipBetChances = 0.65;
+    vipPassiveEarning = 7;
+    vipPassiveEarningCooldown = 60;
 
     public constructor(config: ISettings) {
         this._name = config.botname as string;
