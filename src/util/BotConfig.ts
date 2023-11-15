@@ -78,7 +78,7 @@ export default class BotConfig {
     IMG_TASK = "https://i.imgur.com/aC4quov.png"
     IMG_FBI = "https://i.imgur.com/5HdE197.png"
     IMG_GUN = "https://i.imgur.com/o5dGAU4.png"
-    IMG_RAINMONEY = "https://i.imgur.com/5urPHlx.jpg"
+    IMG_RAINMONEY = "https://i.imgur.com/OYsWRvE.png"
     LOCAL_IMG_DOUBLE_RED = "./src/assets/red_double.jpg"
     LOCAL_IMG_DOUBLE_BLACK = "./src/assets/black_double.jpg"
     LOCAL_IMG_DOUBLE_WHITE = "./src/assets/white_double.jpg"
