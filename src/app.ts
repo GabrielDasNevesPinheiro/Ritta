@@ -5,6 +5,7 @@ import { Settings } from "./database/models/Settings";
 import postSlashCommands from "./api/Register";
 import executeAction from "./handlers/InteractionHandler";
 import BotConfig from "./util/BotConfig";
+import { countVipPassiveCash } from './util/PassiveSystems';
 
 config()
 const token = process.env.BOT_TOKEN;
@@ -30,6 +31,9 @@ client.on("ready", async (bot) => {
 
     bot.user.setUsername(botConfig.name);
     postSlashCommands();
+
+    //vip passive cash earning system
+    setTimeout(countVipPassiveCash, botConfig.vipPassiveEarningCooldown * 1000);
 
 });
 
