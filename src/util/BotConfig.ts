@@ -82,7 +82,9 @@ export default class BotConfig {
     LOCAL_IMG_DOUBLE_RED = "./src/assets/red_double.jpg"
     LOCAL_IMG_DOUBLE_BLACK = "./src/assets/black_double.jpg"
     LOCAL_IMG_DOUBLE_WHITE = "./src/assets/white_double.jpg"
-    LOCAL_IMG_DOUBLE_COIN= "./src/assets/coin_double.png"
+    LOCAL_IMG_DOUBLE_COIN = "./src/assets/coin_double.png"
+    LOCAL_IMG_DOUBLE_LINE = "./src/assets/double_line.png"
+    LOCAL_IMG_DOUBLE_BACKGROUND = "./src/assets/double_background.png"
 
     normalBetChances = 0.5;
     vipBetChances = 0.65;
