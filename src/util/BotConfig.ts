@@ -48,6 +48,8 @@ export default class BotConfig {
     FACEPALM = "<:LZ_facepalm:1173761110457978940>"
     WAITING = "<:LZ_waiting:1174084916951126096>"
     CRYING = "<:LZ_crying:1174084287734231100>"
+    VIP_NO = "<:LZ_no:1174321296516059176>"
+    VIP_YES = "<:LZ_si:1174321267424374834>" 
 
 
     //assets images consts
