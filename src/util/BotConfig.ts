@@ -74,6 +74,10 @@ export default class BotConfig {
     IMG_FBI = "https://i.imgur.com/5HdE197.png"
     IMG_GUN = "https://i.imgur.com/o5dGAU4.png"
     IMG_RAINMONEY = "https://i.imgur.com/5urPHlx.jpg"
+    LOCAL_IMG_DOUBLE_RED = "./src/assets/red_double.jpg"
+    LOCAL_IMG_DOUBLE_BLACK = "./src/assets/black_double.jpg"
+    LOCAL_IMG_DOUBLE_WHITE = "./src/assets/white_double.jpg"
+    LOCAL_IMG_DOUBLE_COIN= "./src/assets/coin_double.jpg"
 
     normalBetChances = 0.5;
     vipBetChances = 0.7;
