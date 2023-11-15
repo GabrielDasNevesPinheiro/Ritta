@@ -41,7 +41,7 @@ export default class Double extends Command {
         let cores = ["red", "black", "white"];
         let random = Math.random();
         let sorted = "";
-        let tax = 0.3;
+        let tax = 300;
 
         let normalMultiplier = 2;
         let rareMultiplier = 14;
@@ -53,7 +53,7 @@ export default class Double extends Command {
         if (!isVipExpired(user)) {
             redProb = 0.32;
             blackProb = 0.64;
-            let tax = 0;
+            tax = 0;
         }
 
         
@@ -97,9 +97,7 @@ export default class Double extends Command {
             }
     
             let ammount = bet;
-            ammount *= selectedMultiplier;
-            let taxVal = Math.floor(ammount * tax);
-            ammount = Math.floor(ammount - taxVal);
+            ammount -= bet >= 1000 ? tax : 0;
     
             const doubleResult = await getDouble(sorted);
             if (sorted !== betColor) {
@@ -130,7 +128,7 @@ export default class Double extends Command {
     
             await confirmation.update({
                 content:
-                    `> ${botConfig.STONKS} | <@${interaction.user.id}>, Você apostou no __${betColor}__ e o jogo sorteou __${sorted}__. Você ganhou ${botConfig.getCashString(ammount)} **(${bet}x${selectedMultiplier})!**\n ${botConfig.getCashString(taxVal)} de taxa.`,
+                    `> ${botConfig.STONKS} | <@${interaction.user.id}>, Você apostou no __${betColor}__ e o jogo sorteou __${sorted}__. Você ganhou ${botConfig.getCashString(ammount)} **(${bet}x${selectedMultiplier})!**\n` + (bet >= 1000 ? `${botConfig.getCashString(tax)} de taxa.` : ""),
                 files: [doubleResult],
                 components: []
             });
