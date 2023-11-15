@@ -33,7 +33,7 @@ export default class Raffle extends Command {
 
             if(!user) user = await UserController.createUser({ userId: interaction.user.id});
 
-            if(Number(user.coins) < RaffleManager.rafflePrice * ammount) return await interaction.reply({ content: `${botConfig.NERVOUS} | <@${user.userId}>, Você não tem ${botConfig.cashname} o suficiente para isto.`})
+            if(Number(user.coins) < RaffleManager.rafflePrice * ammount) return await interaction.reply({ content: `${botConfig.NERVOUS} | <@${user.userId}>, Você não tem ${botConfig.cashname.toLowerCase()} o suficiente para isto.`})
         
             await UserController.removeCash(user, {
                 from: user.userId,

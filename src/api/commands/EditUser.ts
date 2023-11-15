@@ -38,7 +38,7 @@ export default class EditUser extends Command {
                 try {
                     user.coins = cash as number;
                 }   catch(error) {
-                    return await interaction.editReply({ content: `Insira um valor numérico para definir os ${botConfig.cashname}.`});
+                    return await interaction.editReply({ content: `Insira um valor numérico para definir os ${botConfig.cashname.toLowerCase()}.`});
                 }
             }
             if(vip) {

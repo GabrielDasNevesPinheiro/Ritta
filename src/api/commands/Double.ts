@@ -33,7 +33,7 @@ export default class Double extends Command {
         }
         
         if(user.coins as number < bet) {
-            return await interaction.editReply({ content: `${botConfig.CONFUSED} Parece que você não tem **${botConfig.cashname}** o suficiente para essa aposta.`});
+            return await interaction.editReply({ content: `${botConfig.CONFUSED} Parece que você não tem **${botConfig.cashname.toLowerCase().toLowerCase().toLowerCase()}** o suficiente para essa aposta.`});
         }
 
         let redProb = 0.46;

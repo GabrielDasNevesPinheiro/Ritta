@@ -37,7 +37,7 @@ export default class Pay extends Command {
 
         if ((user.coins as number < ammount)) return await interaction.editReply({ content: `**${botConfig.NO} | <@${interaction.user.id}>, Você não tem a quantia fornecida para o pagamento.**` })
 
-        if (user.userId === targetUser.userId) return await interaction.editReply({ content: `**${botConfig.NO} | Você não pode se transferir ${botConfig.cashname}.**` })
+        if (user.userId === targetUser.userId) return await interaction.editReply({ content: `**${botConfig.NO} | Você não pode se transferir ${botConfig.cashname.toLowerCase()}.**` })
 
         if (ammount > botConfig.payLimit && isVipExpired(user).allowed) return await interaction.editReply({ content: `**${botConfig.NO} | <@${interaction.user.id}>, Torne-se __VIP__ para transferir mais de ${botConfig.getCashString(botConfig.payLimit)}.**` });
 
