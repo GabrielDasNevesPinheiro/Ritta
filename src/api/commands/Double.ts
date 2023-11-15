@@ -50,7 +50,7 @@ export default class Double extends Command {
         let alreadyPlayed = false;
 
 
-        if (!isVipExpired(user)) {
+        if (!isVipExpired(user).allowed) {
             redProb = 0.32;
             blackProb = 0.64;
             tax = 0;
