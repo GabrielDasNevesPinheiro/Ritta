@@ -25,7 +25,7 @@ export default class Tasks extends Command {
         let weeklyPlayed = !cooldownCheck(168, user.weeklydate).allowed;
         let workPlayed = !cooldownCheck(2, user.workdate).allowed;
         let crimePlayed = !cooldownCheck(1, user.crimedate).allowed;
-        let tasksPlayed = user.tasksClaimed;
+        let tasksPlayed = !cooldownCheck(24, user.tasksDate, true).allowed;
 
         let dailyString = dailyPlayed ? `:white_check_mark: 🎁 Você resgatou a recompensa diária!` : `:black_large_square: 🎁 Você não resgatou a recompensa diária!`;
         let workString = workPlayed ? `:white_check_mark: 💼 Você trabalhou!` : `:black_large_square: 💼 Você não trabalhou!`;

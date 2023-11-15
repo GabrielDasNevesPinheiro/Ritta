@@ -10,7 +10,7 @@ interface IUser {
     vip?: Boolean
     reps?: [typeof reputationSchema]
     transactions?: [typeof transactionSchema]
-    tasksClaimed?: Boolean
+    tasksDate?: Date
     vipDate?: Date
     dailydate?: Date
     workdate?: Date
@@ -53,10 +53,10 @@ const userSchema = new mongoose.Schema<IUser>({
         type: [transactionSchema],
         required: false,
     },
-    tasksClaimed: {
-        type: Boolean,
+    tasksDate: {
+        type: Date,
         required: false,
-        default: false,
+        default: null,
     },
     vipDate: {
         type: Date,
