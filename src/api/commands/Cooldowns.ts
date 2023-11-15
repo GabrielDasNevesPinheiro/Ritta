@@ -35,7 +35,7 @@ export class Cooldowns extends Command {
         let workString = workCooldown.allowed ? `${botConfig.OK} Disponível.` : `${botConfig.WAITING} ` + `<t:${workCooldown.time}:R>`;
         let crimeString = crimeCooldown.allowed ? `${botConfig.OK} Disponível.` : `${botConfig.WAITING} ` + `<t:${crimeCooldown.time}:R>`;
         let weeklyString = weeklyCooldown.allowed ? `${botConfig.OK} Disponível.` : `${botConfig.WAITING} ` + `<t:${weeklyCooldown.time}:R>`;
-        let vipString = !vipCooldown.allowed ? `${botConfig.OK} Válido até <t:${vipCooldown.time}:d>` : `${botConfig.WAITING} Desativado. `;
+        let vipString = !vipCooldown.allowed ? `${botConfig.VIP_YES} Válido até <t:${vipCooldown.time}:d>` : `${botConfig.VIP_NO} Desativado. `;
 
         let embed = new EmbedBuilder()
             .setTitle(`${botConfig.WAITING} Tempos de Espera`)
