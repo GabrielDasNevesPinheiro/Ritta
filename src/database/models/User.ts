@@ -43,11 +43,6 @@ const userSchema = new mongoose.Schema<IUser>({
         required: false,
         default: null,
     },
-    repDate: {
-        type: Date,
-        required: false,
-        default: null,
-    },
     vipDate: {
         type: Date,
         required: false,
