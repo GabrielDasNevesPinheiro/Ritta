@@ -1,4 +1,6 @@
+import { ITransaction } from '../models/Transaction';
 import { User, IUser } from '../models/User';
+import TransactionController from './TransactionController';
 
 class UserController {
     // Create a new user
@@ -19,6 +21,46 @@ class UserController {
             return users;
         } catch (error) {
             return [];
+        }
+    }
+
+    static async addCash(user: IUser, trans: ITransaction) {
+        try {
+            
+            let foundUser: IUser = await User.findOne({ userId: user.userId });
+            if(!foundUser) return null;
+
+            foundUser.coins = Number(foundUser.coins) + Number(trans.ammount);
+
+            await TransactionController.createTransaction(trans);
+
+            foundUser = await this.updateUser(foundUser.userId as string, foundUser);
+
+            return foundUser;
+
+
+        } catch (error) {
+            return null;
+        }
+    }
+
+    static async removeCash (user: IUser, trans: ITransaction) {
+        try {
+            
+            let foundUser: IUser = await User.findOne({ userId: user.userId });
+            if(!foundUser) return null;
+
+            foundUser.coins = Number(foundUser.coins) - Number(trans.ammount);
+
+            await TransactionController.createTransaction(trans);
+
+            foundUser = await this.updateUser(foundUser.userId as string, foundUser);
+
+            return foundUser;
+
+
+        } catch (error) {
+            return null;
         }
     }
 
