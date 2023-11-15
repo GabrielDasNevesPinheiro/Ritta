@@ -10,6 +10,7 @@ import Atm from "../api/commands/Atm";
 import { Cooldowns } from '../api/commands/Cooldowns';
 import Tasks from '../api/commands/Tasks';
 import Claim from "../api/commands/Claim";
+import Double from "../api/commands/Double";
 
 
 export const commands: { [key: string]: typeof Command } = {
@@ -23,6 +24,7 @@ export const commands: { [key: string]: typeof Command } = {
     "cooldowns": Cooldowns,
     "tasks": Tasks,
     "claim": Claim,
+    "double": Double
 }
 
 export default function executeAction(cmdName: string, interaction: Interaction<CacheType>) {
