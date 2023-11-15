@@ -30,7 +30,7 @@ export default class Atm extends Command {
 
         let targetUser = interaction.client.users.cache.get(user.userId as string);
         await interaction.reply({ 
-            content: `${botConfig.GG} | <@${interaction.user.id}>, ${interaction.user.id === user.userId ? "Você" : "`" +`${targetUser.username}`+ "`"} tem ${botConfig.getCashString(points as number)} e está em **#${ranking}** entre os mais ricos, para ver o ranking, use o comando `+ "`" + '/top' + "`."
+            content: `${botConfig.OMG} | <@${interaction.user.id}>, ${interaction.user.id === user.userId ? "Você" : "`" +`${targetUser.username}`+ "`"} tem ${botConfig.getCashString(points as number)} e está em **#${ranking}** entre os mais ricos, para ver o ranking, use o comando `+ "`" + '/top' + "`."
          });
     }
 
