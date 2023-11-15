@@ -57,7 +57,5 @@ export default abstract class RaffleManager {
 
     static resetGameNoWinner() {
         RaffleManager.lastPlayed = new Date();
-        RaffleManager.lastWinner = null;
-        RaffleManager.lastWinnerWon = 0;
     }
 }
