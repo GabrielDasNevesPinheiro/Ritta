@@ -8,7 +8,7 @@ export async function countVipPassiveCash() {
     let users = await UserController.getAllUsers();
 
     users.forEach(async (user) => {
-        if (!isVipExpired(user)) {
+        if (!isVipExpired(user).allowed) {
             user.coins = Number(user.coins) + botConfig.vipPassiveEarning;
             await UserController.updateUser(String(user.userId), user);
         }
