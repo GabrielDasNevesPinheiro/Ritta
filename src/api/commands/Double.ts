@@ -20,19 +20,19 @@ export default class Double extends Command {
 
         await interaction.deferReply();
 
-        let ammount: number = Number(interaction.options.get("ammount")?.value || "a");
+        let bet: number = Number(interaction.options.get("ammount")?.value || "a");
 
-        if (isNaN(ammount)) {
+        if (isNaN(bet)) {
             return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, por favor insira um valor válido para a aposta.` });
         }
 
-        let user = await UserController.createUser({ userId: interaction.user.id });
+        let user = await UserController.getUserById(interaction.user.id);
 
         if (!user) {
             return await interaction.editReply({ content: `${botConfig.SAD} Ocorreu um erro interno, tente novamente.` });
         }
-
-        if(user.coins as number < ammount) {
+        
+        if(user.coins as number < bet) {
             return await interaction.editReply({ content: `${botConfig.CONFUSED} Parece que você não tem **${botConfig.cashname}** o suficiente para essa aposta.`});
         }
 
@@ -41,6 +41,7 @@ export default class Double extends Command {
         let cores = ["red", "black", "white"];
         let random = Math.random();
         let sorted = "";
+        let tax = 0.3;
 
         let normalMultiplier = 2;
         let rareMultiplier = 14;
@@ -52,6 +53,7 @@ export default class Double extends Command {
         if (!isVipExpired(user)) {
             redProb = 0.32;
             blackProb = 0.64;
+            let tax = 0;
         }
 
         
@@ -75,7 +77,7 @@ export default class Double extends Command {
 
         let row = new ActionRowBuilder<ButtonBuilder>().addComponents([red, black, white]);
 
-        let response = await interaction.editReply({ content: `${botConfig.MONEY} Você vai apostar ${botConfig.getCashString(ammount)} no Double. Escolha uma cor:`, components: [row] });
+        let response = await interaction.editReply({ content: `${botConfig.MONEY} Você vai apostar ${botConfig.getCashString(bet)} no Double. Escolha uma cor:`, components: [row] });
 
         const collector = response.createMessageComponentCollector({ componentType: ComponentType.Button, time: 15000 });
 
@@ -94,7 +96,10 @@ export default class Double extends Command {
                 selectedMultiplier = rareMultiplier;
             }
     
-    
+            let ammount = bet;
+            ammount *= selectedMultiplier;
+            let taxVal = Math.floor(ammount * tax);
+            ammount = Math.floor(ammount - taxVal);
     
             const doubleResult = await getDouble(sorted);
             if (sorted !== betColor) {
@@ -102,28 +107,30 @@ export default class Double extends Command {
                 user = await UserController.removeCash(user, {
                     from: user.userId,
                     to: "para o double",
-                    ammount
+                    ammount: bet
                 });
     
                 await confirmation.update({
                     content:
-                        `> ${botConfig.NO_STONKS} | <@${interaction.user.id}>, você apostou no __${betColor}__ e o jogo sorteou __${sorted}__. Você perdeu ${botConfig.getCashString(ammount)}!`,
+                        `> ${botConfig.NO_STONKS} | <@${interaction.user.id}>, você apostou no __${betColor}__ e o jogo sorteou __${sorted}__. Você perdeu ${botConfig.getCashString(bet)}!`,
                     files: [doubleResult],
                     components: []
                 });
                 alreadyPlayed = true;
                 return;
             }
-    
+            
+            
+
             user = await UserController.addCash(user, {
                 from: "do double",
                 to: user.userId,
-                ammount: ammount * selectedMultiplier
+                ammount: ammount
             })
     
             await confirmation.update({
                 content:
-                    `> ${botConfig.STONKS} | <@${interaction.user.id}>, você apostou no __${betColor}__ e o jogo sorteou __${sorted}__. Você ganhou ${botConfig.getCashString(ammount * selectedMultiplier)} **(${ammount}x${selectedMultiplier})**!`,
+                    `> ${botConfig.STONKS} | <@${interaction.user.id}>, você apostou no __${betColor}__ e o jogo sorteou __${sorted}__. Você ganhou ${botConfig.getCashString(ammount)} **(${bet}x${selectedMultiplier})!**\n ${botConfig.getCashString(taxVal)} de taxa.`,
                 files: [doubleResult],
                 components: []
             });
