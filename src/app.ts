@@ -33,7 +33,7 @@ client.on("ready", async (bot) => {
     postSlashCommands();
 
     //vip passive cash earning system
-    setTimeout(countVipPassiveCash, botConfig.vipPassiveEarningCooldown * 1000);
+    setInterval(countVipPassiveCash, botConfig.vipPassiveEarningCooldown * 1000);
 
 });
 
