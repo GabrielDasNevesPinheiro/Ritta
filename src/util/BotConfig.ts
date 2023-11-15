@@ -113,6 +113,6 @@ export default class BotConfig {
     }
 
     public getCashString(ammount: number): string {
-        return `**${this.CASH} ${ammount.toLocaleString("pt-BR")} ${this.cashname.toLocaleUpperCase()}**`
+        return `**${this.CASH} ${ammount.toLocaleString("pt-BR")} ${this.cashname}**`
     }
 }
