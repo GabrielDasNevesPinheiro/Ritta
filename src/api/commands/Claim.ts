@@ -29,7 +29,7 @@ export default class Claim extends Command {
         let tasksTime = cooldownCheck(24, user.tasksDate, true).time;
 
         if (tasksPlayed) {
-            return await interaction.reply({ content: `${botConfig.WAITING} | <@${user.userId}>, volte <t:${tasksTime}:R> oara resgatar as recompensas das tarefas.` });
+            return await interaction.reply({ content: `${botConfig.WAITING} | <@${user.userId}>, volte <t:${tasksTime}:R> para resgatar as recompensas das tarefas.` });
         }
 
         if (dailyPlayed && weeklyPlayed && workPlayed && crimePlayed) {
