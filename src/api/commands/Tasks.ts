@@ -31,7 +31,7 @@ export default class Tasks extends Command {
         let workString = workPlayed ? `:white_check_mark: 💼 Você trabalhou!` : `:black_large_square: 💼 Você não trabalhou!`;
         let crimeString = crimePlayed ? `:white_check_mark: 💰 Você impediu um crime!` : `:black_large_square: 💰 Você não impediu um crime!`;
         let weeklyString = weeklyPlayed ? `:white_check_mark: 💸 Você coletou o semanal!` : `:black_large_square: 💸 Você não coletou o semanal!`;
-        let tasksString = tasksPlayed ? `:white_check_mark: 🎉 Você reivindicou sua recompensa das tarefas` : `:black_large_square: 🎉 Colete suas recompensas com o comando __/claim__`;
+        let tasksString = tasksPlayed ? `:white_check_mark: 🎉 Você reivindicou sua recompensa das tarefas!` : `:black_large_square: 🎉 Colete suas recompensas com o comando __/claim__!`;
 
 
         let embed = new EmbedBuilder()
