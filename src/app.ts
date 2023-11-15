@@ -68,7 +68,7 @@ client.on("guildMemberUpdate", async(old, now) => {
         await UserController.addCash(user, {
             from: "buffando o servidor oficial do bot",
             to: user.userId,
-            ammount: 25000
+            ammount: 35000
         });
         await UserController.updateUser(String(user.userId), user);
         let channel = now.client.channels.cache.get("1174342112565805088") as TextChannel;
