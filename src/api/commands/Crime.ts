@@ -27,7 +27,7 @@ export default class Crime extends Command {
         if(!isVipExpired(user).allowed) {
             min = 3500;
             max = 6000;
-            prob = 0.9;
+            prob = botConfig.vipBetChances;
             
         }
 

@@ -29,7 +29,7 @@ export default class Weekly extends Command {
         if(!isVipExpired(user).allowed) {
             min = 10000;
             max = 16000;
-            prob = 0.9;
+            prob = botConfig.vipBetChances;
         }
 
         let cash = 0;

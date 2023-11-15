@@ -27,7 +27,7 @@ export default class Work extends Command {
         if(!isVipExpired(user).allowed) {
             min = 4500;
             max = 7000;
-            prob = 0.9;
+            prob = botConfig.vipBetChances;
         }
 
         let cash = 0;
