@@ -52,6 +52,7 @@ export default class BotConfig {
     VIP_YES = "<:LZ_si:1174321267424374834>"
     IDK = "<:LZ_idk:1174368319579627634>"
     HI = "<:LZ_hi:1174082831169880197>"
+    OMG = "<:LZ_omg:1174391918650736670>"
 
 
     //assets images consts
