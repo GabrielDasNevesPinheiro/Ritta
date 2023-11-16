@@ -44,7 +44,7 @@ export default class Crime extends Command {
         if (!crimeCheck.allowed) {
             return await interaction.reply({ content: `**${botConfig.WAITING} |** <@${user.userId}>, volte em <t:${crimeCheck.time}> para prender outro criminoso novamente.`});
         }
-            if(!isVipExpired(user) && Math.random() <= botConfig.vipBetChances) {
+            if(!isVipExpired(user).allowed && Math.random() <= botConfig.vipBetChances) {
                 canWin = true;
             } else if (Math.random() <= botConfig.normalBetChances) {
                 canWin = true;
