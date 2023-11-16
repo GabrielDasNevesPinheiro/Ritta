@@ -9,15 +9,16 @@ export default class Raffle extends Command {
     
     static command: SlashCommandBuilder = new SlashCommandBuilder()
         .setName("raffle")
-        .addStringOption(option => 
+        .addIntegerOption(option => 
                 option.setName("ammount")
                 .setDescription("Quantidade de tickets para comprar")
+                .setMinValue(1)
             )
         .setDescription("Compre tickets para a rifa ou veja informações do sorteio");
 
     static async execute(interaction: CommandInteraction) {
         
-        let ammount = getIntegerOption(interaction.options.get("ammount")?.value as string);
+        let ammount = interaction.options.get("ammount")?.value as number;
 
         if(isNaN(ammount)) {
 

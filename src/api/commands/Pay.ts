@@ -14,10 +14,11 @@ export default class Pay extends Command {
             option.setName("user")
                 .setDescription("Usuário que receberá o pagamento")
                 .setRequired(true)
-        ).addStringOption(option =>
+        ).addIntegerOption(option =>
             option.setName("ammount")
                 .setDescription("Quantidade desejada")
                 .setRequired(true)
+                .setMinValue(20)
         )
         .setDescription("Efetue um pagamento à alguém");
 
@@ -25,9 +26,7 @@ export default class Pay extends Command {
 
         await interaction.deferReply();
         let targetUserId = interaction.options.getUser("user").id;
-        let ammount: number = getIntegerOption(interaction.options.get("ammount")?.value as string);
-
-        if (isNaN(ammount)) return await interaction.editReply({ content: `**${botConfig.CONFUSED} | <@${interaction.user.id}>, Você precisa inserir um valor válido.**` })
+        let ammount: number = interaction.options.get("ammount").value as number;
 
 
         let targetUser = await UserController.getUserById(targetUserId);

@@ -14,10 +14,11 @@ export default class Bet extends Command {
             option.setName("user")
                 .setDescription("Usuário para a posta")
                 .setRequired(true)
-        ).addStringOption(option =>
+        ).addIntegerOption(option =>
             option.setName("ammount")
                 .setDescription("Quantidade desejada para a aposta")
                 .setRequired(true)
+                .setMinValue(20)
         )
         .setDescription("Desafie alguém numa aposta");
 
@@ -25,7 +26,7 @@ export default class Bet extends Command {
 
         await interaction.deferReply();
         let targetUserId = interaction.options.getUser("user").id;
-        let ammount: number = getIntegerOption(interaction.options.get("ammount")?.value as string);
+        let ammount: number = interaction.options.get("ammount").value as number;
 
         let res = await checkPayValues(targetUserId, String(ammount), interaction );
 

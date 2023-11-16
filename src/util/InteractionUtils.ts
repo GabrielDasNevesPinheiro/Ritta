@@ -5,11 +5,6 @@ import UserController from "../database/controllers/UserController";
 export async function checkPayValues(targetUserId: string, optionAmmount: string, interaction: CommandInteraction<CacheType>): Promise<boolean> {
 
         let ammount: number = Number(Number(optionAmmount).toFixed(0));
-
-        if(isNaN(ammount)) {
-            await interaction.editReply({ content: `**${botConfig.CONFUSED} | <@${interaction.user.id}>, Você precisa inserir um valor válido.**`})
-            return false;
-        }
         
         let targetUser = await UserController.getUserById(targetUserId);
         let user = await UserController.getUserById(interaction.user.id);

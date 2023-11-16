@@ -10,10 +10,11 @@ export default class Double extends Command {
 
     static command: SlashCommandBuilder = new SlashCommandBuilder()
         .setName("double")
-        .addStringOption(option =>
+        .addIntegerOption(option =>
             option.setName("ammount")
                 .setDescription("Quantidade a ser usada na aposta")
                 .setRequired(true)
+                .setMinValue(20)
         ).setDescription("Aposte no double");
 
     static async execute(interaction: CommandInteraction) {

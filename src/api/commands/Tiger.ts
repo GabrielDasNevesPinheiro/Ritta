@@ -13,20 +13,19 @@ export abstract class Tiger extends Command {
 
     static command: SlashCommandBuilder = new SlashCommandBuilder()
         .setName("tiger")
-        .addStringOption(option =>
+        .addIntegerOption(option =>
             option.setName("ammount")
                 .setDescription("Quantidade a ser apostada")
                 .setRequired(true)
-                .setMinLength(2)
+                .setMinValue(20)
         ).setDescription("Aposte no tigrinho")
 
     static async execute(interaction: CommandInteraction<CacheType>) {
 
         await interaction.deferReply();
 
-        let ammount: number = getIntegerOption(interaction.options.get("ammount")?.value as string);
+        let ammount: number = interaction.options.get("ammount").value as number;
 
-        if (isNaN(ammount)) return await interaction.editReply({ content: `**${botConfig.CONFUSED} | <@${interaction.user.id}>, Você precisa inserir um valor válido.**` })
         if (ammount < 20) return await interaction.editReply({ content: `**${botConfig.CONFUSED} | <@${interaction.user.id}>, Você precisa inserir no mínimo ${botConfig.getCashString(20)}.**` })
 
         let user = await UserController.getUserById(interaction.user.id);
