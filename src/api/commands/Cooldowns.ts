@@ -38,7 +38,7 @@ export class Cooldowns extends Command {
         let vipString = !vipCooldown.allowed ? `${botConfig.VIP_YES} Válido até <t:${vipCooldown.time}:d>` : `${botConfig.VIP_NO} Desativado. `;
         let boosterString = !boosterCooldown.allowed ? `${botConfig.VIP_YES} Válido até <t:${boosterCooldown.time}:d>` : `${botConfig.VIP_NO} Desativado. `;
 
-        console.log(dailyCooldown);
+        
 
         let embed = new EmbedBuilder()
             .setTitle(`${botConfig.WAITING} Tempos de Espera`)
