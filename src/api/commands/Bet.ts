@@ -27,20 +27,12 @@ export default class Bet extends Command {
         let targetUserId = interaction.options.getUser("user").id;
         let ammount: number = getIntegerOption(interaction.options.get("ammount")?.value as string);
 
-        if (isNaN(ammount)) return await interaction.editReply({ content: `**${botConfig.CONFUSED} | <@${interaction.user.id}>, Você precisa inserir um valor válido.**` })
-        if (ammount < 20) return await interaction.editReply({ content: `**${botConfig.CONFUSED} | <@${interaction.user.id}>, Você precisa inserir no mínimo ${botConfig.getCashString(20)}.**` })
+        let res = await checkPayValues(targetUserId, String(ammount), interaction );
 
+        if(!res) return;
 
-        let targetUser = await UserController.getUserById(targetUserId);
         let user = await UserController.getUserById(interaction.user.id);
-
-        if (!user) return await interaction.editReply({ content: `**${botConfig.CONFUSED} | <@${interaction.user.id}>, Tente fazer suas tarefas primeiro.**` });
-
-        if (!targetUser) return await interaction.editReply({ content: `**${botConfig.CONFUSED} | <@${interaction.user.id}>, Não encontrei <@${targetUserId}> em meus registros.**` });
-
-        if ((user.coins as number < ammount)) return await interaction.editReply({ content: `**${botConfig.NO} | <@${interaction.user.id}>, Você não tem a quantia fornecida para a aposta.**` })
-
-        if (user.userId === targetUser.userId) return await interaction.editReply({ content: `**${botConfig.NO} | Você não pode apostar consigo mesmo.**` })
+        let targetUser = await UserController.getUserById(targetUserId);
 
 
         let emojis = [":monkey_face:", ":cat:", ":dog:"];

@@ -23,15 +23,20 @@ export async function checkPayValues(targetUserId: string, optionAmmount: string
             return false;
         }
         
+        if (user.userId === targetUser.userId) {
+            await interaction.editReply({ content: `**${botConfig.NO} | Você precisa selecionar outro usuário.**` })
+            return false;
+        }
+
         if((user.coins as number < ammount)) {
-            await interaction.editReply({ content: `**${botConfig.NO} | <@${interaction.user.id}>, Você não tem a quantia fornecida para o pagamento.**` })
+            await interaction.editReply({ content: `**${botConfig.NO} | <@${interaction.user.id}>, Você não tem a quantia fornecida.**` })
             return false;
         }
 
         return true;
     }
 
-    export async function checkBetValues(targetUserId: string, optionAmmount: string, interaction: CommandInteraction<CacheType>): Promise<boolean> {
+    export async function checkBetValues(optionAmmount: string, interaction: CommandInteraction<CacheType>): Promise<boolean> {
 
         let ammount: number = getIntegerOption(optionAmmount);
 
@@ -39,21 +44,21 @@ export async function checkPayValues(targetUserId: string, optionAmmount: string
             await interaction.editReply({ content: `**${botConfig.CONFUSED} | <@${interaction.user.id}>, Você precisa inserir um valor válido.**`})
             return false;
         }
-        
-        let targetUser = await UserController.getUserById(targetUserId);
-        let user = await UserController.getUserById(interaction.user.id);
-
-        if(!targetUser) {
-            await interaction.editReply({ content: `**${botConfig.CONFUSED} | <@${targetUserId}>, Tente realizar suas tarefas diárias primeiro.**`});
+        if (ammount < 20) {
+            await interaction.editReply({ content: `**${botConfig.CONFUSED} | <@${interaction.user.id}>, Você precisa inserir no mínimo ${botConfig.getCashString(20)}.**` })
             return false;
         }
+
+        let user = await UserController.getUserById(interaction.user.id);
+
+        
         if(!user) {
             await interaction.editReply({ content: `**${botConfig.CONFUSED} | <@${interaction.user.id}>, Tente realizar suas tarefas diárias primeiro.**`});
             return false;
         }
         
         if((user.coins as number < ammount)) {
-            await interaction.editReply({ content: `**${botConfig.NO} | <@${interaction.user.id}>, Você não tem a quantia fornecida para o pagamento.**` })
+            await interaction.editReply({ content: `**${botConfig.NO} | <@${interaction.user.id}>, Você não tem a quantia fornecida.**` })
             return false;
         }
 
