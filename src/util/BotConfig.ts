@@ -75,7 +75,7 @@ export default class BotConfig {
     IMG_THEROCK = "https://i.imgur.com/hIHKorw.jpg"
     IMG_TIME = "https://i.imgur.com/1eyAtc1.jpg"
     IMG_TONGLE = "https://i.imgur.com/GZBJwG7.jpg"
-    IMG_TASK = "https://i.imgur.com/aC4quov.png"
+    IMG_TASK = "https://i.imgur.com/mWqkWC9.png"
     IMG_FBI = "https://i.imgur.com/5HdE197.png"
     IMG_GUN = "https://i.imgur.com/o5dGAU4.png"
     IMG_RAINMONEY = "https://i.imgur.com/OYsWRvE.png"
@@ -91,6 +91,7 @@ export default class BotConfig {
     LOCAL_IMG_TIGER = "./src/assets/tiger.png"
     LOCAL_IMG_TIGER_WIN = "./src/assets/tiger_win.png"
     LOCAL_IMG_TIGER_LOSE = "./src/assets/tiger_lose.png"
+    LOCAL_IMG_TIGER_LOSESTAR = "./src/assets/tiger_losestar.png"
 
     normalBetChances = 0.5;
     vipBetChances = 0.65;
