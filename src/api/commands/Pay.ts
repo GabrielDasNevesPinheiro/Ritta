@@ -48,10 +48,6 @@ export default class Pay extends Command {
             .setStyle(ButtonStyle.Success)
 
         let row = new ActionRowBuilder<ButtonBuilder>().addComponents(confirm);
-        let embed = new EmbedBuilder().setTitle(`${botConfig.MONEY} Pagamento para ${interaction.client.users.cache.get(targetUserId).username}`)
-            .setThumbnail(`${botConfig.IMG_RAINMONEY}`)
-            .setDescription(`> Após a confirmação de ambos os envolvidos o pagamento de ${botConfig.getCashString(ammount)}`)
-            .setColor(Colors.Green)
 
         let response = await interaction.editReply({ content: `**A Equipe não se responsabiliza por roubos ou golpes.**\n`, embeds: [], components: [row] });
         let confirmed: IUser[] = [];
