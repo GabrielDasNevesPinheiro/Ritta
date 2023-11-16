@@ -44,7 +44,7 @@ export default class Pay extends Command {
 
         let confirm = new ButtonBuilder()
             .setCustomId("agree")
-            .setLabel("Confirmar")
+            .setLabel("PAGAR (0/2)")
             .setStyle(ButtonStyle.Success)
 
         let row = new ActionRowBuilder<ButtonBuilder>().addComponents(confirm);
@@ -53,9 +53,9 @@ export default class Pay extends Command {
             .setDescription(`> Após a confirmação de ambos os envolvidos o pagamento de ${botConfig.getCashString(ammount)}`)
             .setColor(Colors.Green)
 
-        let response = await interaction.editReply({ content: `<@${user.userId}> Aguardando a confirmação...`, embeds: [embed], components: [row] });
-
+        let response = await interaction.editReply({ content: `**A Equipe não se responsabiliza por roubos ou golpes.**\n`, embeds: [], components: [row] });
         let confirmed: IUser[] = [];
+
         const collector = response.createMessageComponentCollector({ componentType: ComponentType.Button, time: 12000 });
 
         collector.on("collect", async (confirmation) => {
@@ -64,11 +64,13 @@ export default class Pay extends Command {
                 
                 if(confirmation.user.id === user.userId) {
                     confirmed.push(user);
-                    await confirmation.update({ content: `<@${confirmation.user.id}> Confirmou.`});
+                    confirm = confirm.setLabel(`PAGAR (${confirmed.length}/2)`);
+                    await confirmation.update({ components: [row]});
                 }
                 if(confirmation.user.id === targetUser.userId) {
                     confirmed.push(targetUser);
-                    await confirmation.update({ content: `<@${confirmation.user.id}> Confirmou.`});
+                    confirm = confirm.setLabel(`PAGAR (${confirmed.length}/2)`);
+                    await confirmation.update({ components: [row]});
                 }
                 
                 if(confirmed.length == 2) {
@@ -90,10 +92,6 @@ export default class Pay extends Command {
                 }
 
             }
-            });
-            collector.on("end", async(confirmation) => {
-                if(confirmed.length != 2)
-                    await interaction.editReply({ content: `**Tempo para confirmação encerrado.**`, embeds: [], components: []})
             });
         }
 
