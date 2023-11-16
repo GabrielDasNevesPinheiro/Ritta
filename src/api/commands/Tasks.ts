@@ -37,7 +37,7 @@ export default class Tasks extends Command {
         let embed = new EmbedBuilder()
             .setTitle(`Tarefas de ${interaction.client.users.cache.get(userId).username}`)
             .setDescription("Após completar suas tarefas, use o comando `/claim` para receber as recompensas.")
-            .setThumbnail(`${botConfig.IMG_NOTED}`)
+            .setThumbnail(`${botConfig.IMG_TASK}`)
             .addFields([
                 { name: ":one: Daily", value: dailyString },
                 { name: ":two: Work", value: workString },
