@@ -40,14 +40,22 @@ export abstract class Tiger extends Command {
         let multiplier = 0;
 
         if(!isVipExpired(user).allowed) {
+
             tigerArray = generateSparseArray();
             multiplier = getTotalMultiplier(tigerArray);
+
         } else {
+
+            let rand = Math.random();
             tax = 10 ** (ammount.toLocaleString("pt-BR").split(".")[1]?.length - 1 | 1);
-            if(Math.random() < (botConfig.normalBetChances - 0.3)){
+
+            if(rand < (botConfig.normalBetChances)){
+
                 tigerArray = generateSparseArray();
                 multiplier = getTotalMultiplier(tigerArray)
+
             } else {
+
                 tigerArray = generateNeverMatchedArray();
                 multiplier = getTotalMultiplier(tigerArray)
                 
@@ -67,7 +75,7 @@ export abstract class Tiger extends Command {
             });
 
             await interaction.editReply({ content: `${botConfig.STONKS} | <@${user.userId}>, Você ganhou ${botConfig.getCashString(ammount)} no tigrinho `+ '`' + `(${multiplier}x bônus)!` + '` ' +
-            (tax > 0 ? ` -${botConfig.getCashString(tax)} de taxa.` : ``), files: [response] });
+            (tax > 0 ? `\n${botConfig.getCashString(tax)} de taxa.` : ``), files: [response] });
             
         } else {
             user = await UserController.removeCash(user, {
