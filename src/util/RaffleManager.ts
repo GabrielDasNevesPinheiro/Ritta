@@ -3,8 +3,8 @@ import { cooldownCheck } from "./DateUtils";
 
 export default abstract class RaffleManager {
 
-    static cooldown = 0.02;
-    static minutesCooldown = 1;
+    static cooldown = 0.5;
+    static minutesCooldown = 30;
     static lastPlayed = new Date();
     static lastWinner: IUser = null;
     static lastWinnerWon = 0;
@@ -59,5 +59,15 @@ export default abstract class RaffleManager {
 
     static resetGameNoWinner() {
         RaffleManager.lastPlayed = new Date();
+    }
+
+    static getInGamePlayers() {
+        let players: String[] = [];
+
+        for(let player in RaffleManager.inRaffle) {
+            players.push(player);
+        }
+
+        return players;
     }
 }
