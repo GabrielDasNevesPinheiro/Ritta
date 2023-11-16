@@ -25,7 +25,7 @@ export default class Double extends Command {
         if (isNaN(bet)) {
             return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, por favor insira um valor válido para a aposta.` });
         }
-
+        if (bet < 20) return await interaction.editReply({ content: `**${botConfig.CONFUSED} | <@${interaction.user.id}>, Você precisa inserir no mínimo ${botConfig.getCashString(20)}.**` })
         let user = await UserController.getUserById(interaction.user.id);
 
         if (!user) {
@@ -41,7 +41,7 @@ export default class Double extends Command {
         let cores = ["red", "black", "white"];
         let random = Math.random();
         let sorted = "";
-        let tax = 300;
+        let tax = 10 ** (bet.toLocaleString("pt-BR").split(".")[1]?.length - 1 || 1);;
 
         let normalMultiplier = 2;
         let rareMultiplier = 14;
@@ -102,7 +102,7 @@ export default class Double extends Command {
     
             let ammount = bet;
             ammount *= selectedMultiplier;
-            ammount -= bet >= 1000 ? tax : 0;
+            ammount -= tax;
     
             const doubleResult = await getDouble(sorted);
             if (sorted !== betColor) {
@@ -133,7 +133,7 @@ export default class Double extends Command {
     
             await confirmation.update({
                 content:
-                    `> ${botConfig.STONKS} | <@${interaction.user.id}>, Você apostou no __${betColor}__ e o jogo sorteou __${sorted}__. Você ganhou ${botConfig.getCashString(ammount)} **(${bet}x${selectedMultiplier})!**\n` + (bet >= 1000 ? `${botConfig.getCashString(tax)} de taxa.` : ""),
+                    `> ${botConfig.STONKS} | <@${interaction.user.id}>, Você apostou no __${betColor}__ e o jogo sorteou __${sorted}__. Você ganhou ${botConfig.getCashString(ammount)} **(${bet}x${selectedMultiplier})!**\n` + (tax > 0 ? `${botConfig.getCashString(tax)} de taxa.` : ""),
                 files: [doubleResult],
                 components: []
             });
