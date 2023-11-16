@@ -32,7 +32,11 @@ export abstract class Tiger extends Command {
 
         if(!res) return;
 
-        await interaction.editReply({ content: "Tudo certo" });
+        let tigerArray = generateRandomArray();
+        tigerArray = decreaseProbability(tigerArray);
+        let multiplier = getTotalMultiplier(countRepeatedItems(tigerArray));
+
+        await interaction.editReply({ content: `Tua array: ${tigerArray}, (${multiplier}x vezes) com isso você deve ganhar ${ammount * multiplier}` });
 
     }
 
@@ -95,20 +99,6 @@ function countValues(values: number[], countMap: Map<number, number>): void {
     });
 }
 
-function getRandomMatrix() {
-    let r1 = [3, 3, 3].map((n) => Math.floor(Math.random() * n));
-    let r2 = [3, 3, 3].map((n) => Math.floor(Math.random() * n));
-    let r3 = [3, 3, 3].map((n) => Math.floor(Math.random() * n));
-
-    const exampleMatrix: Matrix = [
-        r1,
-        r2,
-        r3
-    ];
-
-    return exampleMatrix;
-}
-
 function getTotalMultiplier(repeatedItemsCount: Map<number, number>) {
     let multipliers: {[key: number]: number} = {
         0: 1,
@@ -123,4 +113,69 @@ function getTotalMultiplier(repeatedItemsCount: Map<number, number>) {
     });
 
     return multiplier;
+}
+
+function generateRandomArray(): number[][] {
+    const matrix: number[][] = [];
+    const possibleValues = [0, 1, 2];
+
+    for (let i = 0; i < 3; i++) {
+        matrix[i] = [];
+        for (let j = 0; j < 3; j++) {
+            matrix[i][j] = possibleValues[Math.floor(Math.random() * possibleValues.length)];
+        }
+    }
+
+    return matrix;
+}
+
+function decreaseProbability(matrix: number[][]): number[][] {
+    const occurrences: Map<string, number> = new Map();
+
+    // Contagem das sequências horizontais
+    for (let i = 0; i < 3; i++) {
+        const row = matrix[i].join('');
+        occurrences.set(row, (occurrences.get(row) || 0) + 1);
+    }
+
+    // Contagem das sequências verticais
+    for (let j = 0; j < 3; j++) {
+        const col = matrix.map(row => row[j]).join('');
+        occurrences.set(col, (occurrences.get(col) || 0) + 1);
+    }
+
+    // Contagem da diagonal principal
+    const diagonal1 = matrix[0][0].toString() + matrix[1][1] + matrix[2][2];
+    occurrences.set(diagonal1, (occurrences.get(diagonal1) || 0) + 1);
+
+    // Contagem da diagonal secundária
+    const diagonal2 = matrix[0][2].toString() + matrix[1][1] + matrix[2][0];
+    occurrences.set(diagonal2, (occurrences.get(diagonal2) || 0) + 1);
+
+    // Reduzindo a probabilidade de ocorrência das sequências encontradas
+    for (const [key, value] of occurrences.entries()) {
+        const probability = Math.max(0.1, 1 - (value * 0.1)); // Reduzindo a probabilidade
+        occurrences.set(key, probability);
+    }
+
+    // Gerando uma nova matriz com base nas probabilidades
+    const newMatrix: number[][] = [];
+    let possibleValues = [0,1,2];
+    for (let i = 0; i < 3; i++) {
+        newMatrix[i] = [];
+        for (let j = 0; j < 3; j++) {
+            let newValue = possibleValues[Math.floor(Math.random() * possibleValues.length)];
+            const currentSequence = matrix.map(row => row.join('')).join('');
+            const probability = occurrences.get(currentSequence) || 1;
+
+            // Se a probabilidade for menor que um valor aleatório, mantenha o valor atual
+            if (Math.random() < probability) {
+                newValue = matrix[i][j];
+            }
+
+            newMatrix[i][j] = newValue;
+        }
+    }
+
+    return newMatrix;
 }
