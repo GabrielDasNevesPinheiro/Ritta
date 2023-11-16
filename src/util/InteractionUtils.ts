@@ -14,6 +14,11 @@ export async function checkPayValues(targetUserId: string, optionAmmount: string
         let targetUser = await UserController.getUserById(targetUserId);
         let user = await UserController.getUserById(interaction.user.id);
 
+        if (ammount < 20) {
+            await interaction.editReply({ content: `**${botConfig.CONFUSED} | <@${interaction.user.id}>, Você precisa inserir no mínimo ${botConfig.getCashString(20)}.**` })
+            return false;
+        }
+
         if(!targetUser) {
             await interaction.editReply({ content: `**${botConfig.CONFUSED} | <@${targetUserId}>, Tente realizar suas tarefas diárias primeiro.**`});
             return false;
