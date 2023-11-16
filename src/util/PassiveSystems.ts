@@ -70,9 +70,13 @@ export async function sortRaffle(client: Client) {
         RaffleManager.resetGameNoWinner();
         return;
     }
-
+    let tax = 0;
     let user = await UserController.getUserById(winnerId);
     let stats = RaffleManager.getStats();
+
+    if((stats.players >= 2 && stats.price >= 5000) && (isVipExpired(user).allowed && isBoosterExpired(user).allowed)) tax = 1000;
+
+    stats.price -= tax;
 
     user = await UserController.addCash(user, {
         from: "do sorteio das rifas",
@@ -80,11 +84,15 @@ export async function sortRaffle(client: Client) {
         ammount: stats.price
     });
 
-    RaffleManager.resetGame(user, stats.price);
+    let tickets = RaffleManager.inRaffle[String(user.userId)].tickets;
+
+    RaffleManager.resetGame(user, stats.price, tickets);
 
     try {
         
-        await client.users.cache.get(user.userId as string).send(`<@${user.userId}> Parabéns! Você ganhou ${botConfig.getCashString(stats.price)} no sorteio das rifas`);
+        await client.users.cache.get(user.userId as string).send(`<@${user.userId}> Parabéns! Você ganhou ${botConfig.getCashString(stats.price)} no sorteio das rifas\n` +
+        (tax > 0 ? `> A casa pegou ${botConfig.getCashString(tax)} de taxa.` : "")
+        );
         
     } catch (error) {
         console.log(error);

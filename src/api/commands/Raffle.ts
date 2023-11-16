@@ -1,4 +1,4 @@
-import { CommandInteraction, SlashCommandBuilder } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, ComponentType, EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import Command from "./Command";
 import { getIntegerOption } from "../../util/InteractionUtils";
 import { botConfig } from "../../app";
@@ -23,11 +23,47 @@ export default class Raffle extends Command {
 
             let stats = RaffleManager.getStats();
 
-            return await interaction.reply({
-                content: `# Rifa do ${botConfig.name}\n${botConfig.CASH} | Prêmio: ${stats.price}\n:tickets: | Tickets: ${stats.tickets}\n:busts_in_silhouette: | Participantes: ${stats.players} \n:hourglass: | Finaliza em: <t:${stats.endTime}> (<t:${stats.endTime}:R>)\n` +
+            let info = new ButtonBuilder()
+                .setLabel("Informações do vencedor")
+                .setDisabled(!RaffleManager.lastWinner)
+                .setCustomId("info")
+                .setEmoji("🏆")
+                .setStyle(ButtonStyle.Secondary)
+            
+            let players = new ButtonBuilder()
+            .setLabel("Participantes")
+            .setCustomId("players")
+            .setDisabled(RaffleManager.getStats().players <= 0)
+            .setEmoji("👥")
+            .setStyle(ButtonStyle.Primary)
+            let row = new ActionRowBuilder<ButtonBuilder>().addComponents(players, info);
+
+            let response = await interaction.reply({
+                content: `# Rifa do ${botConfig.name}\n${botConfig.CASH} | Prêmio: ${botConfig.getCashString(stats.price).replace(`${botConfig.CASH}`, ``)}\n:tickets: | Tickets: ${stats.tickets}\n:busts_in_silhouette: | Participantes: ${stats.players} \n:hourglass: | Finaliza em: <t:${stats.endTime}> (<t:${stats.endTime}:R>)\n` +
                 (RaffleManager.lastWinner ? `# Último Ganhador\n## **${interaction.client.users.cache.get(String(RaffleManager.lastWinner.userId)).username}** - (${botConfig.getCashString(RaffleManager.lastWinnerWon)})` : `# Sem informações de um último ganhador.` ) + "\n" +
-                `:information_source: Para participar compre tickets utilizando este mesmo comando. Cada ticket custa ${botConfig.getCashString(RaffleManager.rafflePrice)}.`
-            })
+                `:information_source: Para participar compre tickets utilizando este mesmo comando. Cada ticket custa ${botConfig.getCashString(RaffleManager.rafflePrice)}.`,
+                components: [row]
+            });
+
+
+            const collector = response.createMessageComponentCollector({ componentType: ComponentType.Button, time: 30000 });
+
+            collector.on("collect", async (confirmation) => {
+
+                if(confirmation.customId === "info") {
+                    let embed = new EmbedBuilder().setTitle("Informações do último vencedor")
+                    .setDescription(
+                        `**:tada: Vencedor:** ${confirmation.client.users.cache.get(String(RaffleManager.lastWinner.userId)).username}\n` +
+                        `**:money_with_wings: Apostou:** ${botConfig.getCashString(RaffleManager.lastWinnerTickets * RaffleManager.rafflePrice)}\n` +
+                        `**:trophy: Ganhou:** ${botConfig.getCashString(RaffleManager.lastWinnerWon) }\n`
+                        ).setTimestamp(new Date());
+
+                        await confirmation.update({ embeds: [embed] });
+                        return;
+                }
+
+            });
+
         } else {
             let user = await UserController.getUserById(interaction.user.id);
 
@@ -42,7 +78,12 @@ export default class Raffle extends Command {
             });
 
             RaffleManager.addPlayer(user.userId as string, ammount);
-            await interaction.reply({ content: `${botConfig.OK} | <@${interaction.user.id}>, Você comprou **${ammount} Tickets** por ${botConfig.getCashString(ammount * RaffleManager.rafflePrice)}.`});
+
+            
+
+            await interaction.reply({ content: `${botConfig.OK} | <@${interaction.user.id}>, Você comprou **${ammount} Tickets** por ${botConfig.getCashString(ammount * RaffleManager.rafflePrice)}.` });
+
+            
         }
     }
 

@@ -3,11 +3,12 @@ import { cooldownCheck } from "./DateUtils";
 
 export default abstract class RaffleManager {
 
-    static cooldown = 0.5;
-    static minutesCooldown = 30;
+    static cooldown = 0.02;
+    static minutesCooldown = 1;
     static lastPlayed = new Date();
     static lastWinner: IUser = null;
     static lastWinnerWon = 0;
+    static lastWinnerTickets = 0;
     static rafflePrice = 500;
 
     static inRaffle: {[key: string]: {
@@ -45,10 +46,11 @@ export default abstract class RaffleManager {
         }
     }
 
-    static resetGame(winner: IUser, won: number) {
+    static resetGame(winner: IUser, won: number, tickets: number) {
         RaffleManager.lastPlayed = new Date();
         RaffleManager.lastWinner = winner;
         RaffleManager.lastWinnerWon = won;
+        RaffleManager.lastWinnerTickets = tickets;
 
         for(let player in RaffleManager.inRaffle) {
             delete RaffleManager.inRaffle[player];
