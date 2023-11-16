@@ -3,7 +3,7 @@ import { botConfig } from "../app";
 
 
 export async function getDouble(sorted: string) {
-    let width = 750;
+    let width = 653;
     let height = 250;
 
     const canvas = createCanvas(width, height);
