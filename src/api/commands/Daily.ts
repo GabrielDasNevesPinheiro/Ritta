@@ -1,7 +1,7 @@
 import { CacheType, CommandInteraction, SlashCommandBuilder } from "discord.js";
 import Command from "./Command";
 import UserController from "../../database/controllers/UserController";
-import { cooldownCheck, isVipExpired } from "../../util/DateUtils";
+import { cooldownCheck, dailyCooldownCheck, isVipExpired } from "../../util/DateUtils";
 import { ITransaction } from "../../database/models/Transaction";
 import TransactionController from "../../database/controllers/TransactionController";
 import { botConfig } from "../../app";
@@ -40,7 +40,7 @@ export default class Daily extends Command {
         }
 
 
-        let dailyCheck = cooldownCheck(24, user.dailydate, true);
+        let dailyCheck = dailyCooldownCheck(24, user.dailydate, true);
         
         if (dailyCheck.allowed) {
 
