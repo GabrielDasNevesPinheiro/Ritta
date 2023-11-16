@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, ComponentType, EmbedBuilder, SlashCommandBuilder } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Colors, CommandInteraction, ComponentType, EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import Command from "./Command";
 import { getIntegerOption } from "../../util/InteractionUtils";
 import { botConfig } from "../../app";
@@ -47,6 +47,10 @@ export default class Raffle extends Command {
 
 
             const collector = response.createMessageComponentCollector({ componentType: ComponentType.Button, time: 30000 });
+            let page = 0;
+            let maxPerPage = 10;
+            let inGame = RaffleManager.getInGamePlayers();
+            
 
             collector.on("collect", async (confirmation) => {
 
@@ -56,10 +60,24 @@ export default class Raffle extends Command {
                         `**:tada: Vencedor:** ${confirmation.client.users.cache.get(String(RaffleManager.lastWinner.userId)).username}\n` +
                         `**:money_with_wings: Apostou:** ${botConfig.getCashString(RaffleManager.lastWinnerTickets * RaffleManager.rafflePrice)}\n` +
                         `**:trophy: Ganhou:** ${botConfig.getCashString(RaffleManager.lastWinnerWon) }\n`
-                        ).setTimestamp(new Date());
+                        ).setTimestamp(new Date()).setColor(Colors.Green);
 
-                        await confirmation.update({ embeds: [embed] });
+                        await interaction.followUp({ embeds: [embed], ephemeral: true });
                         return;
+                }
+
+                if(confirmation.customId === "players") {
+                    
+                    let str = "";
+
+                    inGame.forEach((gaming) => {
+                        str += '`' + `${interaction.client.users.cache.get(String(gaming)).username}` + '` '
+                    });
+
+                    await interaction.followUp({ content: `> **Participantes da Rifa**\n`+str, ephemeral: true });
+                    await confirmation.update({});
+                    return;
+                    
                 }
 
             });
