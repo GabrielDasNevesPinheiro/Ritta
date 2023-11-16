@@ -43,17 +43,18 @@ export async function getTigerResult(array: number[][], win: boolean) {
     
     let assetSize = 128;
 
+    let star = await loadImage(botConfig.LOCAL_IMG_TIGER_LOSESTAR)
     let tiger = await loadImage(botConfig.LOCAL_IMG_TIGER);
     let cash = await loadImage(botConfig.LOCAL_IMG_DOUBLE_COIN);
 
-    let images = [tiger, cash, tiger];
+    let images = [star, cash, tiger];
 
     
 
     let positions: Position[][] = [
         [{ x: 176, y: 146}, { x: 340 , y: 146}, { x: 504, y: 146}],
         [ {x: 176, y: 336}, {x: 340, y: 336}, {x: 504, y: 336}],
-        [ {x: 176, y: 493}, {x: 340, y: 493}, {x: 504, y: 493}]
+        [ {x: 176, y: 530}, {x: 340, y: 530}, {x: 504, y: 530}]
     ] 
     
     ctx.strokeStyle = '#FF0000';
