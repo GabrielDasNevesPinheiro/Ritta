@@ -61,7 +61,7 @@ export function getTotalMultiplier(matrix: number[][]) {
 
 export function generateNeverMatchedArray(): Matrix {
     const matrix: Matrix = [];
-    const possibleValues = [0, 1, 2];
+    const possibleValues = [1, 2];
     const centerIndex = 1;
 
     for (let i = 0; i < 3; i++) {
