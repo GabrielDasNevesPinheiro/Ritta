@@ -61,7 +61,7 @@ export abstract class Tiger extends Command {
                 
             }
         }
-
+        
         let response = await getTigerResult(tigerArray, multiplier > 0);
 
         if(multiplier > 0) {
