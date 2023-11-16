@@ -26,3 +26,79 @@ export async function loadImageURL(url: string) {
 
     return image;
 }
+
+
+export async function getTigerResult(array: number[][], win: boolean) {
+
+    type Position = {
+        x: number,
+        y: number
+    }
+
+    let canvas = createCanvas(800, 800);
+    let ctx: CanvasRenderingContext2D = canvas.getContext("2d");
+    
+    if(win) ctx.drawImage(await loadImage(botConfig.LOCAL_IMG_TIGER_WIN), 0, 0);
+    if(!win) ctx.drawImage(await loadImage(botConfig.LOCAL_IMG_TIGER_LOSE), 0, 0);
+    
+    let assetSize = 128;
+
+    let tiger = await loadImage(botConfig.LOCAL_IMG_TIGER);
+    let cash = await loadImage(botConfig.LOCAL_IMG_DOUBLE_COIN);
+
+    let images = [tiger, cash, tiger];
+
+    
+
+    let positions: Position[][] = [
+        [{ x: 176, y: 146}, { x: 340 , y: 146}, { x: 504, y: 146}],
+        [ {x: 176, y: 336}, {x: 340, y: 336}, {x: 504, y: 336}],
+        [ {x: 176, y: 493}, {x: 340, y: 493}, {x: 504, y: 493}]
+    ] 
+    
+    ctx.strokeStyle = '#FF0000';
+
+    array.forEach((row, rowIndex) => {
+
+        row.forEach((icon, iconIndex) => {
+            ctx.drawImage
+            ctx.drawImage(images[icon], positions[rowIndex][iconIndex].x, positions[rowIndex][iconIndex].y, assetSize, assetSize);
+        });
+
+    });
+
+    let horizontal = (array[1][1] == array[1][0] && array[1][1] == array[1][2]);
+    let vertical = (array[1][1] == array[0][1] && array[1][1] == array[2][1]);
+    let diagonalLtR = (array[1][1] == array[0][0] && array[1][1] == array[2][2]);
+    let diagonalRtL = (array[1][1] == array[0][2] && array[1][1] == array[2][0]);
+
+    ctx.beginPath();
+    ctx.lineWidth = 10;
+
+    if(horizontal) {
+        ctx.moveTo(positions[1][0].x + (assetSize / 2), positions[1][0].y + (assetSize / 2));
+        ctx.lineTo(positions[1][2].x + (assetSize / 2), positions[1][2].y + (assetSize / 2));
+        ctx.stroke();
+    }
+
+    if(vertical) {
+        ctx.moveTo(positions[0][1].x + (assetSize / 2), positions[0][1].y + (assetSize / 2));
+        ctx.lineTo(positions[2][1].x + (assetSize / 2), positions[2][1].y + (assetSize / 2));
+        ctx.stroke();
+    }
+
+    if(diagonalLtR) {
+        ctx.moveTo(positions[0][0].x + (assetSize / 2), positions[0][0].y + (assetSize / 2));
+        ctx.lineTo(positions[2][2].x + (assetSize / 2), positions[2][2].y + (assetSize / 2));
+        ctx.stroke();
+    }
+
+    if(diagonalRtL) {
+        ctx.moveTo(positions[0][2].x + (assetSize / 2), positions[0][2].y + (assetSize / 2));
+        ctx.lineTo(positions[2][0].x + (assetSize / 2), positions[2][0].y + (assetSize / 2));
+        ctx.stroke();
+    }
+
+    return canvas.toBuffer("image/jpeg");
+
+}
