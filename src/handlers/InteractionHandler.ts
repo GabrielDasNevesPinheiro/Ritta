@@ -15,6 +15,7 @@ import Vote from '../api/commands/Vote';
 import Pay from '../api/commands/Pay';
 import Vip from "../api/commands/Vip";
 import Raffle from '../api/commands/Raffle';
+import Bet from "../api/commands/Bet";
 
 
 export const commands: { [key: string]: typeof Command } = {
@@ -33,6 +34,7 @@ export const commands: { [key: string]: typeof Command } = {
     "pay": Pay,
     "vip": Vip,
     "raffle": Raffle,
+    "bet": Bet,
 }
 
 export default function executeAction(cmdName: string, interaction: Interaction<CacheType>) {
