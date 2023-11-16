@@ -56,12 +56,12 @@ export default class Pay extends Command {
             
             if(confirmation.customId === "agree") {
                 
-                if(confirmation.user.id === user.userId) {
+                if(confirmation.user.id === user.userId && confirmed.indexOf(user) == -1) {
                     confirmed.push(user);
                     confirm = confirm.setLabel(`PAGAR (${confirmed.length}/2)`);
                     await confirmation.update({ components: [row]});
                 }
-                if(confirmation.user.id === targetUser.userId) {
+                if(confirmation.user.id === targetUser.userId && confirmed.indexOf(targetUser) == -1) {
                     confirmed.push(targetUser);
                     confirm = confirm.setLabel(`PAGAR (${confirmed.length}/2)`);
                     await confirmation.update({ components: [row]});
