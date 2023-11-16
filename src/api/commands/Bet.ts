@@ -34,6 +34,8 @@ export default class Bet extends Command {
         let targetUser = await UserController.getUserById(targetUserId);
         let user = await UserController.getUserById(interaction.user.id);
 
+        if (!user) return await interaction.editReply({ content: `**${botConfig.CONFUSED} | <@${interaction.user.id}>, Tente fazer suas tarefas primeiro.**` });
+
         if (!targetUser) return await interaction.editReply({ content: `**${botConfig.CONFUSED} | <@${interaction.user.id}>, Não encontrei <@${targetUserId}> em meus registros.**` });
 
         if ((user.coins as number < ammount)) return await interaction.editReply({ content: `**${botConfig.NO} | <@${interaction.user.id}>, Você não tem a quantia fornecida para a aposta.**` })
