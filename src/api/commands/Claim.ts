@@ -2,7 +2,7 @@ import { Colors, CommandInteraction, EmbedBuilder, SlashCommandBuilder } from "d
 import Command from "./Command";
 import UserController from "../../database/controllers/UserController";
 import { botConfig } from "../../app";
-import { cooldownCheck } from "../../util/DateUtils";
+import { claimCooldownCheck, cooldownCheck, dailyCooldownCheck } from "../../util/DateUtils";
 import TransactionController from "../../database/controllers/TransactionController";
 
 export default class Claim extends Command {
@@ -21,11 +21,11 @@ export default class Claim extends Command {
 
         if (!user) return await interaction.reply({ content: `${botConfig.CONFUSED} Não encontrei seus dados... Tente fazer suas tarefas antes.` });
 
-        let dailyPlayed = !cooldownCheck(24, user.dailydate, true).allowed;
+        let dailyPlayed = !dailyCooldownCheck(24, user.dailydate, true).allowed;
         let weeklyPlayed = !cooldownCheck(168, user.weeklydate).allowed;
         let workPlayed = !cooldownCheck(2, user.workdate).allowed;
         let crimePlayed = !cooldownCheck(1, user.crimedate).allowed;
-        let tasksPlayed = !cooldownCheck(24, user.tasksDate, true).allowed;
+        let tasksPlayed = !claimCooldownCheck(24, user.tasksDate, true).allowed;
         let tasksTime = cooldownCheck(24, user.tasksDate, true).time;
 
         if (tasksPlayed) {
