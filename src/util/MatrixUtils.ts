@@ -60,44 +60,44 @@ export function getTotalMultiplier(matrix: number[][]) {
 
 
 export function generateNeverMatchedArray(): Matrix {
-    const matrix: Matrix = [];
-    const possibleValues = [1, 2];
-    const centerIndex = 1;
+    const patterns: Matrix[] = [
+        [
+            [2, 1, 2],
+            [2, 1, 1],
+            [1, 2, 2]
+        ],
+        [
+            [1, 2, 2],
+            [2, 2, 1],
+            [1, 1, 2]
+        ],
+        [
+            [1, 1, 2],
+            [2, 2, 1],
+            [1, 1, 2]
+        ],
+        [
+            [1, 2, 2],
+            [2, 2, 1],
+            [1, 1, 2]
+        ],
+        [
+            [1, 2, 2],
+            [1, 2, 2],
+            [1, 1, 2]
+        ], [
+            [1, 1, 1],
+            [2, 2, 1],
+            [1, 1, 1]
+        ], [
+            [2, 1, 2],
+            [2, 2, 1],
+            [2, 1, 1]
+        ]
 
-    for (let i = 0; i < 3; i++) {
-        matrix[i] = [];
-        for (let j = 0; j < 3; j++) {
-            // Valor central
-            if (i === centerIndex && j === centerIndex) {
-                matrix[i][j] = possibleValues[Math.floor(Math.random() * possibleValues.length)];
-            } else {
-                let value = possibleValues[Math.floor(Math.random() * possibleValues.length)];
-                let tries = 0;
-                const maxTries = 10; // Limite de tentativas
+    ];
 
-                // Verifica se há sequências nas direções a partir do centro
-                while (
-                    (i === centerIndex && matrix[i]?.[j - 1] === value && matrix[i]?.[j - 2] === value) || // Horizontal
-                    (j === centerIndex && matrix[i - 1]?.[j] === value && matrix[i - 2]?.[j] === value) || // Vertical
-                    (i === centerIndex - 1 && j === centerIndex - 1 && matrix[i + 1]?.[j + 1] === value && matrix[i + 2]?.[j + 2] === value) || // Diagonal
-                    (i === centerIndex - 1 && j === centerIndex + 1 && matrix[i + 1]?.[j - 1] === value && matrix[i + 2]?.[j - 2] === value) // Diagonal
-                ) {
-                    value = possibleValues[Math.floor(Math.random() * possibleValues.length)];
-                    tries++;
+    const randomIndex = Math.floor(Math.random() * patterns.length);
 
-                    if (tries === maxTries) {
-                        // Se excedeu o número de tentativas, reinicia a verificação
-                        i = 0;
-                        j = 0;
-                        tries = 0;
-                        matrix.forEach(row => row.fill(-1)); // Limpa a matriz
-                    }
-                }
-
-                matrix[i][j] = value;
-            }
-        }
-    }
-
-    return matrix;
+    return patterns[randomIndex];
 }
