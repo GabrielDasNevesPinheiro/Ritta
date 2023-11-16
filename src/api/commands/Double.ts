@@ -29,7 +29,7 @@ export default class Double extends Command {
         let user = await UserController.getUserById(interaction.user.id);
 
         if (!user) {
-            return await interaction.editReply({ content: `${botConfig.SAD} Ocorreu um erro interno, tente novamente.` });
+            return await interaction.editReply({ content: `${botConfig.CONFUSED} Tente fazer suas tarefas diárias primeiro.` });
         }
         
         if(user.coins as number < bet) {

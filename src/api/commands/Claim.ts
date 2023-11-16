@@ -19,7 +19,7 @@ export default class Claim extends Command {
 
         let user = await UserController.getUserById(interaction.user.id);
 
-        if (!user) return await interaction.reply({ content: `${botConfig.CONFUSED} Não encontrei seus dados... Tente fazer suas tarefas antes.` });
+        if (!user) return await interaction.reply({ content: `${botConfig.CONFUSED} Tente fazer suas tarefas antes.` });
 
         let dailyPlayed = !dailyCooldownCheck(24, user.dailydate, true).allowed;
         let weeklyPlayed = !cooldownCheck(168, user.weeklydate).allowed;
