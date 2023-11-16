@@ -25,7 +25,7 @@ export default class Bet extends Command {
 
         await interaction.deferReply();
         let targetUserId = interaction.options.getUser("user").id;
-        let ammount: number = getIntegerOption(interaction);
+        let ammount: number = getIntegerOption(interaction.options.get("ammount")?.value as string);
 
         if (isNaN(ammount)) return await interaction.editReply({ content: `**${botConfig.CONFUSED} | <@${interaction.user.id}>, Você precisa inserir um valor válido.**` })
         if (ammount < 20) return await interaction.editReply({ content: `**${botConfig.CONFUSED} | <@${interaction.user.id}>, Você precisa inserir no mínimo ${botConfig.getCashString(20)}.**` })

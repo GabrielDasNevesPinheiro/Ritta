@@ -17,7 +17,7 @@ export default class Raffle extends Command {
 
     static async execute(interaction: CommandInteraction) {
         
-        let ammount = getIntegerOption(interaction);
+        let ammount = getIntegerOption(interaction.options.get("ammount")?.value as string);
 
         if(isNaN(ammount)) {
 
