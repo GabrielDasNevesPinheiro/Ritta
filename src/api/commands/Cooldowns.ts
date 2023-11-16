@@ -47,10 +47,10 @@ export class Cooldowns extends Command {
                 { name: "Diário", value: dailyString, inline: true },
                 { name: "Trabalho", value: workString, inline: true },
                 { name: "Crime", value: crimeString, inline: true },
-                { name: "VIP", value: vipString, inline: true },
                 { name: "Semanal", value: weeklyString, inline: true },
+                { name: "VIP", value: vipString, inline: true },
+                { name: "Server Booster", value: boosterString, inline: true },
                 { name: "Voto", value: `${botConfig.CRYING} Em manutenção.`, inline: true },
-                { name: "Server Booster", value: boosterString, }
             ]).setThumbnail(`${botConfig.IMG_TIME}`).setTimestamp(new Date()).setColor(Colors.White);
 
         await interaction.reply({ embeds: [embed]});
