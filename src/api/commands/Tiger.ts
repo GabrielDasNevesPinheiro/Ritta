@@ -1,4 +1,4 @@
-import { CommandInteraction, CacheType, SlashCommandBuilder } from "discord.js";
+import { CommandInteraction, CacheType, SlashCommandBuilder, EmbedBuilder, Colors } from "discord.js";
 import Command from "./Command";
 import { botConfig } from "../../app";
 import { checkBetValues, checkMaxValues, getIntegerOption, getTax } from "../../util/InteractionUtils";
@@ -21,8 +21,10 @@ export abstract class Tiger extends Command {
         ).setDescription("Aposte no tigrinho")
 
     static async execute(interaction: CommandInteraction<CacheType>) {
+        const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
         await interaction.deferReply();
+        
 
         let ammount: number = interaction.options.get("ammount").value as number;
 
@@ -35,6 +37,15 @@ export abstract class Tiger extends Command {
 
         if(!canBet) return;
         if (!res) return;
+
+        await interaction.editReply({
+            content: `${botConfig.CASH} <@${user.userId}>, Boa sorte!`, embeds: [
+                new EmbedBuilder().setTitle(`**${botConfig.THINKING} Hmmmmm...**`)
+                    .setImage(botConfig.GIF_TIGER)
+                    .setColor(Colors.Green)], components: []
+        });
+        
+        await sleep(5000);
 
         let tax = 0;
 
@@ -78,7 +89,7 @@ export abstract class Tiger extends Command {
             });
 
             await interaction.editReply({ content: `${botConfig.STONKS} | <@${user.userId}>, Você ganhou ${botConfig.getCashString(ammount)} no tigrinho `+ '`' + `(${multiplier}x bônus)!` + '` ' +
-            (tax > 0 ? `\n${botConfig.getCashString(tax)} de taxa.` : ``), files: [response] });
+            (tax > 0 ? `\n${botConfig.getCashString(tax)} de taxa.` : ``), files: [response], embeds: [] });
             
         } else {
             user = await UserController.removeCash(user, {
@@ -87,7 +98,7 @@ export abstract class Tiger extends Command {
                 ammount: ammount
             });
 
-            await interaction.editReply({ content: `${botConfig.NO_STONKS} | <@${user.userId}>, Você perdeu ${botConfig.getCashString(ammount)} no tigrinho, boa sorte na próxima vez!`, files: [response] });
+            await interaction.editReply({ content: `${botConfig.NO_STONKS} | <@${user.userId}>, Você perdeu ${botConfig.getCashString(ammount)} no tigrinho, boa sorte na próxima vez!`, files: [response], embeds: [] });
 
         }
 
