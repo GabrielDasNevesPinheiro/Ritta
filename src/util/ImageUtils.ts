@@ -122,8 +122,9 @@ export async function getJackpotResult(array: number[]) {
         { x: 161, y: 89}, {x: 289, y: 89}, { x: 418, y: 89}
     ];
 
-    icons.forEach((item, i) => {
-        ctx.drawImage(item, positions[i].x, positions[i].y, iconSize, iconSize);
+    array.forEach((item, i) => {
+        let img = icons[item]
+        ctx.drawImage(img, positions[i].x, positions[i].y, iconSize, iconSize);
     })
     return canvas.toBuffer();
 
