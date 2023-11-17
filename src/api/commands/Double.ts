@@ -21,7 +21,7 @@ export default class Double extends Command {
         ).setDescription("Aposte no double");
 
     static async execute(interaction: CommandInteraction) {
-        const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+        
 
         await interaction.deferReply();
 
