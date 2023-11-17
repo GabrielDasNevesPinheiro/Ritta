@@ -43,9 +43,9 @@ export default abstract class Drop extends Command {
         let embed = new EmbedBuilder()
             .setTitle(`🎉 Drop Lançado`)
             .setThumbnail(botConfig.IMG_RAINMONEY)
-            .setDescription(`Lançado por: <@${user.userId}>.`)
+            .setDescription(`Patrocinado por: <@${user.userId}>.`)
             .addFields(
-                { name: "Valor para o Vencedor", value: `${botConfig.getCashString(ammount)}`, inline: true },
+                { name: "Valor para o vencedor", value: `${botConfig.getCashString(ammount)}`, inline: true },
                 { name: `${botConfig.WAITING} Duração`, value: `<t:${getMinutesCooldownFromNow(time)}:R>`, inline: true },
                 { name: `✨ Para participar`, value: `Clique no botão __PARTICIPAR__` },
                 { name: `😘 Ganhador`, value: `Ninguém, ainda.` }
@@ -101,17 +101,17 @@ export default abstract class Drop extends Command {
 
             embed = new EmbedBuilder()
                 .setTitle(`🎉 Drop Lançado`)
-                .setDescription(`Lançado por: <@${user.userId}>.`)
+                .setDescription(`Patrocinado por: <@${user.userId}>.`)
                 .setThumbnail(botConfig.IMG_RAINMONEY)
                 .addFields(
-                    { name: "Valor para o Vencedor", value: `${botConfig.getCashString(ammount)}`, inline: true },
+                    { name: "Valor para o vencedor", value: `${botConfig.getCashString(ammount)}`, inline: true },
                     { name: `${botConfig.WAITING} Duração`, value: "`Drop encerrado.`", inline: true },
                     { name: `✨ Para participar`, value: `Clique no botão __PARTICIPAR__` },
                     { name: `😘 Ganhador`, value: `<@${winner.userId}>` }
                 ).setColor(Colors.White);
 
             await interaction.editReply({ embeds: [embed], components: [] });
-            await interaction.followUp({ content: `**${botConfig.STONKS} | Parabéns <@${sortedUserId}>**, Você ganhou ${botConfig.getCashString(ammount)} no drop Lançado por <@${interaction.user.id}>.` });
+            await interaction.followUp({ content: `**${botConfig.STONKS} | Parabéns <@${sortedUserId}>**, Você ganhou ${botConfig.getCashString(ammount)} no drop Patrocinado por <@${interaction.user.id}>.` });
 
         });
 
