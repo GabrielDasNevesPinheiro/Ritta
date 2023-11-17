@@ -95,6 +95,8 @@ export default class BotConfig {
     LOCAL_IMG_JACKPOT_BACKGROUND = "./src/assets/jackpot_template.png"
     LOCAL_IMG_BOMB = "./src/assets/bomb.png"
     LOCAL_IMG_EXPLOSION = "./src/assets/explosion.png"
+    GIF_DOUBLE = "https://i.imgur.com/onMSkcv.gif"
+    GIF_TIGER = "https://i.imgur.com/XfWN4e6.gif"
 
     normalBetChances = 0.5;
     vipBetChances = 0.65;
