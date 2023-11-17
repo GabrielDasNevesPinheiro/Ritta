@@ -11,9 +11,9 @@ export function generateSparseArray(): Matrix {
             if (i === centerIndex && j === centerIndex) {
                 let value = possibleValues[Math.floor(Math.random() * possibleValues.length)];
                 let tries = 0;
-                const maxTries = 10; // Limita o número de tentativas
+                const maxTries = 10;
 
-                // Reduz a probabilidade de o valor central ser igual aos vizinhos
+                
                 while (
                     (matrix[i - 1][j] === value || matrix[i][j - 1] === value || matrix[i + 1]?.[j] === value || matrix[i]?.[j + 1] === value) &&
                     tries < maxTries
@@ -23,7 +23,7 @@ export function generateSparseArray(): Matrix {
                 }
 
                 if (tries === maxTries) {
-                    // Se excedeu o número de tentativas, ignora a restrição
+                    
                     value = possibleValues[Math.floor(Math.random() * possibleValues.length)];
                 }
 
