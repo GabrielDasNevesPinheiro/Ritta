@@ -35,38 +35,38 @@ export async function sortRaffle(client: Client) {
 
     function getWinner(array: string[]): string | null {
 
-        if(array.length == 0) return null;
-        
+        if (array.length == 0) return null;
+
         for (let i = array.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [array[i], array[j]] = [array[j], array[i]];
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
         }
 
         return array[0];
-      }
-      
+    }
+
 
 
     let sortArray: string[] = [];
 
     let canSort = sortCooldownCheck(RaffleManager.minutesCooldown, RaffleManager.lastPlayed);
 
-    if(!canSort) return;
+    if (!canSort) return;
 
-    for(let player in RaffleManager.inRaffle) {
+    for (let player in RaffleManager.inRaffle) {
 
         let { tickets } = RaffleManager.inRaffle[player];
 
-        for(let i = 0; i < tickets; i++) {
+        for (let i = 0; i < tickets; i++) {
             sortArray.push(player);
         }
-    
+
     }
 
 
     let winnerId = getWinner(sortArray);
 
-    if(!winnerId) {
+    if (!winnerId) {
         RaffleManager.resetGameNoWinner();
         return;
     }
@@ -74,7 +74,7 @@ export async function sortRaffle(client: Client) {
     let user = await UserController.getUserById(winnerId);
     let stats = RaffleManager.getStats();
 
-    if((stats.players >= 2 && stats.price >= 5000) && (isVipExpired(user).allowed && isBoosterExpired(user).allowed)) tax = 1000;
+    if ((stats.players >= 2 && stats.price >= 5000) && (isVipExpired(user).allowed && isBoosterExpired(user).allowed)) tax = 1000;
 
     stats.price -= tax;
 
@@ -89,18 +89,15 @@ export async function sortRaffle(client: Client) {
     RaffleManager.resetGame(user, stats.price, tickets);
 
     try {
-        
+
+        await (client.channels.cache.get("1174861456341205012") as TextChannel)?.send(`${botConfig.GG} | <@${user.userId}> é o gabhador de ${botConfig.getCashString(stats.price)} no sorteio das rifas\n` +
+            (tax > 0 ? `> A casa pegou ${botConfig.getCashString(tax)} de taxa.` : ""));
+
         await client.users.cache.get(user.userId as string).send(`<@${user.userId}> Parabéns! Você ganhou ${botConfig.getCashString(stats.price)} no sorteio das rifas\n` +
-        (tax > 0 ? `> A casa pegou ${botConfig.getCashString(tax)} de taxa.` : "")
+            (tax > 0 ? `> A casa pegou ${botConfig.getCashString(tax)} de taxa.` : "")
         );
 
-        (client.channels.cache.get("1174858045961023559") as TextChannel).send(`${botConfig.GG} | <@${user.userId}> é o gabhador de ${botConfig.getCashString(stats.price)} no sorteio das rifas\n` +
-        (tax > 0 ? `> A casa pegou ${botConfig.getCashString(tax)} de taxa.` : ""));
-        
-        (client.channels.cache.get("1174861456341205012") as TextChannel)?.send(`${botConfig.GG} | <@${user.userId}> é o gabhador de ${botConfig.getCashString(stats.price)} no sorteio das rifas\n` +
-        (tax > 0 ? `> A casa pegou ${botConfig.getCashString(tax)} de taxa.` : ""));
-
-        
     } catch (error) {
+        
     }
 }
