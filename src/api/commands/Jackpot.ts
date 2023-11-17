@@ -46,7 +46,7 @@ export default abstract class Jackpot extends Command {
 
         if(operation === "win") {
             ammount *= 2;
-            tax = getTax(ammount);
+            if(tax > 0) tax = getTax(ammount);
             ammount -= tax;
             user = await UserController.addCash(user, {
                 from: "jogando jackpot",
