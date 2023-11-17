@@ -97,6 +97,10 @@ export async function sortRaffle(client: Client) {
         (client.channels.cache.get("1174858045961023559") as TextChannel).send(`${botConfig.GG} | <@${user.userId}> é o gabhador de ${botConfig.getCashString(stats.price)} no sorteio das rifas\n` +
         (tax > 0 ? `> A casa pegou ${botConfig.getCashString(tax)} de taxa.` : ""));
         
+        (client.channels.cache.get("1174861456341205012") as TextChannel)?.send(`${botConfig.GG} | <@${user.userId}> é o gabhador de ${botConfig.getCashString(stats.price)} no sorteio das rifas\n` +
+        (tax > 0 ? `> A casa pegou ${botConfig.getCashString(tax)} de taxa.` : ""));
+
+        
     } catch (error) {
     }
 }
