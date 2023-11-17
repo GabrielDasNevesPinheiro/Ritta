@@ -11,7 +11,7 @@ export default abstract class Jackpot extends Command {
         .addIntegerOption(option => 
             option.setName("ammount")
             .setDescription("Quantidade da aposta")
-            .setMinValue(20)
+            .setMinValue(1500)
             .setRequired(true)
             ).setDescription("Aposte no jackpot")
             

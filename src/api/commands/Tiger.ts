@@ -17,7 +17,7 @@ export abstract class Tiger extends Command {
             option.setName("ammount")
                 .setDescription("Quantidade a ser apostada")
                 .setRequired(true)
-                .setMinValue(20)
+                .setMinValue(1500)
         ).setDescription("Aposte no tigrinho")
 
     static async execute(interaction: CommandInteraction<CacheType>) {
