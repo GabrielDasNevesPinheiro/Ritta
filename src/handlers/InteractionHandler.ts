@@ -18,6 +18,7 @@ import Raffle from '../api/commands/Raffle';
 import Bet from "../api/commands/Bet";
 import { Tiger } from "../api/commands/Tiger";
 import Jackpot from "../api/commands/Jackpot";
+import Drop from "../api/commands/Drop";
 
 
 export const commands: { [key: string]: typeof Command } = {
@@ -39,6 +40,7 @@ export const commands: { [key: string]: typeof Command } = {
     "bet": Bet,
     "tiger": Tiger,
     "jackpot": Jackpot,
+    "drop": Drop,
 }
 
 export default function executeAction(cmdName: string, interaction: Interaction<CacheType>) {
