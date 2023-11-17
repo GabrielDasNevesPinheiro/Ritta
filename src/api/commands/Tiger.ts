@@ -51,7 +51,7 @@ export abstract class Tiger extends Command {
             let rand = Math.random();
             tax = getTax(ammount);
 
-            if(rand < (botConfig.normalBetChances - 0.1)){
+            if(rand < (botConfig.normalBetChances + 0.1)){
 
                 tigerArray = generateSparseArray();
                 multiplier = getTotalMultiplier(tigerArray)
