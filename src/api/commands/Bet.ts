@@ -35,6 +35,10 @@ export default class Bet extends Command {
         let user = await UserController.getUserById(interaction.user.id);
         let targetUser = await UserController.getUserById(targetUserId);
 
+        if(Number(targetUser.coins) < ammount) {
+            return await interaction.editReply({ content: `${botConfig.CRYING} | <@${targetUser.userId}> não tem a quantia necessária para esta aposta.` })
+        }
+
 
         let emojis = [":monkey_face:", ":cat:", ":dog:"];
         let face = emojis[Math.floor(Math.random() * emojis.length)];
@@ -70,6 +74,7 @@ export default class Bet extends Command {
                 }
                 if (confirmation.user.id === targetUser.userId) {
                     confirmed.push(targetUser);
+                    
                     confirm = confirm.setLabel(`Aceitar (${confirmed.length}/2)`);
                     await confirmation.update({ components: [row] });
                 }
@@ -82,11 +87,9 @@ export default class Bet extends Command {
                     let otherTax = getTax(ammount);
 
                     if (!isVipExpired(user).allowed) {
-                        userProb = botConfig.vipBetChances;
                         tax = 0;
                     }
                     if (!isVipExpired(targetUser).allowed) {
-                        otherProb = botConfig.vipBetChances;
                         otherTax = 0;
                     }
 
@@ -106,7 +109,7 @@ export default class Bet extends Command {
                     let winnerEmoji = "";
                     let loserEmoji = ""
 
-                    if (sorted <= userProb) {
+                    if (sorted < userProb) {
                         winner = user
                         loser = targetUser;
                         selectedTax = tax;
@@ -114,7 +117,7 @@ export default class Bet extends Command {
                         winnerEmoji = face;
                         loserEmoji = crown;
 
-                    } else if (sorted >= userProb || sorted <= userProb) {
+                    } else if (sorted > userProb) {
                         winner = targetUser;
                         loser = user;
                         selectedTax = otherTax;
