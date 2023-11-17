@@ -40,7 +40,7 @@ export default class Daily extends Command {
         }
 
 
-        let dailyCheck = dailyCooldownCheck(24, user.dailydate, true);
+        let dailyCheck = dailyCooldownCheck(24, user.dailydate, false);
         
         if (dailyCheck.allowed) {
 

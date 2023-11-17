@@ -24,7 +24,7 @@ export class Cooldowns extends Command {
             return await interaction.reply({ content: `${botConfig.CONFUSED} Não encontrei este usuário.`});
         }
 
-        let dailyCooldown = dailyCooldownCheck(24, user.dailydate, true);
+        let dailyCooldown = dailyCooldownCheck(24, user.dailydate, false);
         let weeklyCooldown = cooldownCheck(168, user.weeklydate);
         let workCooldown = cooldownCheck(2, user.workdate);
         let crimeCooldown = cooldownCheck(1, user.crimedate);
