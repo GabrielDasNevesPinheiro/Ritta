@@ -96,6 +96,7 @@ export default class BotConfig {
     LOCAL_IMG_BOMB = "./src/assets/bomb.png"
     LOCAL_IMG_EXPLOSION = "./src/assets/explosion.png"
     LOCAL_IMG_DICE_BACKGROUND = "./src/assets/dice_template.png"
+    LOCAL_IMG_DICE = "./src/assets/dado.png"
     GIF_DOUBLE = "https://i.imgur.com/onMSkcv.gif"
     GIF_TIGER = "https://i.imgur.com/XfWN4e6.gif"
 
