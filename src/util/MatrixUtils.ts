@@ -51,10 +51,10 @@ export function getTotalMultiplier(matrix: number[][]) {
     let diagonalLtR = (matrix[1][1] == matrix[0][0] && matrix[1][1] == matrix[2][2]);
     let diagonalRtL = (matrix[1][1] == matrix[0][2] && matrix[1][1] == matrix[2][0]);
 
-    if(horizontal) multiplier += multipliers[matrix[1][1]];
-    if(vertical) multiplier += multipliers[matrix[1][1]];
-    if(diagonalLtR) multiplier += multipliers[matrix[1][1]];
-    if(diagonalRtL) multiplier += multipliers[matrix[1][1]];
+    if (horizontal) multiplier += multipliers[matrix[1][1]];
+    if (vertical) multiplier += multipliers[matrix[1][1]];
+    if (diagonalLtR) multiplier += multipliers[matrix[1][1]];
+    if (diagonalRtL) multiplier += multipliers[matrix[1][1]];
 
     return multiplier;
 }
@@ -101,4 +101,32 @@ export function generateNeverMatchedArray(): Matrix {
     }
 
     return matrix;
+}
+
+
+
+export function sortJackpotArray() {
+    const random = Math.random() * 100;
+
+    if (random < 70) {
+        let arr: number[];
+        console.log("DIFFERENT")
+        do {
+            
+            arr = [Math.floor(Math.random() * 3), Math.floor(Math.random() * 3), Math.floor(Math.random() * 3)];
+
+        } while (arr[0] === arr[1] && arr[1] === arr[2]);
+
+        return arr;
+
+    } else if (random < 85) {
+        return [0, 0, 0];
+
+    } else if (random < 95) {
+        return [1, 1, 1];
+
+    } else {
+        return [2, 2, 2];
+
+    }
 }
