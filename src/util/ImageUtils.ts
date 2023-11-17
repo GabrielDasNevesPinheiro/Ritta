@@ -27,13 +27,13 @@ export async function loadImageURL(url: string) {
     return image;
 }
 
+type Position = {
+    x: number,
+    y: number
+}
 
 export async function getTigerResult(array: number[][], win: boolean) {
 
-    type Position = {
-        x: number,
-        y: number
-    }
 
     let canvas = createCanvas(800, 800);
     let ctx: CanvasRenderingContext2D = canvas.getContext("2d");
@@ -101,5 +101,30 @@ export async function getTigerResult(array: number[][], win: boolean) {
     }
 
     return canvas.toBuffer("image/jpeg");
+
+}
+
+
+export async function getJackpotResult(array: number[]) {
+
+    let canvas = createCanvas(653, 250);
+    let ctx: CanvasRenderingContext2D = canvas.getContext("2d");
+
+    ctx.drawImage(await loadImage(botConfig.LOCAL_IMG_JACKPOT_BACKGROUND), 0, 0);
+
+    let iconSize = 75;
+    let cash = await loadImage(botConfig.LOCAL_IMG_DOUBLE_COIN);
+    let bomb = await loadImage(botConfig.LOCAL_IMG_BOMB);
+    let explosion = await loadImage(botConfig.LOCAL_IMG_EXPLOSION);
+
+    let icons = [cash, bomb, explosion];
+    let positions: Position[] = [
+        { x: 161, y: 89}, {x: 289, y: 89}, { x: 418, y: 89}
+    ];
+
+    icons.forEach((item, i) => {
+        ctx.drawImage(item, positions[i].x, positions[i].y, iconSize, iconSize);
+    })
+    return canvas.toBuffer();
 
 }
