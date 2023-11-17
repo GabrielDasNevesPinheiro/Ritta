@@ -24,8 +24,26 @@ export default abstract class Dice extends Command {
 
         if(!canBet) return;
 
-        let file = await getDice(30);
+        let num = getDiceRandomNumber();
+        let file = await getDice(num);
         await interaction.editReply({ files: [file] });
+        
     }
 
+}
+
+
+
+function getDiceRandomNumber() {
+    const chanceMenorQue50 = 0.3;
+
+  const random = Math.random();
+  
+  if (random < chanceMenorQue50) {
+    
+    return Math.floor(Math.random() * 50);
+  } else {
+    
+    return Math.floor(Math.random() * (100 - 50) + 50);
+  }
 }
