@@ -146,3 +146,33 @@ export function getJackpotOperation(arr: number[]): "win" | "defeat" | "removePo
     }
     return "defeat"; // Se nenhuma das condições anteriores for atendida
 }
+
+export function getMinesMatrix(numberOfTrue: number) {
+    if (numberOfTrue > 20 || numberOfTrue < 0) {
+        throw new Error("Número de 'true' inválido. Deve estar entre 0 e 20.");
+    }
+
+    const matrix: boolean[][] = [];
+
+    // Inicializa a matriz com 'false'
+    for (let i = 0; i < 4; i++) {
+        matrix[i] = [];
+        for (let j = 0; j < 5; j++) {
+            matrix[i][j] = false;
+        }
+    }
+
+    // Define 'numberOfTrue' valores como 'true' aleatoriamente na matriz
+    let trueCount = 0;
+    while (trueCount < numberOfTrue) {
+        const row = Math.floor(Math.random() * 4);
+        const col = Math.floor(Math.random() * 5);
+
+        if (!matrix[row][col]) {
+            matrix[row][col] = true;
+            trueCount++;
+        }
+    }
+
+    return matrix;
+}
