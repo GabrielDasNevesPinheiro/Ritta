@@ -110,7 +110,7 @@ export default class Double extends Command {
             }
     
             let ammount = bet;
-            ammount *= selectedMultiplier;
+            ammount = Math.floor(ammount * selectedMultiplier);
             tax = getTax(ammount);
             ammount -= tax;
     
