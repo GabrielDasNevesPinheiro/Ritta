@@ -42,8 +42,8 @@ export default class Double extends Command {
 
         if(!canBet) return;
 
-        let redProb = 0.46;
-        let blackProb = 0.96;
+        let redProb = 0.50;
+        let blackProb = 0.97;
         let cores = ["red", "black", "white"];
         let random = Math.random();
         let sorted = "";
@@ -94,6 +94,9 @@ export default class Double extends Command {
         collector.on('collect', async(confirmation) => {
 
             let betColor  = confirmation.customId as "red" | "black" | "white";
+
+            if(betColor === "black") redProb = 0.6;
+            if(betColor === "red") redProb = 0.4;
 
             if (random < redProb) {
                 sorted = cores[0];
