@@ -159,7 +159,7 @@ export async function getDice(value: number) {
     ctx.stroke();
 
     ctx.drawImage(await loadImage(botConfig.LOCAL_IMG_DICE_BACKGROUND), 0, 0);
-    ctx.drawImage(await loadImage(botConfig.LOCAL_IMG_DICE), linhaX - 50, linhaY - 25, 100, 100);
+    ctx.drawImage(await loadImage(botConfig.LOCAL_IMG_DICE), linhaX - 50, linhaY - 10, 75, 75);
 
     return canvas.toBuffer();
 
