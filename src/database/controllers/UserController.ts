@@ -52,6 +52,8 @@ class UserController {
 
             foundUser.coins = Number(foundUser.coins) - Number(trans.ammount);
 
+            if(Number(foundUser.coins) < 0) foundUser.coins = 0;
+
             await TransactionController.createTransaction(trans);
 
             foundUser = await this.updateUser(foundUser.userId as string, foundUser);
