@@ -18,6 +18,13 @@ export function sortCooldownCheck(minutes: number, cmpDate: Date) {
   return diffInMinutes >= minutes;
 }
 
+export function getMinutesCooldownFromNow(minutes: number) {
+  const currentDate = moment(); 
+
+  const futureDate = currentDate.add(minutes, 'minutes');
+  return futureDate.unix();
+}
+
 export function cooldownCheck (cooldown: number, cmpDate: Date, resethours: boolean = false): { allowed: boolean, time: number, textTime: string } {
     
     const currentTime = new Date();
