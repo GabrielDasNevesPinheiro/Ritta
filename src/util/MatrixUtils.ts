@@ -110,7 +110,6 @@ export function sortJackpotArray() {
 
     if (random < 70) {
         let arr: number[];
-        console.log("DIFFERENT")
         do {
             
             arr = [Math.floor(Math.random() * 3), Math.floor(Math.random() * 3), Math.floor(Math.random() * 3)];
@@ -129,4 +128,21 @@ export function sortJackpotArray() {
         return [2, 2, 2];
 
     }
+}
+
+
+export function getJackpotOperation(arr: number[]): "win" | "defeat" | "removePoints" {
+    const uniqueItems = new Set(arr);
+
+    if (uniqueItems.size === 1) {
+        const item = arr[0];
+        if (item === 0) {
+            return "win"; 
+        } else if (item === 1) {
+            return "defeat"; 
+        } else if (item === 2) {
+            return "removePoints";
+        }
+    }
+    return "defeat"; // Se nenhuma das condições anteriores for atendida
 }
