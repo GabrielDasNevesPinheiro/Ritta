@@ -77,7 +77,7 @@ export async function checkMaxValues(interaction: CommandInteraction<CacheType>,
     if(!isVipExpired(user).allowed && !bet) max = 75000;
 
         if (ammount > max) {
-            await interaction.editReply({ content: `**${botConfig.CONFUSED} | <@${interaction.user.id}>, Você só pode usar até** ${botConfig.getCashString(max)}.`});
+            await interaction.followUp({ content: `**${botConfig.CONFUSED} | <@${interaction.user.id}>, Você só pode usar até** ${botConfig.getCashString(max)}.`});
             return false;
         }
 
