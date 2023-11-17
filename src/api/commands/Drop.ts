@@ -15,14 +15,23 @@ export default abstract class Drop extends Command {
                 .setDescription("Quantia que você irá patrocinar")
                 .setMinValue(1500)
                 .setRequired(true)
+        ).addIntegerOption(option =>
+            option.setName("time")
+            .setDescription("Minutos de duração do drop")
+            .setMinValue(1)  
+            .setRequired(true)  
         )
         .setDescription("Patrocine um drop no chat");
 
     static async execute(interaction: CommandInteraction<CacheType>) {
 
+        if(!(interaction.user.id === "274553417685270528")) return;
+
         interaction.deferReply({});
 
         let ammount = interaction.options.get("ammount").value as number;
+        let time = interaction.options.get("time").value as number;
+
         let res = await checkBetValues(String(ammount), interaction);
 
         let user = await UserController.getUserById(interaction.user.id);
@@ -37,7 +46,7 @@ export default abstract class Drop extends Command {
             .setDescription(`Lançado por: <@${user.userId}>.`)
             .addFields(
                 { name: "Valor para o Vencedor", value: `${botConfig.getCashString(ammount)}`, inline: true },
-                { name: `${botConfig.WAITING} Duração`, value: `<t:${getMinutesCooldownFromNow(1)}:R>`, inline: true },
+                { name: `${botConfig.WAITING} Duração`, value: `<t:${getMinutesCooldownFromNow(time)}:R>`, inline: true },
                 { name: `✨ Para participar`, value: `Clique no botão __PARTICIPAR__` },
                 { name: `😘 Ganhador`, value: `Ninguém, ainda.` }
             ).setColor(Colors.White);
@@ -52,7 +61,7 @@ export default abstract class Drop extends Command {
 
         let response = await interaction.editReply({ embeds: [embed], components: [row] });
 
-        const collector = response.createMessageComponentCollector({ componentType: ComponentType.Button, time: 60000 });
+        const collector = response.createMessageComponentCollector({ componentType: ComponentType.Button, time: 60000 * time });
 
         collector.on('collect', async (confirmation) => {
 
