@@ -36,9 +36,6 @@ export default class Pay extends Command {
 
         if(!res) return;
 
-        if (ammount > botConfig.payLimit && isVipExpired(user).allowed) return await interaction.editReply({ content: `**${botConfig.NO} | <@${interaction.user.id}>, Torne-se __VIP__ para transferir mais de ${botConfig.getCashString(botConfig.payLimit)}.**` });
-
-
         let confirm = new ButtonBuilder()
             .setCustomId("agree")
             .setLabel("PAGAR (0/2)")

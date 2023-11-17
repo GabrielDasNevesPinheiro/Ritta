@@ -36,11 +36,6 @@ export default class Bet extends Command {
         let user = await UserController.getUserById(interaction.user.id);
         let targetUser = await UserController.getUserById(targetUserId);
         
-        let canBet1 = await checkMaxValues(interaction, user, ammount, true);
-        let canBet2 = await checkMaxValues(interaction, user, ammount, true);
-
-        if(!canBet1) return;
-        if(!canBet2) return;
         if(Number(targetUser.coins) < ammount) {
             return await interaction.editReply({ content: `${botConfig.CRYING} | <@${targetUser.userId}> não tem a quantia necessária para esta aposta.` })
         }
