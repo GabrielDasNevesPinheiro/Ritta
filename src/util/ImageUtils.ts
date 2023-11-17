@@ -144,7 +144,7 @@ export async function getDice(value: number) {
     const linhaX = startPoint.x + (endPoint.x - startPoint.x) * (value / 100);
     const linhaY = startPoint.y + (endPoint.y - startPoint.y) * (value / 100);
 
-    ctx.beginPath()
+    ctx.beginPath();
     ctx.moveTo(startPoint.x, startPoint.y);
     ctx.lineWidth = 120;
     ctx.strokeStyle = "#ff0000"; 
@@ -159,6 +159,7 @@ export async function getDice(value: number) {
     ctx.stroke();
 
     ctx.drawImage(await loadImage(botConfig.LOCAL_IMG_DICE_BACKGROUND), 0, 0);
+    ctx.drawImage(await loadImage(botConfig.LOCAL_IMG_DICE), linhaX - 50, linhaY - 25, 100, 100);
 
     return canvas.toBuffer();
 
