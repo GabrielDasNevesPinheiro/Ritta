@@ -45,7 +45,7 @@ export abstract class Tiger extends Command {
                     .setColor(Colors.Green)], components: []
         });
         
-        await sleep(5000);
+        await sleep(3000);
 
         let tax = 0;
 
