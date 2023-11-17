@@ -1,6 +1,6 @@
 import { CacheType, CommandInteraction, SlashCommandBuilder } from "discord.js";
 import Command from "./Command";
-import { checkBetValues, getTax } from "../../util/InteractionUtils";
+import { checkBetValues, checkMaxValues, getTax } from "../../util/InteractionUtils";
 import { getJackpotResult } from "../../util/ImageUtils";
 import { getJackpotOperation, sortJackpotArray } from "../../util/MatrixUtils";
 import UserController from "../../database/controllers/UserController";
@@ -26,16 +26,20 @@ export default abstract class Jackpot extends Command {
         let ammount = interaction.options.get("ammount").value as number;
 
         let res = await checkBetValues(String(ammount), interaction);
-
+        
         if(!res) return;
-
-
+        
+        
         let jackpot = sortJackpotArray();
         let result = await getJackpotResult(jackpot);
         let operation = getJackpotOperation(jackpot);
         let tax = getTax(ammount);
-
+        
         let user = await UserController.getUserById(interaction.user.id);
+        let canBet = await checkMaxValues(interaction, user, ammount);
+
+        if(!canBet) return;
+
         if(!isVipExpired(user).allowed) {
             tax = 0;
         }

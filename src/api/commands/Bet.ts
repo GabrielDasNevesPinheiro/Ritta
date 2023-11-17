@@ -2,7 +2,7 @@ import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Colors, CommandInteractio
 import Command from "./Command";
 import UserController from "../../database/controllers/UserController";
 import { botConfig } from "../../app";
-import { checkPayValues, getIntegerOption, getTax } from "../../util/InteractionUtils";
+import { checkMaxValues, checkPayValues, getIntegerOption, getTax } from "../../util/InteractionUtils";
 import { isVipExpired } from "../../util/DateUtils";
 import { IUser } from "../../database/models/User";
 
@@ -29,12 +29,17 @@ export default class Bet extends Command {
         let ammount: number = interaction.options.get("ammount").value as number;
 
         let res = await checkPayValues(targetUserId, String(ammount), interaction );
-
+        
         if(!res) return;
-
+        
         let user = await UserController.getUserById(interaction.user.id);
         let targetUser = await UserController.getUserById(targetUserId);
+        
+        let canBet1 = await checkMaxValues(interaction, user, ammount);
+        let canBet2 = await checkMaxValues(interaction, user, ammount);
 
+        if(!canBet1) return;
+        if(!canBet2) return;
         if(Number(targetUser.coins) < ammount) {
             return await interaction.editReply({ content: `${botConfig.CRYING} | <@${targetUser.userId}> não tem a quantia necessária para esta aposta.` })
         }

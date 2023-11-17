@@ -1,7 +1,7 @@
 import { CommandInteraction, CacheType, SlashCommandBuilder } from "discord.js";
 import Command from "./Command";
 import { botConfig } from "../../app";
-import { checkBetValues, getIntegerOption, getTax } from "../../util/InteractionUtils";
+import { checkBetValues, checkMaxValues, getIntegerOption, getTax } from "../../util/InteractionUtils";
 import UserController from "../../database/controllers/UserController";
 import { getTigerResult } from "../../util/ImageUtils";
 import { isVipExpired } from "../../util/DateUtils";
@@ -31,8 +31,11 @@ export abstract class Tiger extends Command {
         let user = await UserController.getUserById(interaction.user.id);
 
         let res = await checkBetValues(String(ammount), interaction);
+        let canBet = await checkMaxValues(interaction, user, ammount);
 
+        if(!canBet) return;
         if (!res) return;
+
         let tax = 0;
 
         let tigerArray: number[][] = [];

@@ -1,6 +1,8 @@
 import { CacheType, CommandInteraction } from "discord.js";
 import { botConfig } from "../app";
 import UserController from "../database/controllers/UserController";
+import { isVipExpired } from "./DateUtils";
+import { IUser } from "../database/models/User";
 
 export async function checkPayValues(targetUserId: string, optionAmmount: string, interaction: CommandInteraction<CacheType>): Promise<boolean> {
 
@@ -39,7 +41,7 @@ export async function checkPayValues(targetUserId: string, optionAmmount: string
     export async function checkBetValues(optionAmmount: string, interaction: CommandInteraction<CacheType>): Promise<boolean> {
 
         let ammount: number = getIntegerOption(optionAmmount);
-
+        let max = 100000;
         if(isNaN(ammount)) {
             await interaction.editReply({ content: `**${botConfig.CONFUSED} | <@${interaction.user.id}>, Você precisa inserir um valor válido.**`})
             return false;
@@ -53,7 +55,7 @@ export async function checkPayValues(targetUserId: string, optionAmmount: string
 
         
         if(!user) {
-            await interaction.editReply({ content: `**${botConfig.CONFUSED} | <@${interaction.user.id}>, Tente realizar suas tarefas diárias primeiro.**`});
+            await interaction.editReply({ content: `**${botConfig.CONFUSED} | <@${interaction.user.id}>, Tente realizar suas tarefas diárias primeiro.**` });
             return false;
         }
         
@@ -65,6 +67,20 @@ export async function checkPayValues(targetUserId: string, optionAmmount: string
         return true;
     }
 
+
+export async function checkMaxValues(interaction: CommandInteraction<CacheType>, user: IUser, ammount: number): Promise<boolean> {
+
+    let max = 100000;
+
+    if(!isVipExpired(user).allowed) max = 200000;
+
+        if (ammount > max) {
+            await interaction.editReply({ content: `**${botConfig.CONFUSED} | <@${interaction.user.id}>, Você só pode apostar até ${botConfig.getCashString(max)}.**`});
+            return false;
+        }
+
+        return true;
+}
 
 export function getIntegerOption(num: string) {
     let ammount: number = Number(Number(num).toFixed(0));

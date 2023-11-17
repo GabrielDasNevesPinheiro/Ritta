@@ -5,7 +5,7 @@ import { CanvasRenderingContext2D, createCanvas, loadImage } from "canvas";
 import { getDouble } from "../../util/ImageUtils";
 import UserController from "../../database/controllers/UserController";
 import { isBoosterExpired, isVipExpired } from "../../util/DateUtils";
-import { getTax } from "../../util/InteractionUtils";
+import { checkMaxValues, getTax } from "../../util/InteractionUtils";
 
 export default class Double extends Command {
 
@@ -22,7 +22,7 @@ export default class Double extends Command {
 
         await interaction.deferReply();
 
-        let bet: number = Number(interaction.options.get("ammount")?.value || "a");
+        let bet: number = interaction.options.get("ammount").value as number;
 
         if (isNaN(bet)) {
             return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, por favor insira um valor válido para a aposta.` });
@@ -37,6 +37,10 @@ export default class Double extends Command {
         if(user.coins as number < bet) {
             return await interaction.editReply({ content: `${botConfig.CONFUSED} Parece que você não tem **${botConfig.cashname.toLowerCase().toLowerCase().toLowerCase()}** o suficiente para essa aposta.`});
         }
+
+        let canBet = await checkMaxValues(interaction, user, bet);
+
+        if(!canBet) return;
 
         let redProb = 0.46;
         let blackProb = 0.96;
