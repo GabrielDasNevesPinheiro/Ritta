@@ -1,7 +1,7 @@
 import { CommandInteraction, CacheType, SlashCommandBuilder } from "discord.js";
 import Command from "./Command";
 import { botConfig } from "../../app";
-import { checkBetValues, getIntegerOption } from "../../util/InteractionUtils";
+import { checkBetValues, getIntegerOption, getTax } from "../../util/InteractionUtils";
 import UserController from "../../database/controllers/UserController";
 import { getTigerResult } from "../../util/ImageUtils";
 import { isVipExpired } from "../../util/DateUtils";
@@ -46,7 +46,7 @@ export abstract class Tiger extends Command {
         } else {
 
             let rand = Math.random();
-            tax = 10 ** (ammount.toLocaleString("pt-BR").split(".")[1]?.length - 1 | 1);
+            tax = getTax(ammount);
 
             if(rand < (botConfig.normalBetChances)){
 

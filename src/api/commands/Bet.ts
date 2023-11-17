@@ -2,7 +2,7 @@ import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Colors, CommandInteractio
 import Command from "./Command";
 import UserController from "../../database/controllers/UserController";
 import { botConfig } from "../../app";
-import { checkPayValues, getIntegerOption } from "../../util/InteractionUtils";
+import { checkPayValues, getIntegerOption, getTax } from "../../util/InteractionUtils";
 import { isVipExpired } from "../../util/DateUtils";
 import { IUser } from "../../database/models/User";
 
@@ -78,8 +78,8 @@ export default class Bet extends Command {
                     let toSort = [face, crown];
                     let userProb = botConfig.normalBetChances;
                     let otherProb = botConfig.normalBetChances;
-                    let tax = 10 ** (ammount.toLocaleString("pt-BR").split(".")[1]?.length - 1 || 1);
-                    let otherTax = 10 ** (ammount.toLocaleString("pt-BR").split(".")[1]?.length - 1 || 1);
+                    let tax = getTax(ammount);
+                    let otherTax = getTax(ammount);
 
                     if (!isVipExpired(user).allowed) {
                         userProb = botConfig.vipBetChances;

@@ -70,3 +70,13 @@ export function getIntegerOption(num: string) {
     let ammount: number = Number(Number(num).toFixed(0));
     return ammount;
 } 
+
+export function getTax(valor: number): number {
+    if (valor <= 0) {
+       return 0;
+    } else if (valor < 100) {
+        return Math.floor(valor / 10); // Retorna a taxa conforme o exemplo fornecido
+    } else {
+        return Math.floor(valor / 100);
+    }
+}

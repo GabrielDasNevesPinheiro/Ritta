@@ -5,6 +5,7 @@ import { CanvasRenderingContext2D, createCanvas, loadImage } from "canvas";
 import { getDouble } from "../../util/ImageUtils";
 import UserController from "../../database/controllers/UserController";
 import { isBoosterExpired, isVipExpired } from "../../util/DateUtils";
+import { getTax } from "../../util/InteractionUtils";
 
 export default class Double extends Command {
 
@@ -42,7 +43,7 @@ export default class Double extends Command {
         let cores = ["red", "black", "white"];
         let random = Math.random();
         let sorted = "";
-        let tax = 10 ** (bet.toLocaleString("pt-BR").split(".")[1]?.length - 1 || 1);;
+        let tax = getTax(bet);
 
         let normalMultiplier = 2;
         let rareMultiplier = 14;
