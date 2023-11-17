@@ -80,7 +80,6 @@ export abstract class Tiger extends Command {
         if(multiplier > 0) {
 
             ammount = Math.floor(ammount * multiplier);
-            tax = getTax(ammount);
             ammount -= tax;
             user = await UserController.addCash(user, {
                 from: "jogando tigrinho",
