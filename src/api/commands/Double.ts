@@ -111,6 +111,7 @@ export default class Double extends Command {
     
             let ammount = bet;
             ammount *= selectedMultiplier;
+            tax = getTax(ammount);
             ammount -= tax;
     
             const doubleResult = await getDouble(sorted);

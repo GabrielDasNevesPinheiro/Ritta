@@ -51,7 +51,7 @@ export abstract class Tiger extends Command {
             let rand = Math.random();
             tax = getTax(ammount);
 
-            if(rand < (botConfig.normalBetChances)){
+            if(rand < (botConfig.normalBetChances - 0.1)){
 
                 tigerArray = generateSparseArray();
                 multiplier = getTotalMultiplier(tigerArray)
@@ -69,6 +69,7 @@ export abstract class Tiger extends Command {
         if(multiplier > 0) {
 
             ammount *= multiplier
+            tax = getTax(ammount);
             ammount -= tax;
             user = await UserController.addCash(user, {
                 from: "jogando tigrinho",
