@@ -83,7 +83,7 @@ export default abstract class Mines extends Command {
                 user = await UserController.addCash(user, {
                     from: "jogando mines",
                     to: user.userId,
-                    ammount: count
+                    ammount: count - ammount
                 });
 
                 await interaction.editReply({ content: `**${botConfig.OK} | <@${user.userId}>**, Você ganhou um total de ${botConfig.getCashString(count)}.\n` +
@@ -127,7 +127,7 @@ export default abstract class Mines extends Command {
                 user = await UserController.addCash(user, {
                     from: "jogando mines",
                     to: user.userId,
-                    ammount: count
+                    ammount: count - ammount
                 });
 
                 await interaction.editReply({ content: `**${botConfig.OK} | <@${user.userId}>**, Você ganhou um total de ${botConfig.getCashString(count)}.\n` +
