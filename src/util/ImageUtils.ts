@@ -130,7 +130,7 @@ export async function getJackpotResult(array: number[]) {
 
 }
 
-export async function getDice(value: number) {
+export async function getDice(value: number, bet: number) {
     let width = 653;
     let height = 250;
 
@@ -141,8 +141,8 @@ export async function getDice(value: number) {
     let endPoint: Position = { x: 609, y: 98 }
 
     
-    const linhaX = startPoint.x + (endPoint.x - startPoint.x) * (value / 100);
-    const linhaY = startPoint.y + (endPoint.y - startPoint.y) * (value / 100);
+    let linhaX = startPoint.x + (endPoint.x - startPoint.x) * (bet / 100);
+    const linhaY = startPoint.y + (endPoint.y - startPoint.y) * (bet / 100);
 
     ctx.beginPath();
     ctx.moveTo(startPoint.x, startPoint.y);
@@ -157,6 +157,8 @@ export async function getDice(value: number) {
     ctx.moveTo(startPoint.x, startPoint.y);
     ctx.lineTo(linhaX, linhaY);
     ctx.stroke();
+
+    linhaX = startPoint.x + ((endPoint.x - 29) - (startPoint.x)) * (value / 100);
 
     ctx.drawImage(await loadImage(botConfig.LOCAL_IMG_DICE_BACKGROUND), 0, 0);
     ctx.drawImage(await loadImage(botConfig.LOCAL_IMG_DICE), linhaX - 25, linhaY - 1, 55, 55);
