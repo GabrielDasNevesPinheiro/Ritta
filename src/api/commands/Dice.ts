@@ -75,7 +75,7 @@ export default abstract class Dice extends Command {
         
         collector.on("collect", async (confirmation) => {
           if(confirmation.user.id !== interaction.user.id) return;
-          await interaction.editReply({ content: `Vamos ver o que lhe aguarda...`, embeds: [], components: []});
+          await interaction.editReply({ content: `**Vamos ver o que lhe aguarda...**`, embeds: [], components: []});
           customId = confirmation.customId as "basic" | "medium" | "advanced";
           
           //show gif
