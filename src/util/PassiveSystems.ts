@@ -143,7 +143,7 @@ export async function startCrash(client: Client) {
                 .setImage(botConfig.IMG_CRASH)], components: [buttonRow]
     });
 
-
+    let prob = 0.85;
     let buttonCollector = res.createMessageComponentCollector({ componentType: ComponentType.Button, time: 25000 });
 
     buttonCollector.on("collect", async (confirmation) => {
@@ -157,7 +157,7 @@ export async function startCrash(client: Client) {
 
             await confirmation.showModal(modal);
             let modalRes = await confirmation.awaitModalSubmit({ time: 25000 });
-            let ammount = Number(modalRes.fields.getTextInputValue("ammount"));
+            let ammount = Number(modalRes.fields?.getTextInputValue("ammount"));
             let user = await UserController.getUserById(confirmation.user.id);
 
             if(RaffleManager.inRaffle[confirmation.user.id]?.tickets < 10 || !RaffleManager.inRaffle[confirmation.user.id]) {
@@ -178,6 +178,10 @@ export async function startCrash(client: Client) {
             } else if (!isNaN(ammount) && ammount && ammount <= 100000) {
                 
                 ammount = Math.floor(ammount);
+
+                if(ammount > 50000) {
+                    prob = 0.3;
+                }
                 
                 CrashManager.inGame[confirmation.user.id] = {
                     bet: ammount,
@@ -222,11 +226,16 @@ export async function startCrash(client: Client) {
     for (let i = 0; i <= times; i++) {
 
 
-        multiplier += Math.random() * 0.5;
+        multiplier += Math.random() * 0.3;
 
+        
         let final = i == times;
         let draw = "";
         let stacking = "";
+        
+        if(Math.random() > prob) {
+            final = true;
+        }
 
         for (let player in CrashManager.inGame) {
 

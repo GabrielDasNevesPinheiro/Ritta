@@ -32,13 +32,7 @@ export default abstract class Drop extends Command {
         let ammount = interaction.options.get("ammount").value as number;
         let time = interaction.options.get("time").value as number;
 
-        let res = await checkBetValues(String(ammount), interaction);
-
         let user = await UserController.getUserById(interaction.user.id);
-        let canBet = await checkMaxValues(interaction, user, ammount);
-
-        if (!res) return;
-        if (!canBet) return;
 
         let embed = new EmbedBuilder()
             .setTitle(`🎉 Drop Lançado`)
