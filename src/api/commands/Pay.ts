@@ -43,7 +43,9 @@ export default class Pay extends Command {
 
         let row = new ActionRowBuilder<ButtonBuilder>().addComponents(confirm);
 
-        let response = await interaction.editReply({ content: `**A Equipe não se responsabiliza por roubos ou golpes.**\n`, embeds: [], components: [row] });
+        let response = await interaction.editReply({ content: 
+            `${botConfig.CASH} | <@${targetUser.userId}>, <@${user.userId}> quer te enviar ${botConfig.getCashString(ammount)}, para aceitar, você e <@${user.userId}> devem clicar no botão __PAGAR__.\n`+
+            `**A Equipe não se responsabiliza por roubos ou golpes.**\n`, embeds: [], components: [row] });
         let confirmed: IUser[] = [];
 
         const collector = response.createMessageComponentCollector({ componentType: ComponentType.Button, time: 12000 });
