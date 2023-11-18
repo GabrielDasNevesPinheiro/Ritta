@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, CacheType, Colors, CommandInteraction, EmbedBuilder, SlashCommandBuilder } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, CacheType, Colors, CommandInteraction, ComponentType, EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import Command from "./Command";
 import { checkBetValues, checkMaxValues } from "../../util/InteractionUtils";
 import { getDice } from "../../util/ImageUtils";
@@ -32,10 +32,6 @@ export default abstract class Dice extends Command {
         if(!canBet) return;
 
 
-        
-        let num = getDiceRandomNumber();
-        let file = await getDice(num);
-
         let oneToSevens = 2.0;
         let oneToFives = 3.0;
         let oneToTwenties = 4.0;
@@ -66,7 +62,26 @@ export default abstract class Dice extends Command {
         `Números de 1 - 25: ${oneToTwenties.toFixed(1)}x \n` 
         ).setImage(botConfig.IMG_DICE).setColor(Colors.Red);
         
-        await interaction.editReply({ embeds: [diceEmbed], components: [row] });
+        let response = await interaction.editReply({ embeds: [diceEmbed], components: [row] });
+        let collector = response.createMessageComponentCollector({ componentType: ComponentType.Button, time: 3000 });
+
+        let customId: "basic" | "medium" | "advanced" = null;
+        
+        collector.on("collect", async (confirmation) => {
+          customId = confirmation.customId as "basic" | "medium" | "advanced";
+          //show gif
+
+        });
+
+
+        collector.on("end", async (confirmation) => {
+
+          let num = getDiceRandomNumber();
+          let file = await getDice(num);
+
+          await interaction.editReply({ content: `Eis o resultado`, files: [file] });
+
+        });
         
     }
 
