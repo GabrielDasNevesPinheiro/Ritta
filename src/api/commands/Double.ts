@@ -4,7 +4,7 @@ import { botConfig } from "../../app";
 import { CanvasRenderingContext2D, createCanvas, loadImage } from "canvas";
 import { getDouble } from "../../util/ImageUtils";
 import UserController from "../../database/controllers/UserController";
-import { isBoosterExpired, isVipExpired } from "../../util/DateUtils";
+import { isBoosterExpired, isVipExpired, sleep } from "../../util/DateUtils";
 import { checkMaxValues, getTax } from "../../util/InteractionUtils";
 import fs from 'fs';
 
@@ -91,9 +91,9 @@ export default class Double extends Command {
         let row = new ActionRowBuilder<ButtonBuilder>().addComponents([red, black, white]);
 
         let response = await interaction.editReply({ content: `${botConfig.MONEY} Você vai apostar ${botConfig.getCashString(bet)} no Double. Escolha uma cor:`, components: [row] });
-        const collector = response.createMessageComponentCollector({ componentType: ComponentType.Button, time: 5000 });
-        let customId = "";
-
+        const collector = response.createMessageComponentCollector({ componentType: ComponentType.Button, time: 30000 });
+        let customId: string = null;
+        
         collector.on('collect', async (confirmation) => {
             customId = confirmation.customId;
             await interaction.editReply({
@@ -102,10 +102,15 @@ export default class Double extends Command {
                         .setImage(botConfig.GIF_DOUBLE)
                         .setColor(Colors.Green)], components: []
             });
+            await sleep(4000);
+            collector.emit("end"); 
         });
 
         collector.on("end", async (confirmation) => {
+            
+            if(!customId) return;
             await interaction.editReply({ components: [] });
+
 
             let betColor = customId as "red" | "black" | "white";
 

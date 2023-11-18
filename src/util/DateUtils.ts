@@ -25,6 +25,8 @@ export function getMinutesCooldownFromNow(minutes: number) {
   return futureDate.unix();
 }
 
+export const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 export function cooldownCheck (cooldown: number, cmpDate: Date, resethours: boolean = false): { allowed: boolean, time: number, textTime: string } {
     
     const currentTime = new Date();

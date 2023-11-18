@@ -4,7 +4,7 @@ import { botConfig } from "../../app";
 import { checkBetValues, checkMaxValues, getIntegerOption, getTax } from "../../util/InteractionUtils";
 import UserController from "../../database/controllers/UserController";
 import { getTigerResult } from "../../util/ImageUtils";
-import { isVipExpired } from "../../util/DateUtils";
+import { isVipExpired, sleep } from "../../util/DateUtils";
 import { generateNeverMatchedArray, generateSparseArray, getTotalMultiplier } from "../../util/MatrixUtils";
 
 
@@ -21,7 +21,7 @@ export abstract class Tiger extends Command {
         ).setDescription("Aposte no tigrinho")
 
     static async execute(interaction: CommandInteraction<CacheType>) {
-        const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+        
 
         await interaction.deferReply();
         
