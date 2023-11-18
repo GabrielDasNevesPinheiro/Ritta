@@ -5,7 +5,7 @@ import { Settings } from "./database/models/Settings";
 import postSlashCommands from "./api/Register";
 import executeAction from "./handlers/InteractionHandler";
 import BotConfig from "./util/BotConfig";
-import { countBoosterPassiveCash, countVipPassiveCash, sortRaffle } from './util/PassiveSystems';
+import { countBoosterPassiveCash, countVipPassiveCash, sortRaffle, startCrash } from './util/PassiveSystems';
 import UserController from './database/controllers/UserController';
 
 config()
@@ -37,6 +37,7 @@ client.on("ready", async (bot) => {
     setInterval(countVipPassiveCash, botConfig.vipPassiveEarningCooldown * 1000);
     setInterval(sortRaffle, 10000, client);
     setInterval(countBoosterPassiveCash, botConfig.vipPassiveEarningCooldown * 1000);
+    setInterval(startCrash, 3000, client);
 
 });
 
@@ -59,7 +60,7 @@ client.on('interactionCreate', async (interaction) => {
 client.on("guildMemberUpdate", async(old, now) => {
     
     if(now.guild.id !== "1174342112070869012") return;
-
+    
     if (!old.premiumSince && now.premiumSince) {
         let user = await UserController.getUserById(now.user.id);
 

@@ -1,8 +1,10 @@
-import { Client, TextChannel } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, Colors, ComponentType, EmbedBuilder, Message, ModalBuilder, TextChannel, TextInputBuilder, TextInputStyle } from "discord.js";
 import { botConfig } from "../app";
 import UserController from "../database/controllers/UserController";
-import { cooldownCheck, isBoosterExpired, isVipExpired, sortCooldownCheck } from "./DateUtils";
+import { cooldownCheck, isBoosterExpired, isVipExpired, sleep, sortCooldownCheck } from "./DateUtils";
 import RaffleManager from "./RaffleManager";
+import { CrashManager } from "./CrashManager";
+import { getTax } from "./InteractionUtils";
 
 
 export async function countVipPassiveCash() {
@@ -98,6 +100,225 @@ export async function sortRaffle(client: Client) {
         );
 
     } catch (error) {
-        
+
     }
+}
+export async function startCrash(client: Client) {
+
+    if (CrashManager.running) return;
+    CrashManager.running = true;
+
+    let channel = client.channels.cache.get(botConfig.crashChannel) as TextChannel || client.channels.cache.get("1174826007727972433") as TextChannel;
+
+    let message: Message<true> = null;
+
+    let times = Math.floor(Math.random() * 15);
+    let multiplier = 1;
+
+
+    let button = new ButtonBuilder()
+        .setCustomId("join")
+        .setLabel("Participar")
+        .setStyle(ButtonStyle.Success)
+
+    let buttonRow = new ActionRowBuilder<ButtonBuilder>().addComponents(button);
+
+    let modal = new ModalBuilder().setCustomId("confirm")
+        .setTitle("Defina sua quantia");
+
+    let ammountInput = new TextInputBuilder().setCustomId("ammount")
+        .setPlaceholder("Digite aqui a quantia da aposta")
+        .setLabel("Faça sua aposta!")
+        .setMinLength(3)
+        .setRequired(true)
+        .setStyle(TextInputStyle.Short);
+
+    let modals = new ActionRowBuilder<TextInputBuilder>().addComponents(ammountInput);
+
+    modal.addComponents(modals);
+
+    let res = await channel.send({
+        embeds: [
+            new EmbedBuilder().setTitle("Crash Iniciado!").setColor(Colors.Green)
+                .setImage(botConfig.IMG_STONKS)], components: [buttonRow]
+    });
+
+
+    let buttonCollector = res.createMessageComponentCollector({ componentType: ComponentType.Button, time: 25000 });
+
+    buttonCollector.on("collect", async (confirmation) => {
+        let players: string[] = [];
+
+        for (let player in CrashManager.inGame) {
+            players.push(CrashManager.inGame[player].userId);
+        }
+
+        if (players.indexOf(confirmation.user.id) == -1) {
+
+            await confirmation.showModal(modal);
+            let modalRes = await confirmation.awaitModalSubmit({ time: 25000 });
+            let ammount = Number(modalRes.fields.getTextInputValue("ammount"));
+            let user = await UserController.getUserById(confirmation.user.id);
+
+            if(!user) {
+                
+                await modalRes.deferReply({ ephemeral: true });
+                await modalRes.editReply({ content: `${botConfig.OK} | <@${confirmation.user.id}>, Tente realizar suas tarefas primeiro.` });
+
+            } else if(user.coins as number < ammount) {
+                
+                await modalRes.deferReply({ ephemeral: true });
+                await modalRes.editReply({ content: `${botConfig.OK} | <@${confirmation.user.id}>, Você não tem a quantia de ${botConfig.getCashString(ammount)}.` });
+
+            } else if (!isNaN(ammount) && ammount && ammount <= 100000) {
+                
+                ammount = Math.floor(ammount);
+                
+                CrashManager.inGame[confirmation.user.id] = {
+                    bet: ammount,
+                    lose: false,
+                    stopped: false,
+                    userId: confirmation.user.id,
+                    username: confirmation.user.username,
+                    stoppedMultiplier: 1,
+                    
+                }
+                
+                await modalRes.deferReply({ ephemeral: true });
+                await modalRes.editReply({ content: `${botConfig.OK} | <@${confirmation.user.id}>, Você está no crash apostando ${botConfig.getCashString(ammount)}.` });
+
+            } else if (ammount > 100000) {
+
+                await modalRes.deferReply({ ephemeral: true });
+                await modalRes.editReply({ content: `${botConfig.OK} | <@${confirmation.user.id}>, Você só pode apostar até ${botConfig.getCashString(100000)}.` });
+
+            } else {
+
+                await modalRes.deferReply({ ephemeral: true });
+                await modalRes.editReply({ content: `${botConfig.NO} | <@${confirmation.user.id}>, Você precisa inserir um valor válido.` });
+
+            }
+
+        }
+
+
+    });
+
+    await sleep(15000);
+    await res.delete();
+
+    let drawButton = new ButtonBuilder()
+                .setLabel("Retirar")
+                .setCustomId("draw")
+                .setStyle(ButtonStyle.Secondary)
+
+            let drawRow = new ActionRowBuilder<ButtonBuilder>().addComponents(drawButton);
+
+    for (let i = 0; i <= times; i++) {
+
+
+        multiplier += Math.random() * 0.5;
+
+        let final = i == times;
+        let draw = "";
+        let stacking = "";
+
+        for (let player in CrashManager.inGame) {
+
+            if (!CrashManager.inGame[player].stopped) stacking += `🔴 ${CrashManager.inGame[player].username}: ${botConfig.getCashString(Math.floor(CrashManager.inGame[player].bet * multiplier))}`;
+            if (CrashManager.inGame[player].stopped) draw += `🟢 ${CrashManager.inGame[player].username}: ${botConfig.getCashString(Math.floor(CrashManager.inGame[player].bet * CrashManager.inGame[player].stoppedMultiplier))}`;
+        }
+
+        let crashstring = getEmojiString(Math.floor(multiplier), final)
+
+        let embed = !final ?
+            new EmbedBuilder().setTitle(`🚀 Multiplicador: ${multiplier.toFixed(2)}x`)
+                .setDescription(`**Retiraram:**\n${draw === "" ? "Nenhum." : draw}\n\n**Ainda no Jogo:**\n${stacking === "" ? "Nenhum." : stacking}\n\n${crashstring}\n`).setColor(Colors.Green)
+            :
+            new EmbedBuilder().setTitle(`${botConfig.STONKS} Multiplicador Final: ${multiplier.toFixed(2)}x`)
+                .setDescription(`**Retiraram:\n**${draw === "" ? "Nenhum." : draw}\n\n**Ainda no Jogo:**\n${stacking === "" ? "Nenhum." : stacking}\n\n${crashstring}\n\n` + `🔥 Fim de Jogo: Em breve outro irá iniciar.`).setColor(Colors.Green)
+                .setColor(Colors.Red)
+
+        if (!message) {
+            message = await channel.send({ embeds: [embed], components: [drawRow] });
+
+            const collector = message.createMessageComponentCollector({ componentType: ComponentType.Button, time: 50000 });
+
+            collector.on("collect", async(confirmation) => {
+                
+                if(CrashManager.inGame[confirmation.user.id]) {
+                    
+                    if(!CrashManager.inGame[confirmation.user.id].stopped) {
+                        CrashManager.inGame[confirmation.user.id].stopped = true;
+                        CrashManager.inGame[confirmation.user.id].stoppedMultiplier = multiplier;
+                        console.log(CrashManager.inGame[confirmation.user.id]);
+                        confirmation.update({});
+                    }
+
+                }
+            });
+
+        }
+        if (message) message.edit({ embeds: [embed], components: final ?  [] : [drawRow] });
+
+        await sleep(1000);
+    }
+
+    for (let player in CrashManager.inGame) {
+
+        let user = await UserController.getUserById(player);
+        
+        if(CrashManager.inGame[player].stopped) {
+            let tax = getTax(Math.floor(CrashManager.inGame[player].bet * CrashManager.inGame[player].stoppedMultiplier));
+            
+            if(!isVipExpired(user).allowed) tax = 0;
+
+            await UserController.addCash(user, {
+                from: "apostando no crash",
+                to: user.userId,
+                ammount: Math.floor(((CrashManager.inGame[player].bet * CrashManager.inGame[player].stoppedMultiplier) - tax) - CrashManager.inGame[player].bet)
+            });
+
+        } else {
+
+            await UserController.removeCash(user, {
+                from: user.userId,
+                to: "apostando no crash",
+                ammount: CrashManager.inGame[player].bet
+            });
+
+        }
+
+    }
+
+    await sleep(10000);
+    CrashManager.inGame = {};
+    CrashManager.running = false;
+
+
+
+
+}
+
+function getEmojiString(numeroAtual: number, vermelho: boolean): string {
+    const emojiVermelho = '💥';
+    const emojiVerde = '🚀';
+    const minimoExibicao = 5;
+
+    let resultado = '';
+
+    for (let i = Math.max(numeroAtual, minimoExibicao); i > Math.max(numeroAtual - minimoExibicao, 0); i--) {
+        if (i == numeroAtual) {
+            if (vermelho) {
+                if (i == numeroAtual) resultado += `${i}x  ${emojiVermelho}\n`;
+            }
+            if (!vermelho)
+                resultado += `${i}x  ${emojiVerde}\n`;
+
+        } else {
+            resultado += `${i}x\n`;
+        }
+    }
+
+    return resultado.trim();
 }
