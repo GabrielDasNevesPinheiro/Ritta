@@ -53,6 +53,7 @@ export default class BotConfig {
     IDK = "<:LZ_idk:1174368319579627634>"
     HI = "<:LZ_hi:1174082831169880197>"
     OMG = "<:LZ_omg:1174391918650736670>"
+    HORSE= "<:LZ_horse:1175255322512871495>"
 
 
     //assets images consts
