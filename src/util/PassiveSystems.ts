@@ -140,7 +140,7 @@ export async function startCrash(client: Client) {
     let res = await channel.send({
         embeds: [
             new EmbedBuilder().setTitle("Crash Iniciado!").setColor(Colors.Green)
-                .setImage(botConfig.IMG_STONKS)], components: [buttonRow]
+                .setImage(botConfig.IMG_CRASH)], components: [buttonRow]
     });
 
 
@@ -164,17 +164,17 @@ export async function startCrash(client: Client) {
 
                 await modalRes.deferReply({ ephemeral: true });
                 await modalRes.editReply({ content: `${botConfig.OK} | <@${confirmation.user.id}>, Você precisa ter no mínimo **10 tickets** na rifa atual.` });
-
+                return;
             } else if (!user) {
                 
                 await modalRes.deferReply({ ephemeral: true });
                 await modalRes.editReply({ content: `${botConfig.OK} | <@${confirmation.user.id}>, Tente realizar suas tarefas primeiro.` });
-
+                return;
             } else if(user.coins as number < ammount) {
                 
                 await modalRes.deferReply({ ephemeral: true });
                 await modalRes.editReply({ content: `${botConfig.OK} | <@${confirmation.user.id}>, Você não tem a quantia de ${botConfig.getCashString(ammount)}.` });
-
+                return;
             } else if (!isNaN(ammount) && ammount && ammount <= 100000) {
                 
                 ammount = Math.floor(ammount);
@@ -191,17 +191,17 @@ export async function startCrash(client: Client) {
                 
                 await modalRes.deferReply({ ephemeral: true });
                 await modalRes.editReply({ content: `${botConfig.OK} | <@${confirmation.user.id}>, Você está no crash apostando ${botConfig.getCashString(ammount)}.` });
-
+                return;
             } else if (ammount > 100000) {
 
                 await modalRes.deferReply({ ephemeral: true });
                 await modalRes.editReply({ content: `${botConfig.OK} | <@${confirmation.user.id}>, Você só pode apostar até ${botConfig.getCashString(100000)}.` });
-
+                return;
             } else {
 
                 await modalRes.deferReply({ ephemeral: true });
                 await modalRes.editReply({ content: `${botConfig.NO} | <@${confirmation.user.id}>, Você precisa inserir um valor válido.` });
-
+                return;
             }
 
         }
