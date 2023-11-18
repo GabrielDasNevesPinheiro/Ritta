@@ -3,7 +3,7 @@ import Command from "./Command";
 import UserController from "../../database/controllers/UserController";
 import { botConfig } from "../../app";
 import { checkPayValues, getIntegerOption } from "../../util/InteractionUtils";
-import { isVipExpired } from "../../util/DateUtils";
+import { getMinutesCooldownFromNow, isVipExpired } from "../../util/DateUtils";
 import { IUser } from "../../database/models/User";
 
 export default class Pay extends Command {
@@ -44,8 +44,8 @@ export default class Pay extends Command {
         let row = new ActionRowBuilder<ButtonBuilder>().addComponents(confirm);
 
         let response = await interaction.editReply({ content: 
-            `${botConfig.HI} | <@${targetUser.userId}>, <@${user.userId}> quer te enviar ${botConfig.getCashString(ammount)}, para aceitar, você e <@${user.userId}> devem clicar no botão __PAGAR__.\n`+
-            `**A equipe do Leozito não se responsabiliza por roubos ou golpes.**\n`, embeds: [], components: [row] });
+            `${botConfig.HI} | <@${targetUser.userId}>, <@${user.userId}> quer te enviar ${botConfig.getCashString(ammount)}, para aceitar, você e <@${user.userId}> devem clicar no botão __PAGAR__ em até <t:${getMinutesCooldownFromNow(0.22)}:R>.\n`+
+            `**A equipe do Leozito não se responsabiliza por roubos ou golpes. **\n`, embeds: [], components: [row] });
         let confirmed: IUser[] = [];
 
         const collector = response.createMessageComponentCollector({ componentType: ComponentType.Button, time: 12000 });
