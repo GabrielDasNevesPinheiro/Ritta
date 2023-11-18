@@ -70,11 +70,10 @@ export async function checkPayValues(targetUserId: string, optionAmmount: string
 
 export async function checkMaxValues(interaction: CommandInteraction<CacheType>, user: IUser, ammount: number, bet: boolean = false): Promise<boolean> {
 
-    let max = 50000;
+    let max = 100000;
 
     if(bet) max = 100000;
 
-    if(!isVipExpired(user).allowed && !bet) max = 75000;
 
         if (ammount > max) {
             await interaction.followUp({ content: `**${botConfig.CONFUSED} | <@${interaction.user.id}>, Você só pode usar até** ${botConfig.getCashString(max)}.`});
