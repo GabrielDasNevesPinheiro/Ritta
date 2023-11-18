@@ -115,7 +115,7 @@ export default class BotConfig {
     vipPrice = 10.00;
 
     emojis = ["🐵", "🐶"];
-    crashChannel = "1170449276418150402";
+    crashChannel = "1174467929518121091";
 
     public constructor(config: ISettings) {
         this._name = config.botname as string;
