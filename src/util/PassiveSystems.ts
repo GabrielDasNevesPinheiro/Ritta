@@ -143,7 +143,7 @@ export async function startCrash(client: Client) {
                 .setImage(botConfig.IMG_CRASH)], components: [buttonRow]
     });
 
-    let prob = 0.85;
+    let prob = 0.99;
     let buttonCollector = res.createMessageComponentCollector({ componentType: ComponentType.Button, time: 25000 });
 
     buttonCollector.on("collect", async (confirmation) => {
@@ -160,29 +160,29 @@ export async function startCrash(client: Client) {
             let ammount = Number(modalRes.fields?.getTextInputValue("ammount"));
             let user = await UserController.getUserById(confirmation.user.id);
 
-            if(RaffleManager.inRaffle[confirmation.user.id]?.tickets < 10 || !RaffleManager.inRaffle[confirmation.user.id]) {
+            if (RaffleManager.inRaffle[confirmation.user.id]?.tickets < 10 || !RaffleManager.inRaffle[confirmation.user.id]) {
 
                 await modalRes.deferReply({ ephemeral: true });
                 await modalRes.editReply({ content: `${botConfig.OK} | <@${confirmation.user.id}>, Você precisa ter no mínimo **10 tickets** na rifa atual.` });
                 return;
             } else if (!user) {
-                
+
                 await modalRes.deferReply({ ephemeral: true });
                 await modalRes.editReply({ content: `${botConfig.OK} | <@${confirmation.user.id}>, Tente realizar suas tarefas primeiro.` });
                 return;
-            } else if(user.coins as number < ammount) {
-                
+            } else if (user.coins as number < ammount) {
+
                 await modalRes.deferReply({ ephemeral: true });
                 await modalRes.editReply({ content: `${botConfig.OK} | <@${confirmation.user.id}>, Você não tem a quantia de ${botConfig.getCashString(ammount)}.` });
                 return;
             } else if (!isNaN(ammount) && ammount && ammount <= 100000) {
-                
+
                 ammount = Math.floor(ammount);
 
-                if(ammount >= 50000) {
+                if (ammount >= 45000) {
                     prob = 0.3;
                 }
-                
+
                 CrashManager.inGame[confirmation.user.id] = {
                     bet: ammount,
                     lose: false,
@@ -190,9 +190,9 @@ export async function startCrash(client: Client) {
                     userId: confirmation.user.id,
                     username: confirmation.user.username,
                     stoppedMultiplier: 1,
-                    
+
                 }
-                
+
                 await modalRes.deferReply({ ephemeral: true });
                 await modalRes.editReply({ content: `${botConfig.OK} | <@${confirmation.user.id}>, Você está no crash apostando ${botConfig.getCashString(ammount)}.` });
                 return;
@@ -217,25 +217,30 @@ export async function startCrash(client: Client) {
     await res.delete();
 
     let drawButton = new ButtonBuilder()
-                .setLabel("Retirar")
-                .setCustomId("draw")
-                .setStyle(ButtonStyle.Secondary)
+        .setLabel("Retirar")
+        .setCustomId("draw")
+        .setStyle(ButtonStyle.Secondary)
 
-            let drawRow = new ActionRowBuilder<ButtonBuilder>().addComponents(drawButton);
+    let drawRow = new ActionRowBuilder<ButtonBuilder>().addComponents(drawButton);
 
     for (let i = 0; i <= times; i++) {
 
+        let multiplierSum = 0;
 
-        multiplier += Math.random() * 0.3;
+        if (Math.random() > prob) {
+            multiplierSum = Math.random() * 0.05;
+        } else {
+            multiplierSum = Math.random() * 0.42;
+        }
 
-        
+
+        multiplier += multiplierSum;
+
+
         let final = i == times;
         let draw = "";
         let stacking = "";
-        
-        if(Math.random() > prob) {
-            final = true;
-        }
+
 
         for (let player in CrashManager.inGame) {
 
@@ -258,11 +263,11 @@ export async function startCrash(client: Client) {
 
             const collector = message.createMessageComponentCollector({ componentType: ComponentType.Button, time: 50000 });
 
-            collector.on("collect", async(confirmation) => {
-                
-                if(CrashManager.inGame[confirmation.user.id]) {
-                    
-                    if(!CrashManager.inGame[confirmation.user.id].stopped) {
+            collector.on("collect", async (confirmation) => {
+
+                if (CrashManager.inGame[confirmation.user.id]) {
+
+                    if (!CrashManager.inGame[confirmation.user.id].stopped) {
                         CrashManager.inGame[confirmation.user.id].stopped = true;
                         CrashManager.inGame[confirmation.user.id].stoppedMultiplier = multiplier;
                         confirmation.update({});
@@ -271,8 +276,10 @@ export async function startCrash(client: Client) {
                 }
             });
 
+
         }
-        if (message) message.edit({ embeds: [embed], components: final ?  [] : [drawRow] });
+
+        if (message) await message.edit({ embeds: [embed], components: final ? [] : [drawRow] });
 
         await sleep(1000);
     }
@@ -280,11 +287,11 @@ export async function startCrash(client: Client) {
     for (let player in CrashManager.inGame) {
 
         let user = await UserController.getUserById(player);
-        
-        if(CrashManager.inGame[player].stopped) {
+
+        if (CrashManager.inGame[player].stopped) {
             let tax = getTax(Math.floor(CrashManager.inGame[player].bet * CrashManager.inGame[player].stoppedMultiplier));
-            
-            if(!isVipExpired(user).allowed) tax = 0;
+
+            if (!isVipExpired(user).allowed) tax = 0;
 
             await UserController.addCash(user, {
                 from: "apostando no crash",
