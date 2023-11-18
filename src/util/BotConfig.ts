@@ -102,6 +102,9 @@ export default class BotConfig {
     LOCAL_IMG_DICE = "./src/assets/dado.png"
     GIF_DOUBLE = "https://i.imgur.com/onMSkcv.gif"
     GIF_TIGER = "https://i.imgur.com/XfWN4e6.gif"
+    GIF_2DICE = "https://i.imgur.com/KnnOITl.gif"
+    GIF_5DICE = "https://i.imgur.com/pvhPqLR.gif"
+    GIF_7DICE = "https://i.imgur.com/290D4qc.gif"
 
 
     normalBetChances = 0.5;
