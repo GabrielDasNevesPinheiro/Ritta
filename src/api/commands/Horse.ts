@@ -76,13 +76,13 @@ export default abstract class Horse extends Command {
                 race.forEach((horse, index) => {
                     if (!(i == 5 - 1))
                         horse.distance += Math.random() * 3.5;
-                    text += `${horse.emoji} ${'‎ '.repeat(horse.distance)} ${botConfig.HORSE} (${horse.distance.toFixed(2)})\n`
+                    text += `${horse.emoji} ${'‎ ‎ ‎ ‎'.repeat(horse.distance)} ${botConfig.HORSE} (${horse.distance.toFixed(2)})\n`
                 });
 
                 let embed = new EmbedBuilder().setDescription(text).setColor(race[0].embedColor);
 
                 await interaction.editReply({ embeds: [embed], components: [] });
-                await sleep(400);
+                await sleep(500);
 
             }
 
