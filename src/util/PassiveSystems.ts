@@ -160,7 +160,12 @@ export async function startCrash(client: Client) {
             let ammount = Number(modalRes.fields.getTextInputValue("ammount"));
             let user = await UserController.getUserById(confirmation.user.id);
 
-            if(!user) {
+            if(RaffleManager.inRaffle[confirmation.user.id]?.tickets < 10 || !RaffleManager.inRaffle[confirmation.user.id]) {
+
+                await modalRes.deferReply({ ephemeral: true });
+                await modalRes.editReply({ content: `${botConfig.OK} | <@${confirmation.user.id}>, Você precisa ter no mínimo **10 tickets** na rifa atual.` });
+
+            } else if (!user) {
                 
                 await modalRes.deferReply({ ephemeral: true });
                 await modalRes.editReply({ content: `${botConfig.OK} | <@${confirmation.user.id}>, Tente realizar suas tarefas primeiro.` });
