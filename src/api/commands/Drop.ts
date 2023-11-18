@@ -13,7 +13,7 @@ export default abstract class Drop extends Command {
         .addIntegerOption(option =>
             option.setName("ammount")
                 .setDescription("Quantia que você irá patrocinar")
-                .setMinValue(1500)
+                .setMinValue(1000)
                 .setRequired(true)
         ).addIntegerOption(option =>
             option.setName("time")

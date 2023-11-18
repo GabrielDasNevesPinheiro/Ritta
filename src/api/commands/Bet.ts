@@ -18,7 +18,7 @@ export default class Bet extends Command {
             option.setName("ammount")
                 .setDescription("Quantidade desejada para a aposta")
                 .setRequired(true)
-                .setMinValue(1500)
+                .setMinValue(1000)
                 .setMaxValue(100000)
         )
         .setDescription("Desafie alguém numa aposta");
