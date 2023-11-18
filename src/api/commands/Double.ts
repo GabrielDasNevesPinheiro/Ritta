@@ -103,10 +103,10 @@ export default class Double extends Command {
                         .setColor(Colors.Green)], components: []
             });
             await sleep(4000);
-            collector.emit("end"); 
+            collector.emit("dispose"); 
         });
 
-        collector.on("end", async (confirmation) => {
+        collector.on("dispose", async (confirmation) => {
             
             if(!customId) return;
             await interaction.editReply({ components: [] });
