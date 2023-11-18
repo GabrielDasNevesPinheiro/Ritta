@@ -92,7 +92,7 @@ export async function sortRaffle(client: Client) {
 
     try {
 
-        await (client.channels.cache.get("1174861456341205012") as TextChannel)?.send(`${botConfig.GG} | <@${user.userId}> é o gabhador de ${botConfig.getCashString(stats.price)} no sorteio das rifas\n` +
+        await (client.channels.cache.get("1174861456341205012") as TextChannel)?.send(`${botConfig.GG} | <@${user.userId}> é o ganhador de ${botConfig.getCashString(stats.price)} no sorteio das rifas\n` +
             (tax > 0 ? `> A casa pegou ${botConfig.getCashString(tax)} de taxa.` : ""));
 
         await client.users.cache.get(user.userId as string).send(`<@${user.userId}> Parabéns! Você ganhou ${botConfig.getCashString(stats.price)} no sorteio das rifas\n` +
