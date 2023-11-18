@@ -179,7 +179,7 @@ export async function startCrash(client: Client) {
                 
                 ammount = Math.floor(ammount);
 
-                if(ammount > 50000) {
+                if(ammount >= 50000) {
                     prob = 0.3;
                 }
                 
