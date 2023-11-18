@@ -13,7 +13,7 @@ export default abstract class Horse extends Command {
             option.setName("ammount")
                 .setDescription("Quantidade da aposta")
                 .setRequired(true)
-                .setMinValue(1000)
+                .setMinValue(100)
         )
         .setDescription("Aposte na corrida de cavalos")
 

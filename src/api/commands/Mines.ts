@@ -15,7 +15,7 @@ export default abstract class Mines extends Command {
             option.setName("ammount")
             .setDescription("Quantidade da aposta")
             .setRequired(true)
-            .setMinValue(1000)    
+            .setMinValue(100)    
         )
         .addIntegerOption(option => 
             option.setName("bombs")

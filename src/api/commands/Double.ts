@@ -17,7 +17,7 @@ export default class Double extends Command {
             option.setName("ammount")
                 .setDescription("Quantidade a ser usada na aposta")
                 .setRequired(true)
-                .setMinValue(1000)
+                .setMinValue(100)
         ).setDescription("Aposte no double");
 
     static async execute(interaction: CommandInteraction) {

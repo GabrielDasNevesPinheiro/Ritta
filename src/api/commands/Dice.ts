@@ -15,7 +15,7 @@ export default abstract class Dice extends Command {
             option.setName("ammount")
             .setDescription("Quantidade da aposta")
             .setRequired(true)
-            .setMinValue(1000)
+            .setMinValue(100)
         )
     .setDescription("Aposte com o dado")
 
