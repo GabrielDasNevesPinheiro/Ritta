@@ -176,3 +176,17 @@ export function getMinesMatrix(numberOfTrue: number) {
 
     return matrix;
 }
+
+export function getMaximumValueIndex(array: number[]) {
+    let indiceMaximo = 0;
+  let valorMaximo = array[0]; // Supondo que o primeiro elemento seja o máximo inicialmente
+
+  for (let i = 1; i < array.length; i++) {
+    if (array[i] > valorMaximo) {
+      valorMaximo = array[i];
+      indiceMaximo = i;
+    }
+  }
+
+  return indiceMaximo;
+}

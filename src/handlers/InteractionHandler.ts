@@ -21,6 +21,7 @@ import Jackpot from "../api/commands/Jackpot";
 import Drop from "../api/commands/Drop";
 import Mines from "../api/commands/Mines";
 import Dice from "../api/commands/Dice";
+import Horse from "../api/commands/Horse";
 
 
 export const commands: { [key: string]: typeof Command } = {
@@ -45,6 +46,7 @@ export const commands: { [key: string]: typeof Command } = {
     "drop": Drop,
     "mines": Mines,
     "dice": Dice,
+    "horse": Horse
 }
 
 export default function executeAction(cmdName: string, interaction: Interaction<CacheType>) {
