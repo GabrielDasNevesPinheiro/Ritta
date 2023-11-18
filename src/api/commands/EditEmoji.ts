@@ -18,7 +18,7 @@ export default abstract class EditEmoji {
                 .addChoices({ name: "Cara", value: 0 }, { name: "Coroa", value: 1 })
                 .setRequired(true)
         )
-        .setDescription("Edite os emojis do bet.")
+        .setDescription("Edite os emojis do bet")
 
 
     static async execute(interaction: CommandInteraction<CacheType>) {
