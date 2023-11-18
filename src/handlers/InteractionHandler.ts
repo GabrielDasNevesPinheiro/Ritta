@@ -41,7 +41,7 @@ export const commands: { [key: string]: typeof Command } = {
     "pay": Pay,
     "vip": Vip,
     "raffle": Raffle,
-    "bet": Bet,
+    "coinflip": Bet,
     "tiger": Tiger,
     "jackpot": Jackpot,
     "drop": Drop,

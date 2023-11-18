@@ -9,7 +9,7 @@ import { IUser } from "../../database/models/User";
 export default class Bet extends Command {
 
     static command: SlashCommandBuilder = new SlashCommandBuilder()
-        .setName("bet")
+        .setName("coinflip")
         .addUserOption(option =>
             option.setName("user")
                 .setDescription("Usuário para a posta")

@@ -68,7 +68,7 @@ export default abstract class Dice extends Command {
         ).setImage(botConfig.IMG_DICE).setColor(Colors.Red);
         
         let response = await interaction.editReply({ embeds: [diceEmbed], components: [row] });
-        let collector = response.createMessageComponentCollector({ componentType: ComponentType.Button, time: 30000 });
+        let collector = response.createMessageComponentCollector({ componentType: ComponentType.Button});
 
         let customId = null;
         
@@ -79,7 +79,7 @@ export default abstract class Dice extends Command {
           customId = confirmation.customId as "basic" | "medium" | "advanced";
           
           //show gif
-          await sleep(3000);
+          await sleep(2000);
           collector.emit("dispose");
 
         });
@@ -131,6 +131,7 @@ export default abstract class Dice extends Command {
           }
 
           await interaction.editReply({ content: `${botConfig.STONKS} | <@${user.userId}>, Você ${win ? `**GANHOU!** O Dado chamou ${num}.\n**Sua recompensa é de** ${botConfig.getCashString(ammount)}\n${tax > 0 ? `${botConfig.getCashString(tax)} de taxa.` : `` }` : `**perdeu**, apostou no **${multiplier.toFixed(1)}x** mas o Dado foi em **${num}**.\nVocê perdeu ${botConfig.getCashString(ammount)}.`}`, files: [file], embeds: [], components: [] });
+          collector.stop();
           return;
         });
         

@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, Colors, ComponentType, EmbedBuilder, Message, ModalBuilder, TextChannel, TextInputBuilder, TextInputStyle } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, Client, Colors, ComponentType, EmbedBuilder, InteractionCollector, Message, ModalBuilder, TextChannel, TextInputBuilder, TextInputStyle } from "discord.js";
 import { botConfig } from "../app";
 import UserController from "../database/controllers/UserController";
 import { cooldownCheck, isBoosterExpired, isVipExpired, sleep, sortCooldownCheck } from "./DateUtils";
@@ -112,9 +112,9 @@ export async function startCrash(client: Client) {
 
     let message: Message<true> = null;
 
-    let times = Math.floor(Math.random() * 15);
+    let times = Math.floor(Math.random() * (25 - 5 + 1) + 5);
     let multiplier = 1;
-
+    let collector: InteractionCollector<ButtonInteraction<"cached">> = null;
 
     let button = new ButtonBuilder()
         .setCustomId("join")
@@ -144,7 +144,7 @@ export async function startCrash(client: Client) {
     });
 
     let prob = 0.99;
-    let buttonCollector = res.createMessageComponentCollector({ componentType: ComponentType.Button, time: 25000 });
+    let buttonCollector = res.createMessageComponentCollector({ componentType: ComponentType.Button });
 
     buttonCollector.on("collect", async (confirmation) => {
         let players: string[] = [];
@@ -180,7 +180,7 @@ export async function startCrash(client: Client) {
                 ammount = Math.floor(ammount);
 
                 if (ammount >= 45000) {
-                    prob = 0.3;
+                    prob = 0.25;
                 }
 
                 CrashManager.inGame[confirmation.user.id] = {
@@ -193,18 +193,28 @@ export async function startCrash(client: Client) {
 
                 }
 
-                await modalRes.deferReply({ ephemeral: true });
+                if (!modalRes.replied)
+                    await modalRes.deferReply({ ephemeral: true });
+
                 await modalRes.editReply({ content: `${botConfig.OK} | <@${confirmation.user.id}>, Você está no crash apostando ${botConfig.getCashString(ammount)}.` });
+
                 return;
+
             } else if (ammount > 100000) {
 
-                await modalRes.deferReply({ ephemeral: true });
-                await modalRes.editReply({ content: `${botConfig.OK} | <@${confirmation.user.id}>, Você só pode apostar até ${botConfig.getCashString(100000)}.` });
-                return;
-            } else {
+                if (!modalRes.replied)
+                    await modalRes.deferReply({ ephemeral: true });
 
-                await modalRes.deferReply({ ephemeral: true });
+                await modalRes.editReply({ content: `${botConfig.OK} | <@${confirmation.user.id}>, Você só pode apostar até ${botConfig.getCashString(100000)}.` });
+                buttonCollector.stop()
+                return;
+
+            } else {
+                if (!modalRes.replied)
+                    await modalRes.deferReply({ ephemeral: true });
+
                 await modalRes.editReply({ content: `${botConfig.NO} | <@${confirmation.user.id}>, Você precisa inserir um valor válido.` });
+                buttonCollector.stop()
                 return;
             }
 
@@ -255,13 +265,13 @@ export async function startCrash(client: Client) {
                 .setDescription(`**Retiraram:**\n${draw === "" ? "Nenhum." : draw}\n\n**Ainda no Jogo:**\n${stacking === "" ? "Nenhum." : stacking}\n\n${crashstring}\n`).setColor(Colors.Green)
             :
             new EmbedBuilder().setTitle(`${botConfig.STONKS} Multiplicador Final: ${multiplier.toFixed(2)}x`)
-                .setDescription(`**Retiraram:\n**${draw === "" ? "Nenhum." : draw}\n\n**Ainda no Jogo:**\n${stacking === "" ? "Nenhum." : stacking}\n\n${crashstring}\n\n` + `🔥 Fim de Jogo: Em breve outro irá iniciar.`).setColor(Colors.Green)
+                .setDescription(`**Retiraram:\n**${draw === "" ? "Nenhum." : draw}\n\n**Perderam:**\n${stacking === "" ? "Nenhum." : stacking}\n\n${crashstring}\n\n` + `🔥 Fim de Jogo: Em breve outro irá iniciar.`).setColor(Colors.Green)
                 .setColor(Colors.Red)
 
         if (!message) {
             message = await channel.send({ embeds: [embed], components: [drawRow] });
 
-            const collector = message.createMessageComponentCollector({ componentType: ComponentType.Button, time: 50000 });
+            collector = message.createMessageComponentCollector({ componentType: ComponentType.Button });
 
             collector.on("collect", async (confirmation) => {
 
@@ -310,8 +320,7 @@ export async function startCrash(client: Client) {
         }
 
     }
-
-    await sleep(10000);
+    collector.stop();
     CrashManager.inGame = {};
     CrashManager.running = false;
 

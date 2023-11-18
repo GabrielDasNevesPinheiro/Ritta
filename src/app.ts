@@ -37,7 +37,7 @@ client.on("ready", async (bot) => {
     setInterval(countVipPassiveCash, botConfig.vipPassiveEarningCooldown * 1000);
     setInterval(sortRaffle, 10000, client);
     setInterval(countBoosterPassiveCash, botConfig.vipPassiveEarningCooldown * 1000);
-    setInterval(startCrash, 14000, client);
+    setInterval(startCrash, 40000, client);
 
 });
 

@@ -60,7 +60,7 @@ export default abstract class Horse extends Command {
             components: [row]
         });
 
-        let collector = response.createMessageComponentCollector({ componentType: ComponentType.Button, time: 30000 });
+        let collector = response.createMessageComponentCollector({ componentType: ComponentType.Button });
 
         collector.on("collect", async (confirmation) => {
             if (confirmation.user.id !== user.userId) return;
@@ -113,6 +113,7 @@ export default abstract class Horse extends Command {
                 })
                 await interaction.followUp({ content: `**${botConfig.STONKS} | <@${user.userId}>**, O Cavalo **${winner.name}** se saiu vitorioso e você perdeu ${botConfig.getCashString(ammount)}.` });
             }
+            collector.stop();
 
         });
 

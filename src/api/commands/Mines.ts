@@ -62,7 +62,7 @@ export default abstract class Mines extends Command {
         
 
         let response = await interaction.editReply({ content: ``, components: rows, embeds: [embed] });
-        const collector = response.createMessageComponentCollector({ componentType: ComponentType.Button, time: 180000 });
+        const collector = response.createMessageComponentCollector({ componentType: ComponentType.Button });
 
         collector.on("collect", async (confirmation) => {
 
@@ -137,6 +137,10 @@ export default abstract class Mines extends Command {
 
             
         });
+
+        collector.on("end", () => {
+            collector.stop();
+        })
 
     }
 }

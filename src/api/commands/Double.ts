@@ -91,7 +91,7 @@ export default class Double extends Command {
         let row = new ActionRowBuilder<ButtonBuilder>().addComponents([red, black, white]);
 
         let response = await interaction.editReply({ content: `${botConfig.MONEY} Você vai apostar ${botConfig.getCashString(bet)} no Double. Escolha uma cor:`, components: [row] });
-        const collector = response.createMessageComponentCollector({ componentType: ComponentType.Button, time: 30000 });
+        const collector = response.createMessageComponentCollector({ componentType: ComponentType.Button });
         let customId: string = null;
         
         collector.on('collect', async (confirmation) => {
@@ -102,7 +102,7 @@ export default class Double extends Command {
                         .setImage(botConfig.GIF_DOUBLE)
                         .setColor(Colors.Green)], components: []
             });
-            await sleep(4000);
+            await sleep(2000);
             collector.emit("dispose"); 
         });
 
@@ -150,6 +150,7 @@ export default class Double extends Command {
                     embeds: []
                 });
                 alreadyPlayed = true;
+                collector.stop();
                 return;
             }
 
@@ -168,6 +169,7 @@ export default class Double extends Command {
                 components: [],
                 embeds: []
             });
+            collector.stop();
             alreadyPlayed = true;
             return;
 
