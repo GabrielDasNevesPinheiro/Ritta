@@ -41,12 +41,11 @@ export default class Bet extends Command {
         }
 
 
-        let emojis = [":monkey_face:", ":cat:", ":dog:"];
-        let face = emojis[Math.floor(Math.random() * emojis.length)];
-        emojis = emojis.filter((item) => item !== face);
+        let emojis = botConfig.emojis;
 
-        let crown = emojis[Math.floor(Math.random() * emojis.length)];
-        emojis = emojis.filter((item) => item !== crown);
+        let face = emojis[0];
+
+        let crown = emojis[1];
 
         let confirm = new ButtonBuilder()
             .setCustomId("agree")

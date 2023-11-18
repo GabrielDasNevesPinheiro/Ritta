@@ -114,6 +114,8 @@ export default class BotConfig {
 
     vipPrice = 10.00;
 
+    emojis = ["🐵", "🐶"];
+
     public constructor(config: ISettings) {
         this._name = config.botname as string;
         this._cashname = config.cashname as string;
