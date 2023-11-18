@@ -256,7 +256,6 @@ export async function startCrash(client: Client) {
                     if(!CrashManager.inGame[confirmation.user.id].stopped) {
                         CrashManager.inGame[confirmation.user.id].stopped = true;
                         CrashManager.inGame[confirmation.user.id].stoppedMultiplier = multiplier;
-                        console.log(CrashManager.inGame[confirmation.user.id]);
                         confirmation.update({});
                     }
 
