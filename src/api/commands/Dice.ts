@@ -141,15 +141,15 @@ export default abstract class Dice extends Command {
 
 
 function getDiceRandomNumber() {
-    const chanceMenorQue50 = 0.3;
+    const chances = 0.2;
 
   const random = Math.random();
   
-  if (random < chanceMenorQue50) {
+  if (random < chances) {
     
-    return Math.floor(Math.random() * 50);
+    return Math.floor(Math.random() * 25);
   } else {
     
-    return Math.floor(Math.random() * (100 - 50) + 50);
+    return Math.floor(Math.random() * (100 - 25) + 25);
   }
 }
