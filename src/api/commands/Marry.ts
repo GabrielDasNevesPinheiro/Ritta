@@ -59,7 +59,7 @@ export default abstract class Marry extends Command {
                     thisuser = await UserController.updateUser(String(thisuser.userId), thisuser);
                     targetUser = await UserController.updateUser(String(targetUser.userId), targetUser);
 
-                    await interaction.editReply({ content: `${botConfig.PEPEHEART} | <@${targetUser.userId}>, <@${thisuser.userId}> Parabéns! Vocês agora são um casal💝.`, components: [] });
+                    await interaction.editReply({ content: `${botConfig.LOVE} | <@${targetUser.userId}>, <@${thisuser.userId}> Parabéns! Vocês agora são um casal💝.`, components: [] });
 
                 } else {
                     await interaction.editReply({ content: `${botConfig.CRYING} | <@${thisuser.userId}>, <@${targetUser.userId}> não quis se casar com você, bola pra frente!`, components: [] });
