@@ -35,6 +35,8 @@ export default class Rep extends Command {
         if(!thisuser) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, Tente realizar suas tarefas primeiro.` });
         if(!user) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, Você não pode enviar reputação para <@${targetUser.id}>.` });
 
+        if(targetUser.id === interaction.user.id) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, Você não pode se dar reputações.`});
+
         let repCheck = dailyCooldownCheck(24, thisuser.repDate, false);
         
         if (repCheck.allowed) {
