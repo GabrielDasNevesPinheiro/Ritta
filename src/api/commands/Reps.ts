@@ -56,6 +56,8 @@ export default class Reps extends Command {
 
         collector.on("collect", async(confirmation) => {
 
+            if(confirmation.user.id !== interaction.user.id) return;
+
             if(confirmation.customId === "prev" && page > 0) {
                 page -= 1
             }
@@ -84,7 +86,7 @@ function formatTransaction(userId: string) {
         const unix = moment(rep.createdAt);
 
 
-        const formattedString = `[${date} | <t:${unix.unix()}:R>] ${action}  ${isReceived ? `<@${rep.from}>` : `<@${rep.to}>` }: ${'`'+ message +'`'}`;
+        const formattedString = `${date} | <t:${unix.unix()}:R> ${action}  ${isReceived ? `<@${rep.from}>` : `<@${rep.to}>` }: ${'`'+ message +'`'}`;
 
         return formattedString;
     };
