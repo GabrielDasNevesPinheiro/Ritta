@@ -100,11 +100,18 @@ export default class BotConfig {
     LOCAL_IMG_EXPLOSION = "./src/assets/explosion.png"
     LOCAL_IMG_DICE_BACKGROUND = "./src/assets/dice_template.png"
     LOCAL_IMG_DICE = "./src/assets/dado.png"
+    LOCAL_IMG_ROULETTE1K = "./src/assets/roleta_1k.png"
+    LOCAL_IMG_ROULETTE5K = "./src/assets/roleta_5k.png"
+    LOCAL_IMG_ROULETTE9K = "./src/assets/roleta_9k.png"
+    LOCAL_IMG_ROULETTE15K = "./src/assets/roleta_15k.png"
+    LOCAL_IMG_ROULETTEVIP = "./src/assets/roleta_vip.png"
     GIF_DOUBLE = "https://i.imgur.com/onMSkcv.gif"
     GIF_TIGER = "https://i.imgur.com/XfWN4e6.gif"
     GIF_2DICE = "https://i.imgur.com/KnnOITl.gif"
     GIF_5DICE = "https://i.imgur.com/pvhPqLR.gif"
     GIF_7DICE = "https://i.imgur.com/290D4qc.gif"
+    GIF_ROULETTE = "https://i.imgur.com/QT0os3y.gif"
+    
 
 
     normalBetChances = 0.5;
