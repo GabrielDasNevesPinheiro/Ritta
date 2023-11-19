@@ -7,6 +7,7 @@ import executeAction from "./handlers/InteractionHandler";
 import BotConfig from "./util/BotConfig";
 import { countBoosterPassiveCash, countVipPassiveCash, sortRaffle, startCrash } from './util/PassiveSystems';
 import UserController from './database/controllers/UserController';
+import { cooldownCheck, isVipExpired } from './util/DateUtils';
 
 config()
 const token = process.env.BOT_TOKEN;
@@ -42,7 +43,7 @@ client.on("ready", async (bot) => {
 });
 
 client.on("messageCreate", async (message) => {
-    
+
 });
 
 client.on('interactionCreate', async (interaction) => {
@@ -57,24 +58,40 @@ client.on('interactionCreate', async (interaction) => {
 });
 
 
-client.on("guildMemberUpdate", async(old, now) => {
-    
-    if(now.guild.id !== "1174342112070869012") return;
-    
+client.on("guildMemberUpdate", async (old, now) => {
+
+    if (now.guild.id !== "1174342112070869012") return;
+
+    if ((!now.premiumSince && old.premiumSince)) {
+        let user = await UserController.getUserById(now.user.id);
+
+        if (!cooldownCheck(720, user?.boosterDate).allowed) {
+            await UserController.removeCash(user, {
+                from: user?.userId,
+                to: "como punição por tentar abusar do nitro.",
+                ammount: 30000
+            });
+            user.boosterDate = null;
+            await UserController.updateUser(String(user?.userId), user);
+
+        }
+
+    }
+
     if (!old.premiumSince && now.premiumSince) {
         let user = await UserController.getUserById(now.user.id);
 
-        if(!user) user = await UserController.createUser({ userId: now.user.id });
+        if (!user) user = await UserController.createUser({ userId: now.user.id });
         user.boosterDate = new Date();
         await UserController.addCash(user, {
             from: "buffando o servidor oficial do bot",
             to: user.userId,
-            ammount: 35000
+            ammount: 30000
         });
         await UserController.updateUser(String(user.userId), user);
         let channel = now.client.channels.cache.get("1174342112565805088") as TextChannel;
 
-        await channel.send(`${botConfig.GG} <@${now.user.id}> Impulsionou o servidor e ganhou ${botConfig.getCashString(25000)}!`);
+        await channel.send(`${botConfig.GG} <@${now.user.id}> Impulsionou o servidor e ganhou ${botConfig.getCashString(30000)}!`);
 
     }
 
