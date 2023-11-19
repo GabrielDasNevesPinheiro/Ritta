@@ -100,6 +100,7 @@ export default class BotConfig {
     LOCAL_IMG_EXPLOSION = "./src/assets/explosion.png"
     LOCAL_IMG_DICE_BACKGROUND = "./src/assets/dice_template.png"
     LOCAL_IMG_DICE = "./src/assets/dado.png"
+    LOCAL_IMG_ROULETTELOSE = "./src/assets/roleta_lose.png"
     LOCAL_IMG_ROULETTE1K = "./src/assets/roleta_1k.png"
     LOCAL_IMG_ROULETTE5K = "./src/assets/roleta_5k.png"
     LOCAL_IMG_ROULETTE9K = "./src/assets/roleta_9k.png"

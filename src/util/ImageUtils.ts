@@ -166,3 +166,24 @@ export async function getDice(value: number, bet: number) {
     return canvas.toBuffer();
 
 }
+
+export async function getRouletteResult(result: string) {
+    let width = 560;
+    let height = 560;
+
+    const canvas = createCanvas(width, height);
+    const ctx: CanvasRenderingContext2D = canvas.getContext("2d");
+    
+    let images = {
+        "Perdeu": await loadImage(botConfig.LOCAL_IMG_ROULETTELOSE),
+        "1k": await loadImage(botConfig.LOCAL_IMG_ROULETTE1K),
+        "5k": await loadImage(botConfig.LOCAL_IMG_ROULETTE5K),
+        "9k": await loadImage(botConfig.LOCAL_IMG_ROULETTE9K),
+        "15k": await loadImage(botConfig.LOCAL_IMG_ROULETTE15K),
+        "VIP": await loadImage(botConfig.LOCAL_IMG_ROULETTEVIP),
+    }
+
+    ctx.drawImage(images[result], 0, 0);
+
+    return canvas.toBuffer();
+}
