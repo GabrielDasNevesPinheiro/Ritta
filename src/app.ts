@@ -62,20 +62,25 @@ client.on("guildMemberUpdate", async (old, now) => {
 
     if (now.guild.id !== "1174342112070869012") return;
 
-    if (!old.premiumSince && now.premiumSince) {
-        let user = await UserController.getUserById(now.user.id);
+    if (now.premiumSince) {
 
-        if (!user) user = await UserController.createUser({ userId: now.user.id });
-        user.boosterDate = new Date();
-        await UserController.addCash(user, {
-            from: "buffando o servidor oficial do bot",
-            to: user.userId,
-            ammount: 30000
-        });
-        await UserController.updateUser(String(user.userId), user);
-        let channel = now.client.channels.cache.get("1174342112565805088") as TextChannel;
+        if (!cooldownCheck(0.1, now.premiumSince).allowed) {
 
-        await channel.send(`${botConfig.GG} <@${now.user.id}> Impulsionou o servidor e ganhou ${botConfig.getCashString(30000)}!`);
+            let user = await UserController.getUserById(now.user.id);
+
+            if (!user) user = await UserController.createUser({ userId: now.user.id });
+            user.boosterDate = new Date();
+            await UserController.addCash(user, {
+                from: "buffando o servidor oficial do bot",
+                to: user.userId,
+                ammount: 30000
+            });
+            await UserController.updateUser(String(user.userId), user);
+            let channel = now.client.channels.cache.get("1174342112565805088") as TextChannel;
+
+            await channel.send(`${botConfig.GG} <@${now.user.id}> Impulsionou o servidor e ganhou ${botConfig.getCashString(30000)}!`);
+        }
+
 
     }
 
