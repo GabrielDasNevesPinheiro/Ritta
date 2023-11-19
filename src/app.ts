@@ -62,22 +62,6 @@ client.on("guildMemberUpdate", async (old, now) => {
 
     if (now.guild.id !== "1174342112070869012") return;
 
-    if ((!now.premiumSince && old.premiumSince)) {
-        let user = await UserController.getUserById(now.user.id);
-
-        if (!cooldownCheck(720, user?.boosterDate).allowed) {
-            await UserController.removeCash(user, {
-                from: user?.userId,
-                to: "como punição por tentar abusar do nitro.",
-                ammount: 30000
-            });
-            user.boosterDate = null;
-            await UserController.updateUser(String(user?.userId), user);
-
-        }
-
-    }
-
     if (!old.premiumSince && now.premiumSince) {
         let user = await UserController.getUserById(now.user.id);
 
