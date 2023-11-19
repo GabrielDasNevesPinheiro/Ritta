@@ -1,3 +1,4 @@
+import { IReputation, Reputation } from '../models/Reputation';
 import { ITransaction } from '../models/Transaction';
 import { User, IUser } from '../models/User';
 import TransactionController from './TransactionController';
@@ -22,6 +23,29 @@ class UserController {
         } catch (error) {
             return [];
         }
+    }
+
+    static async giveRep(user: IUser, target: IUser, text: string): Promise<IReputation> {
+        
+        try {
+            
+            let rep = new Reputation({
+                from: user.userId,
+                to: target.userId,
+                message: text.trim()
+            });
+
+            user.repDate = new Date();
+            await UserController.updateUser(user.userId as string, user);
+            
+            await rep.save();
+            return rep;
+        } catch {
+            return null;
+        }
+
+
+
     }
 
     static async addCash(user: IUser, trans: ITransaction) {

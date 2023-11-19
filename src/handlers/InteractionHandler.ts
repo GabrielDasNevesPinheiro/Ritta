@@ -24,6 +24,7 @@ import Dice from "../api/commands/Dice";
 import Horse from "../api/commands/Horse";
 import EditEmoji from "../api/commands/EditEmoji";
 import Transactions from "../api/commands/Transactions";
+import Rep from "../api/commands/Rep";
 
 
 export const commands: { [key: string]: typeof Command } = {
@@ -51,6 +52,7 @@ export const commands: { [key: string]: typeof Command } = {
     "horse": Horse,
     "editemoji": EditEmoji,
     "transactions": Transactions,
+    "rep": Rep,
 }
 
 export default function executeAction(cmdName: string, interaction: Interaction<CacheType>) {

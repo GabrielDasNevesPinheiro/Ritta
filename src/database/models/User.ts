@@ -78,6 +78,11 @@ const userSchema = new mongoose.Schema<IUser>({
         type: Date,
         required: false,
         default: null,
+    },
+    repDate: {
+        type: Date,
+        required: false,
+        default: null,
     }
 });
 

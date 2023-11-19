@@ -5,6 +5,7 @@ interface IReputation {
     to: String
     from: String
     message: String
+    createdAt?: Date
 }
 
 const reputationSchema = new mongoose.Schema<IReputation>({
@@ -20,7 +21,7 @@ const reputationSchema = new mongoose.Schema<IReputation>({
         type: String,
         required: true    
     }
-});
+}, { timestamps: true });
 
 const Reputation: mongoose.Model<IReputation> = mongoose.models.Reputation || mongoose.model<IReputation>("Reputation", reputationSchema);
 
