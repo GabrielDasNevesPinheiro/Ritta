@@ -3,7 +3,7 @@ import Command from "./Command";
 import { loadImage } from "canvas";
 import { botConfig } from "../../app";
 import { getRouletteResult } from "../../util/ImageUtils";
-import { isVipExpired, sleep } from "../../util/DateUtils";
+import { cooldownCheck, isVipExpired, sleep } from "../../util/DateUtils";
 import UserController from "../../database/controllers/UserController";
 import { getTax } from "../../util/InteractionUtils";
 
@@ -25,11 +25,19 @@ export default abstract class Roulette extends Command {
         if(!user) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, Tente realizar suas tarefas primeiro.` });
         if(user.coins as number < 1500) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, Você precisa ter no mínimo ${botConfig.getCashString(1500)}.` });
 
+        let canPlay = cooldownCheck(48, user.rouletteDate);
+        if(!canPlay.allowed) {
+            return await interaction.editReply({ content: `${botConfig.WAITING} | <@${interaction.user.id}>, Você só poderá jogar <t:${canPlay.time}:R>.`});
+        }
+
         user = await UserController.removeCash(user, {
             from: user.userId,
             to: "jogando roleta",
             ammount: 1500
         });
+        user.rouletteDate = new Date();
+
+        user = await UserController.updateUser(user.userId as string, user);
 
         await interaction.editReply({ embeds: [
             new EmbedBuilder().setTitle(`${botConfig.GG} Boa sorte Jogador!`).setImage(botConfig.GIF_ROULETTE).setColor(Colors.Red)
