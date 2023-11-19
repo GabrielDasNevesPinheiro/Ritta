@@ -23,6 +23,8 @@ export default class Rep extends Command {
         .setDescription("Dê uma reputação pra alguém");
 
     static async execute(interaction: CommandInteraction<CacheType>) {
+
+        await interaction.deferReply({});
         
         let targetUser = interaction.options.getUser("user");
         let text = interaction.options.get("text").value as string;
@@ -40,13 +42,13 @@ export default class Rep extends Command {
             let res = await UserController.giveRep(thisuser, user, text);
 
             if(res) {
-                await interaction.reply({ content: `**${botConfig.OK} | Ótimo** <@${res.to}>, Você ganhou uma reputação de <@${interaction.user.id}>.`})
+                await interaction.editReply({ content: `**${botConfig.OK} | Ótimo** <@${res.to}>, Você ganhou uma reputação de <@${interaction.user.id}>.`})
             } else {
-                await interaction.reply({ content: "ocorreu um erro, tente novamente" });
+                await interaction.editReply({ content: "ocorreu um erro, tente novamente" });
             }
 
         } else {
-            await interaction.reply({ content: `**${botConfig.WAITING} | <@${thisuser.userId}>**, Volte em <t:${repCheck.time}:R> para poder dar outra reputação.` });
+            await interaction.editReply({ content: `**${botConfig.WAITING} | <@${thisuser.userId}>**, Volte em <t:${repCheck.time}:R> para poder dar outra reputação.` });
         }
 
     }
