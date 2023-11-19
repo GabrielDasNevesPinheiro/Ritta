@@ -1,19 +1,21 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, CacheType, Colors, CommandInteraction, ComponentType, EmbedBuilder, SlashCommandBuilder } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, CacheType, Collection, Colors, CommandInteraction, ComponentType, EmbedBuilder, SlashCommandBuilder, User } from "discord.js";
 import Command from "./Command";
 import { ITransaction } from "../../database/models/Transaction";
 import TransactionController from "../../database/controllers/TransactionController";
 import moment from 'moment';
 import { botConfig } from "../../app";
+import UserController from "../../database/controllers/UserController";
+import { IReputation } from "../../database/models/Reputation";
 
 
-export default class Transactions extends Command {
+export default class Reps extends Command {
 
     static command: SlashCommandBuilder = new SlashCommandBuilder()
-        .setName("transactions")
+        .setName("reps")
         .addUserOption(option =>
             option.setName("user")
                 .setDescription("Escolha o usuário")
-        ).setDescription("Exibe as transações do usuário")
+        ).setDescription("Exibe as reputações do usuário")
 
 
     static async execute(interaction: CommandInteraction<CacheType>) {
@@ -22,11 +24,12 @@ export default class Transactions extends Command {
 
         let targetUser = interaction.options.getUser("user") || interaction.user;
 
-        let transactions = await TransactionController.getAllTransactions(targetUser.id);
+        let reps = await UserController.getReps(targetUser.id);
 
-        if(transactions.length == 0) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, Não encontrei transações.` });
+        if(reps.length == 0) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, Não encontrei reputações.` });
 
-        let list = generateTransactionPage(targetUser.id, transactions);
+
+        let list = generateReputationPage(targetUser.id, reps);
         let embeds: EmbedBuilder[] = [];
         let page = 0;
         for (let page of list) {
@@ -36,7 +39,7 @@ export default class Transactions extends Command {
                 text += register + "\n";
             });
 
-            embeds.push(new EmbedBuilder().setTitle(`:money_with_wings: Transações de ${targetUser.username} (${list.indexOf(page) + 1}/${list.length})`)
+            embeds.push(new EmbedBuilder().setTitle(`:star: Reputações de ${targetUser.username} (${list.indexOf(page) + 1}/${list.length})`)
                 .setDescription(text).setColor(Colors.Blue)
             )
 
@@ -71,28 +74,28 @@ export default class Transactions extends Command {
 }
 
 function formatTransaction(userId: string) {
-    return function (transaction: ITransaction) {
+    return function (rep: IReputation) {
 
-        const isReceived = transaction.to === userId;
-        const action = isReceived ? '📥 | Recebeu' : '📤 | Enviou';
-        const amount = transaction.ammount;
+        const isReceived = rep.to === userId;
+        const action = isReceived ? '📥 | Recebeu de' : '📤 | Enviou para';
+        const message = rep.message;
 
-        const date = transaction.createdAt.toLocaleDateString("pt-BR");
-        const unix = moment(transaction.createdAt);
+        const date = rep.createdAt.toLocaleDateString("pt-BR");
+        const unix = moment(rep.createdAt);
 
 
-        const formattedString = `[${date} | <t:${unix.unix()}:R>] ${action} ${botConfig.getCashString(Number(amount))} ${isReceived ? transaction.from : transaction.to}`;
+        const formattedString = `[${date} | <t:${unix.unix()}:R>] ${action}  ${isReceived ? `<@${rep.from}>` : `<@${rep.to}>` }: ${'`'+ message +'`'}`;
 
         return formattedString;
     };
 }
 
-function generateTransactionPage(userId: string, transactions: ITransaction[]): string[][] {
+function generateReputationPage(userId: string, reputations: IReputation[]): string[][] {
     const pageSize = 10;
     const pages = [];
 
-    for (let i = 0; i < transactions.length; i += pageSize) {
-        const pageTransactions = transactions.slice(i, i + pageSize);
+    for (let i = 0; i < reputations.length; i += pageSize) {
+        const pageTransactions = reputations.slice(i, i + pageSize);
         const formattedTransactions = pageTransactions.map(formatTransaction(userId));
         pages.push(formattedTransactions);
     }

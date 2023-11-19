@@ -26,9 +26,9 @@ class UserController {
     }
 
     static async giveRep(user: IUser, target: IUser, text: string): Promise<IReputation> {
-        
+
         try {
-            
+
             let rep = new Reputation({
                 from: user.userId,
                 to: target.userId,
@@ -37,7 +37,7 @@ class UserController {
 
             user.repDate = new Date();
             await UserController.updateUser(user.userId as string, user);
-            
+
             await rep.save();
             return rep;
         } catch {
@@ -48,11 +48,26 @@ class UserController {
 
     }
 
+    static async getReps(userId: string): Promise<IReputation[]> {
+
+        try {
+
+            const transactions = await Reputation.find({ "$or": [{ from: userId }, { to: userId }] }).sort({ createdAt: -1 });
+            return transactions;
+
+        } catch (error) {
+            return [];
+        }
+
+
+
+
+    }
     static async addCash(user: IUser, trans: ITransaction) {
         try {
-            
+
             let foundUser: IUser = await User.findOne({ userId: user.userId });
-            if(!foundUser) return null;
+            if (!foundUser) return null;
 
             foundUser.coins = Number(foundUser.coins) + Number(trans.ammount);
 
@@ -68,15 +83,15 @@ class UserController {
         }
     }
 
-    static async removeCash (user: IUser, trans: ITransaction) {
+    static async removeCash(user: IUser, trans: ITransaction) {
         try {
-            
+
             let foundUser: IUser = await User.findOne({ userId: user.userId });
-            if(!foundUser) return null;
+            if (!foundUser) return null;
 
             foundUser.coins = Number(foundUser.coins) - Number(trans.ammount);
 
-            if(Number(foundUser.coins) < 0) foundUser.coins = 0;
+            if (Number(foundUser.coins) < 0) foundUser.coins = 0;
 
             await TransactionController.createTransaction(trans);
 
@@ -115,7 +130,7 @@ class UserController {
         try {
             await User.findOneAndDelete({ userId });
         } catch (error) {
-            
+
         }
     }
 }
