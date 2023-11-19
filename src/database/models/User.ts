@@ -5,7 +5,7 @@ import { transactionSchema } from "./Transaction";
 interface IUser {
     userId: String
     about?: String
-    partner?: ObjectId
+    partner?: String
     coins?: Number
     boosterDate?: Date
     tasksDate?: Date
@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema<IUser>({
         default: "Descrição do meu perfil."
     },
     partner: {
-        type: mongoose.Types.ObjectId,
+        type: String,
         required: false,
         default: null
     },
