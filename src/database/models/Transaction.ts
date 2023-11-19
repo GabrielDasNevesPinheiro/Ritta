@@ -4,7 +4,8 @@ import mongoose, { ObjectId } from "mongoose";
 interface ITransaction {
     to: String,
     from: String,
-    ammount: Number
+    ammount: Number,
+    createdAt?: Date
 
 }
 
@@ -20,8 +21,8 @@ const transactionSchema = new mongoose.Schema<ITransaction>({
     ammount: {
         type: Number,
         required: true,
-    }
-});
+    },
+}, { timestamps: true });
 
 const Transaction: mongoose.Model<ITransaction> = mongoose.models.Transaction || mongoose.model<ITransaction>("Transaction", transactionSchema);
 

@@ -16,7 +16,7 @@ class TransactionController {
   async getAllTransactions(userId: string): Promise<ITransaction[]> {
     try {
 
-      const transactions = await Transaction.find({ "$or": [{ from: userId}, { to: userId }]});
+      const transactions = await Transaction.find({ "$or": [{ from: userId}, { to: userId }]}).sort({ createdAt: -1 });
       return transactions;
 
     } catch (error) {
