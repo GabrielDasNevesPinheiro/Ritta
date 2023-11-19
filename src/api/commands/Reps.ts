@@ -26,6 +26,8 @@ export default class Reps extends Command {
 
         let reps = await UserController.getReps(targetUser.id);
 
+        if(targetUser.id === interaction.user.id) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, Você não pode se dar reputações.`});
+
         if(reps.length == 0) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, Não encontrei reputações.` });
 
 
