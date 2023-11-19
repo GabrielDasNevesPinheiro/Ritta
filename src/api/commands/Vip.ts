@@ -14,7 +14,7 @@ export default class Vip extends Command {
         
         let embed = new EmbedBuilder().setTitle("Benefícios VIP")
             .setDescription("Não quer mais ter que lidar com taxas? Ou quer ganhar mais pontos em resgate e tarefas? Compre o VIP por um precinho camarada. Para adquirir basta entrar no meu servidor oficial clicando no botão abaixo.\nConfere aí os benefícios do VIP:")
-            .addFields({ name: "BENEFÍCIOS", value: `* Cargo Exclusivo no meu [servidor](${invite})\n* Sorteios Exclusivos\n* Tarefas com **Melhores Recompensas**\n* **Sem Taxa** Econômica\n* **${botConfig.vipPassiveEarning} ${botConfig.cashname.toLowerCase()}** por minuto\n* **Sem Limite** de pagamentos\n
+            .addFields({ name: "BENEFÍCIOS", value: `* Cargo Exclusivo no meu [servidor](${invite})\n* **Sorteios** e **Drops** Exclusivos\n* Tarefas com **melhores recompensas**\n* **Sem taxa** econômica\n* Tem **5%** de chances em apostas\n* **${botConfig.vipPassiveEarning} ${botConfig.cashname.toLowerCase()}** por minuto\n* Pode escolher o **emoji** que quiser (coinflip)\n
             `}).setTimestamp(new Date()).setColor(Colors.White);
 
             let button = new ButtonBuilder()
