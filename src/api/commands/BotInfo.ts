@@ -24,6 +24,6 @@ export default abstract class BotInfo extends Command {
                 { name: "Fui criado", value: `<t:${data.unix()}>(<t:${data.unix()}:R>)`}
             ]).setColor(Colors.White).setTimestamp(new Date());
 
-        await interaction.reply({ content: `<@${interaction.user.id}>`, embeds: [embed]});
+        await interaction.reply({ content: `<@${interaction.user.id}>`, embeds: [embed], ephemeral: true });
     }
 }
