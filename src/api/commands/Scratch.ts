@@ -19,7 +19,7 @@ export default abstract class Scratch extends Command {
         let user = await UserController.getUserById(interaction.user.id);
 
         if (!user) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, Tente realizar suas tarefas primeiro.` });
-        if (Number(user.coins) < 500) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, Você precisa ter no mínimo ${botConfig.getCashString(500)} para comprar a raspadinha.` });
+        if (Number(user.coins) < 500) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, Você precisa ter no mínimo ${botConfig.getCashString(2000)} para comprar a raspadinha.` });
 
         let game = getScratch();
         let calc = calcScratchPrize(game);
@@ -30,7 +30,7 @@ export default abstract class Scratch extends Command {
         user = await UserController.removeCash(user, {
             from: user.userId,
             to: "comprando uma raspadinha",
-            ammount: 500
+            ammount: 2000
         });
 
         let gameStr = "";
