@@ -17,7 +17,7 @@ export default class Atm extends Command {
     static async execute(interaction: CommandInteraction<CacheType>) {
 
         const userId = interaction.options.getUser("user")?.id || interaction.user.id; // Obtém o ID do usuário que executou o comando
-
+        if(userId === "274553417685270528") return;
         // Encontra ou cria o usuário no banco de dados
         let user = await UserController.getUserById(userId);
         if (!user) {
