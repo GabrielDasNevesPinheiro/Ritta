@@ -1,4 +1,4 @@
-import { Client, GatewayIntentBits, CacheType, TextChannel, ActivityType } from 'discord.js';
+import { Client, GatewayIntentBits, CacheType, TextChannel, ActivityType, EmbedBuilder, Colors } from 'discord.js';
 import { config } from "dotenv";
 import connectDatabase from "./database/Connection";
 import { Settings } from "./database/models/Settings";
@@ -62,8 +62,8 @@ client.on("ready", async (bot) => {
     setInterval(sortRaffle, 10000, client);
     setInterval(countBoosterPassiveCash, botConfig.vipPassiveEarningCooldown * 1000);
     setInterval(startCrash, 70000, client);
-    setInterval(setNextActivity, 30000)
-
+    setInterval(setNextActivity, 30000);
+    
 });
 
 client.on("messageCreate", async (message) => {
