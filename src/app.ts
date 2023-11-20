@@ -1,4 +1,4 @@
-import { Client, GatewayIntentBits, CacheType, TextChannel } from 'discord.js';
+import { Client, GatewayIntentBits, CacheType, TextChannel, ActivityType } from 'discord.js';
 import { config } from "dotenv";
 import connectDatabase from "./database/Connection";
 import { Settings } from "./database/models/Settings";
@@ -14,6 +14,29 @@ const token = process.env.BOT_TOKEN;
 let botConfig: BotConfig = null;
 
 connectDatabase();
+
+const activities = [
+    { name: '/help', type: ActivityType.Watching },
+    { name: '/horse', type: ActivityType.Playing },
+    { name: '/coinflip', type: ActivityType.Playing },
+    { name: '/mines', type: ActivityType.Playing },
+    { name: '/double', type: ActivityType.Playing },
+    { name: '/jackpot', type: ActivityType.Playing },
+    { name: '/tiger', type: ActivityType.Playing },
+    { name: '/roulette', type: ActivityType.Playing },
+    { name: '/raffle', type: ActivityType.Playing },
+    { name: '/dice', type: ActivityType.Playing },
+  ];
+  
+  let currentActivityIndex = 0;
+  
+  function setNextActivity() {
+    const activity = activities[currentActivityIndex];
+    if (!activity) return;
+  
+    client.user?.setActivity(activity.name, { type: activity.type as ActivityType });
+    currentActivityIndex = (currentActivityIndex + 1) % activities.length;
+  }
 
 const client = new Client({
     intents: [
@@ -39,6 +62,7 @@ client.on("ready", async (bot) => {
     setInterval(sortRaffle, 10000, client);
     setInterval(countBoosterPassiveCash, botConfig.vipPassiveEarningCooldown * 1000);
     setInterval(startCrash, 70000, client);
+    setInterval(setNextActivity, 2000)
 
 });
 
