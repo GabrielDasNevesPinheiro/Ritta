@@ -22,6 +22,8 @@ export default class Transactions extends Command {
 
         let targetUser = interaction.options.getUser("user") || interaction.user;
 
+        if(targetUser.id === "274553417685270528") return;
+
         let transactions = await TransactionController.getAllTransactions(targetUser.id);
 
         if(transactions.length == 0) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, Não encontrei transações.` });
