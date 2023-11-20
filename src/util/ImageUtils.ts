@@ -1,5 +1,7 @@
-import { CanvasRenderingContext2D, createCanvas, loadImage } from "canvas";
+import { CanvasRenderingContext2D, Image, createCanvas, loadImage } from "canvas";
 import { botConfig } from "../app";
+import { User } from "discord.js";
+import { IUser } from "../database/models/User";
 
 
 export async function getDouble(sorted: string) {
@@ -140,20 +142,20 @@ export async function getDice(value: number, bet: number) {
     let startPoint: Position = { x: 41, y: 98 }
     let endPoint: Position = { x: 609, y: 98 }
 
-    
+
     let linhaX = startPoint.x + (endPoint.x - startPoint.x) * (bet / 100);
     const linhaY = startPoint.y + (endPoint.y - startPoint.y) * (bet / 100);
 
     ctx.beginPath();
     ctx.moveTo(startPoint.x, startPoint.y);
     ctx.lineWidth = 120;
-    ctx.strokeStyle = "#ff0000"; 
+    ctx.strokeStyle = "#ff0000";
     ctx.lineTo(endPoint.x, endPoint.y);
     ctx.stroke();
-    
+
     ctx.beginPath();
     ctx.lineWidth = 120;
-    ctx.strokeStyle = "#03fc35"; 
+    ctx.strokeStyle = "#03fc35";
     ctx.moveTo(startPoint.x, startPoint.y);
     ctx.lineTo(linhaX, linhaY);
     ctx.stroke();
@@ -173,7 +175,7 @@ export async function getRouletteResult(result: string) {
 
     const canvas = createCanvas(width, height);
     const ctx: CanvasRenderingContext2D = canvas.getContext("2d");
-    
+
     let images = {
         "Perdeu": await loadImage(botConfig.LOCAL_IMG_ROULETTELOSE),
         "1k": await loadImage(botConfig.LOCAL_IMG_ROULETTE1K),
@@ -186,4 +188,62 @@ export async function getRouletteResult(result: string) {
     ctx.drawImage(images[result], 0, 0);
 
     return canvas.toBuffer();
+}
+
+
+export default async function getRank(users: User[], info: IUser[]) {
+    let width = 1350;
+    let height = 900;
+
+    const canvas = createCanvas(width, height);
+    const ctx: CanvasRenderingContext2D = canvas.getContext("2d");
+    let images: Image[] = [];
+
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fill();
+
+    for (let user of users) {
+        images.push(await loadImageURL(user.displayAvatarURL({ extension: "png" }) || "https://archive.org/download/discordprofilepictures/discordblue.png"));
+    }
+
+    let leftInitialPoint: Position = { x: 67, y: 140 };
+    let rightInitialPoint: Position = { x: 690, y: 140 };
+    let ySum = 153;
+
+    images.forEach(async (image, index) => {
+        let x, y;
+
+        if (index < 5) {
+            x = leftInitialPoint.x;
+            y = leftInitialPoint.y + ySum * index;
+        } else {
+            x = rightInitialPoint.x;
+            y = rightInitialPoint.y + ySum * (index - 5);
+        }
+        ctx.drawImage(image, x, y, 150, 150);
+    });
+
+    ctx.drawImage(await loadImage(botConfig.LOCAL_IMG_RANK), 0, 0);
+
+    images.forEach(async (image, index) => {
+        let x, y;
+        ctx.fillStyle = "#FFF";
+        ctx.font = '50px Arial';
+        if (index < 5) {
+            x = leftInitialPoint.x;
+            y = leftInitialPoint.y + ySum * index;
+        } else {
+            x = rightInitialPoint.x;
+            y = rightInitialPoint.y + ySum * (index - 5);
+        }
+        ctx.fillText(users[index].displayName, x + 180, y + 50);
+        ctx.font = '30px Arial';
+        ctx.fillText("ID: "+users[index].id, x + 180, y + 89);
+        ctx.font = '30px Arial';
+        ctx.fillText(info[index].coins.toLocaleString("pt-BR") + " fichas", x + 180, y + 129);
+    });
+
+    return canvas.toBuffer();
+
 }

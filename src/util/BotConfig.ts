@@ -105,6 +105,7 @@ export default class BotConfig {
     LOCAL_IMG_ROULETTE5K = "./src/assets/roleta_5k.png"
     LOCAL_IMG_ROULETTE9K = "./src/assets/roleta_9k.png"
     LOCAL_IMG_ROULETTE15K = "./src/assets/roleta_15k.png"
+    LOCAL_IMG_RANK = "./src/assets/rank_template.png"
     LOCAL_IMG_ROULETTEVIP = "./src/assets/roleta_vip.png"
     GIF_DOUBLE = "https://i.imgur.com/onMSkcv.gif"
     GIF_TIGER = "https://i.imgur.com/XfWN4e6.gif"

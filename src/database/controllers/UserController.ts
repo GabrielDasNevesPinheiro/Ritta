@@ -25,6 +25,15 @@ class UserController {
         }
     }
 
+    static async getRanking(): Promise<IUser[]> {
+        try {
+            const users = await User.find().sort({ coins: -1 });
+            return users;
+        } catch (error) {
+            return [];
+        }
+    }
+
     static async giveRep(user: IUser, target: IUser, text: string): Promise<IReputation> {
 
         try {
