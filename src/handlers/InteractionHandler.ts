@@ -29,6 +29,7 @@ import Reps from "../api/commands/Reps";
 import Marry from "../api/commands/Marry";
 import Roulette from "../api/commands/Roulette";
 import Top from "../api/commands/Top";
+import Invite from "../api/commands/Invite";
 
 
 export const commands: { [key: string]: typeof Command } = {
@@ -60,7 +61,8 @@ export const commands: { [key: string]: typeof Command } = {
     "reps": Reps,
     "marry": Marry,
     "roulette": Roulette,
-    "top": Top
+    "top": Top,
+    "invite": Invite,
 }
 
 export default function executeAction(cmdName: string, interaction: Interaction<CacheType>) {
