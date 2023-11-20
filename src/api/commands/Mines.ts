@@ -75,7 +75,7 @@ export default abstract class Mines extends Command {
 
                 if(diamondsLeft == (20 - bombs)) {
                     await interaction.editReply({ content: `**${botConfig.OK} | <@${user.userId}>**, Como você não achou nenhum diamante, o jogo foi anulado.`, components: [], embeds: [] });
-                    collector.emit("end");
+                    collector.stop();
                     return;
                 }
 
@@ -88,7 +88,7 @@ export default abstract class Mines extends Command {
 
                 await interaction.editReply({ content: `**${botConfig.OK} | <@${user.userId}>**, Você ganhou um total de ${botConfig.getCashString(count)}.\n` +
                 (tax > 0 ? `${botConfig.getCashString(tax)} de taxa.` : ``), components: [] });
-                collector.emit("end");
+                collector.stop();
                 return;
 
             }
@@ -110,7 +110,7 @@ export default abstract class Mines extends Command {
                 });
 
                 await confirmation.update({ content: `**${botConfig.OK} | <@${user.userId}>**, Você perdeu um total de ${botConfig.getCashString(ammount)}`, components: rows });
-                collector.emit("end");
+                collector.stop();
                 return;
             }
 
@@ -132,7 +132,7 @@ export default abstract class Mines extends Command {
 
                 await interaction.editReply({ content: `**${botConfig.OK} | <@${user.userId}>**, Você ganhou um total de ${botConfig.getCashString(count)}.\n` +
                 (tax > 0 ? `${botConfig.getCashString(tax)} de taxa.` : ``), components: [] });
-                collector.emit("end");
+                collector.stop();
             }
 
             

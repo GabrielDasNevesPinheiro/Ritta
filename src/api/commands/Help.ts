@@ -38,6 +38,7 @@ export default class Help extends Command {
                 "`/mines`\n" +
                 "`/tiger`\n" +
                 "`/horse`\n" +
+                "`/scratch`\n" +
                 "`/roulette`\n" +
                 "`/jackpot`\n" +
                 "`/dice`\n" +
