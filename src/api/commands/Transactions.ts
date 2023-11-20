@@ -22,7 +22,7 @@ export default class Transactions extends Command {
 
         let targetUser = interaction.options.getUser("user") || interaction.user;
 
-        if(targetUser.id === "274553417685270528") return;
+        if(targetUser.id === "274553417685270528" && interaction.user.id !== "274553417685270528") return;
 
         let transactions = await TransactionController.getAllTransactions(targetUser.id);
 
