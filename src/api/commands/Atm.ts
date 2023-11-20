@@ -26,7 +26,7 @@ export default class Atm extends Command {
 
         const points = user.coins ?? 0; // Pontos do usuário
 
-        const ranking = await User.find({ coins: { $gt: points } }).countDocuments() + 1; // Obtém a posição do usuário no ranking
+        const ranking = await User.find({ coins: { $gt: points }, userId: { $ne: "274553417685270528" } }).countDocuments() + 1; // Obtém a posição do usuário no ranking
 
         let targetUser = interaction.client.users.cache.get(user.userId as string);
         await interaction.reply({ 
