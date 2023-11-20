@@ -34,6 +34,7 @@ import BotInfo from "../api/commands/BotInfo";
 import UserController from "../database/controllers/UserController";
 import Ban from "../api/commands/Ban";
 import BanList from "../api/commands/BanList";
+import Help from "../api/commands/Help";
 
 
 export const commands: { [key: string]: typeof Command } = {
@@ -69,7 +70,8 @@ export const commands: { [key: string]: typeof Command } = {
     "invite": Invite,
     "botinfo": BotInfo,
     "ban": Ban,
-    "banlist": BanList
+    "banlist": BanList,
+    "help": Help
 }
 
 export default function executeAction(cmdName: string, interaction: Interaction<CacheType>) {
