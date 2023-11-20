@@ -26,17 +26,17 @@ const activities = [
     { name: '/roulette', type: ActivityType.Playing },
     { name: '/raffle', type: ActivityType.Playing },
     { name: '/dice', type: ActivityType.Playing },
-  ];
-  
-  let currentActivityIndex = 0;
-  
-  function setNextActivity() {
+];
+
+let currentActivityIndex = 0;
+
+function setNextActivity() {
     const activity = activities[currentActivityIndex];
     if (!activity) return;
-  
+
     client.user?.setActivity(activity.name, { type: activity.type as ActivityType });
     currentActivityIndex = (currentActivityIndex + 1) % activities.length;
-  }
+}
 
 const client = new Client({
     intents: [
@@ -91,6 +91,17 @@ client.on("guildMemberUpdate", async (old, now) => {
         if (!cooldownCheck(0.1, now.premiumSince).allowed) {
 
             let user = await UserController.getUserById(now.user.id);
+
+            let cargo = now.guild?.roles.cache.get("1175822265015873556");
+            if (cargo && now) {
+                now.roles.add(cargo)
+                    .then(() => {
+                        console.log(`Cargo ${cargo.name} adicionado com sucesso para ${now.user.tag}`);
+                    })
+                    .catch((error) => {
+                        console.error('Ocorreu um erro ao adicionar o cargo:', error);
+                    });
+            }
 
             if (!user) user = await UserController.createUser({ userId: now.user.id });
             user.boosterDate = new Date();
