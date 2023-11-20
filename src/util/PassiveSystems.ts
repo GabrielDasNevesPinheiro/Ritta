@@ -155,68 +155,74 @@ export async function startCrash(client: Client) {
 
         if (players.indexOf(confirmation.user.id) == -1) {
 
-            await confirmation.showModal(modal);
-            let modalRes = await confirmation.awaitModalSubmit({ time: 25000 });
-            let ammount = Number(modalRes.fields?.getTextInputValue("ammount"));
-            let user = await UserController.getUserById(confirmation.user.id);
+            try {
+                await confirmation.showModal(modal);
+                let modalRes = await confirmation.awaitModalSubmit({ time: 25000 });
+                let ammount = Number(modalRes.fields?.getTextInputValue("ammount"));
+                let user = await UserController.getUserById(confirmation.user.id);
 
-            if (RaffleManager.inRaffle[confirmation.user.id]?.tickets < 10 || !RaffleManager.inRaffle[confirmation.user.id]) {
+                if (RaffleManager.inRaffle[confirmation.user.id]?.tickets < 10 || !RaffleManager.inRaffle[confirmation.user.id]) {
 
-                await modalRes.deferReply({ ephemeral: true });
-                await modalRes.editReply({ content: `${botConfig.OK} | <@${confirmation.user.id}>, Você precisa ter no mínimo **10 tickets** na rifa atual.` });
-                return;
-            } else if (!user) {
+                    await modalRes.deferReply({ ephemeral: true });
+                    await modalRes.editReply({ content: `${botConfig.OK} | <@${confirmation.user.id}>, Você precisa ter no mínimo **10 tickets** na rifa atual.` });
+                    return;
+                } else if (!user) {
 
-                await modalRes.deferReply({ ephemeral: true });
-                await modalRes.editReply({ content: `${botConfig.OK} | <@${confirmation.user.id}>, Tente realizar suas tarefas primeiro.` });
-                return;
-            } else if (user.coins as number < ammount) {
+                    await modalRes.deferReply({ ephemeral: true });
+                    await modalRes.editReply({ content: `${botConfig.OK} | <@${confirmation.user.id}>, Tente realizar suas tarefas primeiro.` });
+                    return;
+                } else if (user.coins as number < ammount) {
 
-                await modalRes.deferReply({ ephemeral: true });
-                await modalRes.editReply({ content: `${botConfig.OK} | <@${confirmation.user.id}>, Você não tem a quantia de ${botConfig.getCashString(ammount)}.` });
-                return;
-            } else if (!isNaN(ammount) && ammount && ammount <= 100000) {
+                    await modalRes.deferReply({ ephemeral: true });
+                    await modalRes.editReply({ content: `${botConfig.OK} | <@${confirmation.user.id}>, Você não tem a quantia de ${botConfig.getCashString(ammount)}.` });
+                    return;
+                } else if (!isNaN(ammount) && ammount && ammount <= 100000) {
 
-                ammount = Math.floor(ammount);
+                    ammount = Math.floor(ammount);
 
-                if (ammount >= 45000) {
-                    prob = 0.25;
+                    if (ammount >= 45000) {
+                        prob = 0.25;
+                    }
+
+                    CrashManager.inGame[confirmation.user.id] = {
+                        bet: ammount,
+                        lose: false,
+                        stopped: false,
+                        userId: confirmation.user.id,
+                        username: confirmation.user.username,
+                        stoppedMultiplier: 1,
+
+                    }
+
+                    if (!modalRes.replied)
+                        await modalRes.deferReply({ ephemeral: true });
+
+                    await modalRes.editReply({ content: `${botConfig.OK} | <@${confirmation.user.id}>, Você está no crash apostando ${botConfig.getCashString(ammount)}.` });
+
+                    return;
+
+                } else if (ammount > 100000) {
+
+                    if (!modalRes.replied)
+                        await modalRes.deferReply({ ephemeral: true });
+
+                    await modalRes.editReply({ content: `${botConfig.OK} | <@${confirmation.user.id}>, Você só pode apostar até ${botConfig.getCashString(100000)}.` });
+                    buttonCollector.stop();
+                    return;
+
+                } else {
+                    if (!modalRes.replied)
+                        await modalRes.deferReply({ ephemeral: true });
+
+                    await modalRes.editReply({ content: `${botConfig.NO} | <@${confirmation.user.id}>, Você precisa inserir um valor válido.` });
+                    buttonCollector.stop();
+                    return;
                 }
 
-                CrashManager.inGame[confirmation.user.id] = {
-                    bet: ammount,
-                    lose: false,
-                    stopped: false,
-                    userId: confirmation.user.id,
-                    username: confirmation.user.username,
-                    stoppedMultiplier: 1,
-
-                }
-
-                if (!modalRes.replied)
-                    await modalRes.deferReply({ ephemeral: true });
-
-                await modalRes.editReply({ content: `${botConfig.OK} | <@${confirmation.user.id}>, Você está no crash apostando ${botConfig.getCashString(ammount)}.` });
-
-                return;
-
-            } else if (ammount > 100000) {
-
-                if (!modalRes.replied)
-                    await modalRes.deferReply({ ephemeral: true });
-
-                await modalRes.editReply({ content: `${botConfig.OK} | <@${confirmation.user.id}>, Você só pode apostar até ${botConfig.getCashString(100000)}.` });
-                buttonCollector.stop()
-                return;
-
-            } else {
-                if (!modalRes.replied)
-                    await modalRes.deferReply({ ephemeral: true });
-
-                await modalRes.editReply({ content: `${botConfig.NO} | <@${confirmation.user.id}>, Você precisa inserir um valor válido.` });
-                buttonCollector.stop()
-                return;
+            } catch (error) {
+                
             }
+
 
         }
 
