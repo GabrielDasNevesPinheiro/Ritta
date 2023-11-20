@@ -7,7 +7,7 @@ import executeAction from "./handlers/InteractionHandler";
 import BotConfig from "./util/BotConfig";
 import { countBoosterPassiveCash, countVipPassiveCash, sortRaffle, startCrash } from './util/PassiveSystems';
 import UserController from './database/controllers/UserController';
-import { cooldownCheck, isVipExpired } from './util/DateUtils';
+import { cooldownCheck, isBoosterExpired, isVipExpired } from './util/DateUtils';
 
 config()
 const token = process.env.BOT_TOKEN;
@@ -83,6 +83,21 @@ client.on('interactionCreate', async (interaction) => {
 
 
 client.on("guildMemberUpdate", async (old, now) => {
+
+    if(old.premiumSince && !now.premiumSince) {
+        let oldUser = await UserController.getUserById(old.id);
+        if (!cooldownCheck(719, oldUser?.boosterDate).allowed) {
+            oldUser.boosterDate = null;
+            await UserController.updateUser(String(oldUser.userId), oldUser);
+
+            let channel = old.client.channels.cache.get("1174450180238618684") as TextChannel;
+            let cargo = now.guild?.roles.cache.get("1175822265015873556");
+
+            await now.roles.remove(cargo);
+            await channel.send({ content: `${botConfig.CRYING} | <@${old.id}> removeu o boost e por isso perdeu as vantagens de Booster.` });
+            return;
+        }
+    }
 
     if (now.guild.id !== "1174342112070869012") return;
 
