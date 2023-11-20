@@ -7,6 +7,7 @@ interface IUser {
     about?: String
     partner?: String
     coins?: Number
+    banned?: Boolean
     boosterDate?: Date
     rouletteDate?: Date
     tasksDate?: Date
@@ -34,6 +35,11 @@ const userSchema = new mongoose.Schema<IUser>({
         type: String,
         required: false,
         default: null
+    },
+    banned: {
+        type: Boolean,
+        required: false,
+        default: false
     },
     coins: {
         type: Number,

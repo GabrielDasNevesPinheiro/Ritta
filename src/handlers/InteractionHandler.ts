@@ -31,6 +31,8 @@ import Roulette from "../api/commands/Roulette";
 import Top from "../api/commands/Top";
 import Invite from "../api/commands/Invite";
 import BotInfo from "../api/commands/BotInfo";
+import UserController from "../database/controllers/UserController";
+import Ban from "../api/commands/Ban";
 
 
 export const commands: { [key: string]: typeof Command } = {
@@ -64,9 +66,14 @@ export const commands: { [key: string]: typeof Command } = {
     "roulette": Roulette,
     "top": Top,
     "invite": Invite,
-    "botinfo": BotInfo
+    "botinfo": BotInfo,
+    "ban": Ban
 }
 
 export default function executeAction(cmdName: string, interaction: Interaction<CacheType>) {
-    commands[cmdName].execute(interaction as CommandInteraction);
+    UserController.getUserById(interaction.user.id).then((res) => {
+
+        if(!res?.banned)
+            commands[cmdName].execute(interaction as CommandInteraction);
+    });
 }
