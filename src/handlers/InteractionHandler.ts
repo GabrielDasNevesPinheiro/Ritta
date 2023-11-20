@@ -39,7 +39,6 @@ import Help from "../api/commands/Help";
 
 export const commands: { [key: string]: typeof Command } = {
     "edituser": EditUser,
-    "say": Say,
     "daily": Daily,
     "crime": Crime,
     "work": Work,
