@@ -190,3 +190,61 @@ export function getMaximumValueIndex(array: number[]) {
 
   return indiceMaximo;
 }
+
+type Emoji = {
+    symbol: string;
+    prize: number;
+};
+
+export function getScratch (): string[][] {
+    const emojis: string[] = ["⭐", "🎁", "🍌", "😱", "❤️", "💀"];
+
+    const matrix: string[][] = Array.from({ length: 3 }, () => Array(3).fill(''));
+
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+            const randomIndex = Math.floor(Math.random() * emojis.length);
+            matrix[i][j] = emojis[randomIndex];
+        }
+    }
+
+    return matrix;
+}
+
+
+export function calcScratchPrize(matrix: string[][]): number {
+    const prizes: Record<string, number> = {
+        '⭐': 120000,
+        '🎁': 50000,
+        '🍌': 30000,
+        '😱': 8000,
+        '❤️': 3000,
+        '💀': 500,
+    };
+
+    let totalPrize = 0;
+
+    // Verificação das linhas
+    for (const row of matrix) {
+        if (row.every((val) => val === row[0])) {
+            totalPrize += prizes[row[0]];
+        }
+    }
+
+    // Verificação das colunas
+    for (let col = 0; col < 3; col++) {
+        if (matrix[0][col] === matrix[1][col] && matrix[1][col] === matrix[2][col]) {
+            totalPrize += prizes[matrix[0][col]];
+        }
+    }
+
+    // Verificação das diagonais
+    if (matrix[0][0] === matrix[1][1] && matrix[1][1] === matrix[2][2]) {
+        totalPrize += prizes[matrix[0][0]];
+    }
+    if (matrix[0][2] === matrix[1][1] && matrix[1][1] === matrix[2][0]) {
+        totalPrize += prizes[matrix[0][2]];
+    }
+
+    return totalPrize;
+}
