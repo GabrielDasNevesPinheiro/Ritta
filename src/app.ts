@@ -63,7 +63,7 @@ client.on("ready", async (bot) => {
     setInterval(countBoosterPassiveCash, botConfig.vipPassiveEarningCooldown * 1000);
     setInterval(startCrash, 70000, client);
     setInterval(setNextActivity, 30000);
-    
+
 });
 
 client.on("messageCreate", async (message) => {
@@ -84,7 +84,7 @@ client.on('interactionCreate', async (interaction) => {
 
 client.on("guildMemberUpdate", async (old, now) => {
 
-    if(old.premiumSince && !now.premiumSince) {
+    if (old.premiumSince && !now.premiumSince) {
         let oldUser = await UserController.getUserById(old.id);
         if (!cooldownCheck(719, oldUser?.boosterDate).allowed) {
             oldUser.boosterDate = null;
@@ -103,38 +103,37 @@ client.on("guildMemberUpdate", async (old, now) => {
 
     if (now.premiumSince) {
 
-        if (!cooldownCheck(0.1, now.premiumSince).allowed) {
 
-            let user = await UserController.getUserById(now.user.id);
+        let user = await UserController.getUserById(now.user.id);
 
-            let cargo = now.guild?.roles.cache.get("1175822265015873556");
-            if (cargo && now) {
-                now.roles.add(cargo)
-                    .then(() => {
-                        console.log(`Cargo ${cargo.name} adicionado com sucesso para ${now.user.tag}`);
-                    })
-                    .catch((error) => {
-                        console.error('Ocorreu um erro ao adicionar o cargo:', error);
-                    });
-            }
-
-            if (!user) user = await UserController.createUser({ userId: now.user.id });
-            user.boosterDate = new Date();
-            await UserController.addCash(user, {
-                from: "buffando o servidor oficial do bot",
-                to: user.userId,
-                ammount: 30000
-            });
-            await UserController.updateUser(String(user.userId), user);
-            let channel = now.client.channels.cache.get("1174342112565805088") as TextChannel;
-
-            await channel.send(`${botConfig.GG} <@${now.user.id}> Impulsionou o servidor e ganhou ${botConfig.getCashString(30000)}!`);
+        let cargo = now.guild?.roles.cache.get("1175822265015873556");
+        if (cargo && now) {
+            now.roles.add(cargo)
+                .then(() => {
+                    console.log(`Cargo ${cargo.name} adicionado com sucesso para ${now.user.tag}`);
+                })
+                .catch((error) => {
+                    console.error('Ocorreu um erro ao adicionar o cargo:', error);
+                });
         }
 
+        if (!user) user = await UserController.createUser({ userId: now.user.id });
+        user.boosterDate = new Date();
+        await UserController.addCash(user, {
+            from: "buffando o servidor oficial do bot",
+            to: user.userId,
+            ammount: 30000
+        });
+        await UserController.updateUser(String(user.userId), user);
+        let channel = now.client.channels.cache.get("1174450180238618684") as TextChannel;
 
+        await channel.send(`${botConfig.GG} <@${now.user.id}> Impulsionou o servidor e ganhou ${botConfig.getCashString(30000)}!`);
     }
 
-});
+
+}
+
+);
 
 client.login(token);
 
