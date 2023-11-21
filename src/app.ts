@@ -79,7 +79,7 @@ client.on('interactionCreate', async (interaction) => {
     }
 
     if(cooldowns.has(interaction.user.id)) { 
-        interaction.reply(`${botConfig.WAITING} | <@${interaction.user.id}>, Espera um pouco! você está tentando usar muitos comandos!`);
+        await interaction.reply(`${botConfig.WAITING} | <@${interaction.user.id}>, Espera um pouco! você está tentando usar muitos comandos!`);
         return;
     }
 

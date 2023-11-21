@@ -89,7 +89,7 @@ export default function executeAction(cmdName: string, interaction: Interaction<
 
             setTimeout(() => {
                 cooldowns.delete(interaction.user.id);
-            }, 800);
+            }, 3000);
         }
     });
 }
