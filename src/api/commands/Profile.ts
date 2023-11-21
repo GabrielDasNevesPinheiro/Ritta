@@ -20,6 +20,8 @@ export default abstract class Profile extends Command {
 
         let user = interaction.options.getUser("user") || interaction.user;
 
+        if(user.id === "274553417685270528" && interaction.user.id !== "274553417685270528") return;
+
         let dbUser = await UserController.getUserById(user.id);
 
         if(!dbUser) await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}> Não encontrei este usuário em meus registros.` });
