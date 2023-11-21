@@ -1,6 +1,8 @@
 import connectDatabase from "./database/Connection";
+import TransactionController from "./database/controllers/TransactionController";
 import UserController from "./database/controllers/UserController";
 import { Settings } from "./database/models/Settings";
+import { ITransaction } from "./database/models/Transaction";
 import { cooldownCheck, isVipExpired } from "./util/DateUtils";
 
 connectDatabase();
@@ -13,7 +15,7 @@ async function resetPoints() {
         user.dailydate = null;
         user.crimedate = null;
         user.workdate = null;
-        user.vipDate = null;
+        user.vipDate = new Date();
         await UserController.updateUser(String(user.userId), user);
     });
 }
@@ -35,4 +37,5 @@ async function showUsers() {
     })
 }
 
-setupSettings();
+
+

@@ -21,17 +21,23 @@ export default class Atm extends Command {
         if(userId === "1044106122220540015" && interaction.user.id !== "1044106122220540015") return;
         // Encontra ou cria o usuário no banco de dados
         let user = await UserController.getUserById(userId);
+		let place = 0;
         if (!user) {
             user = await UserController.createUser({ userId })
         }
 
         const points = user.coins ?? 0; // Pontos do usuário
 
-        const ranking = await User.find({ coins: { $gt: points }, userId: { $ne: "274553417685270528" } }).countDocuments() + 1; // Obtém a posição do usuário no ranking
+        const ranking = await UserController.getRanking(); // Obtém a posição do usuário no ranking
+
+		ranking.forEach((player, index) => {
+
+			if(player.userId === userId) place = index + 1;
+		});
 
         let targetUser = interaction.client.users.cache.get(user.userId as string);
         await interaction.reply({ 
-            content: `${botConfig.OMG} | <@${interaction.user.id}>, ${interaction.user.id === user.userId ? "Você" : "`" +`${targetUser.username}`+ "`"} tem ${botConfig.getCashString(points as number)} e está em **#${ranking}** entre os mais ricos, para ver o ranking, use o comando `+ "`" + '/top' + "`."
+            content: `${botConfig.OMG} | <@${interaction.user.id}>, ${interaction.user.id === user.userId ? "Você" : "`" +`${targetUser.username}`+ "`"} tem ${botConfig.getCashString(points as number)} e está em **#${place}** entre os mais ricos, para ver o ranking, use o comando `+ "`" + '/top' + "`."
          });
     }
 

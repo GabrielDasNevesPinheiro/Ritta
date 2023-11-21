@@ -180,7 +180,7 @@ export async function startCrash(client: Client) {
 
                     ammount = Math.floor(ammount);
 
-                    if (ammount >= 45000) {
+                    if (ammount >= 30000) {
                         prob = 0.25;
                     }
 
@@ -244,9 +244,9 @@ export async function startCrash(client: Client) {
         let multiplierSum = 0;
 
         if (Math.random() > prob) {
-            multiplierSum = Math.random() * 0.05;
+            multiplierSum = Math.random() * 0.04;
         } else {
-            multiplierSum = Math.random() * 0.42;
+            multiplierSum = Math.random() * 0.09;
         }
 
 
