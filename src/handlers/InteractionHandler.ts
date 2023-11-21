@@ -36,6 +36,7 @@ import Ban from "../api/commands/Ban";
 import BanList from "../api/commands/BanList";
 import Help from "../api/commands/Help";
 import Scratch from "../api/commands/Scratch";
+import Profile from "../api/commands/Profile";
 
 
 export const commands: { [key: string]: typeof Command } = {
@@ -72,7 +73,8 @@ export const commands: { [key: string]: typeof Command } = {
     "ban": Ban,
     "banlist": BanList,
     "help": Help,
-    "scratch": Scratch
+    "scratch": Scratch,
+    "profile": Profile
 }
 
 export default function executeAction(cmdName: string, interaction: Interaction<CacheType>) {

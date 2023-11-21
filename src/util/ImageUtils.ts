@@ -247,3 +247,80 @@ export default async function getRank(users: User[], info: IUser[]) {
     return canvas.toBuffer();
 
 }
+
+
+export async function getProfile(user: IUser, discordProfile: User, reps: number, partner: string = null) {
+    
+    let width = 561;
+    let height = 420;
+
+    let profileImage = await loadImageURL(discordProfile.displayAvatarURL({ size: 256, extension: "png" }));
+
+    const canvas = createCanvas(width, height);
+    const ctx: CanvasRenderingContext2D = canvas.getContext("2d");
+
+    let photoPoint: Position = { x: 24, y: 157 };
+    let photoSize: Position = { x: 150, y: 150 };
+
+    let namePoint: Position = { x: 191, y: 249 };
+    let repPoint: Position = { x: 191 , y: 286 };
+    let scorePoint: Position = { x: 306 , y: 286 };
+    let marryPoint: Position = { x: 191 , y: 313 };
+    let aboutmePoint: Position = { x: 34, y: 356 };
+
+    ctx.drawImage(profileImage, photoPoint.x, photoPoint.y, photoSize.x, photoSize.y);
+    ctx.drawImage(await loadImage(botConfig.LOCAL_IMG_PROFILE_TEMPLATE), 0, 0);
+    
+    ctx.fillStyle = "#FFF";
+    ctx.font = '20px Arial';
+
+    ctx.fillText(discordProfile.displayName, namePoint.x, namePoint.y);
+    ctx.fillText(`${reps} Reps`, repPoint.x, repPoint.y);
+    ctx.fillText(`${user.coins.toLocaleString("pt-BR")} fichas`, scorePoint.x, scorePoint.y);
+    ctx.fillText(partner ? `Casado(a) com ${partner}` : `Solteiro(a)`, marryPoint.x, marryPoint.y);
+    ctx.font = '18px Arial';
+    drawTextInBox(ctx, String(user.about), aboutmePoint.x, aboutmePoint.y, 499, 74);
+
+    return canvas.toBuffer();
+    
+}
+
+
+function drawTextInBox(
+    ctx: CanvasRenderingContext2D,
+    text: string,
+    x: number,
+    y: number,
+    boxWidth: number,
+    boxHeight: number
+  ) {
+    // Define a fonte e alinhamento do texto
+    const fontSize = 23;
+    ctx.font = `${fontSize}px Arial`;
+  
+    // Define os limites do retângulo
+    const boxX = x;
+    const boxY = y;
+  
+    // Verifica se o texto se ajusta aos limites da caixa
+    const words = text.split(' ');
+    let line = '';
+    let testY = boxY;
+    
+    for (let i = 0; i < words.length; i++) {
+      const testLine = line + words[i] + ' ';
+      const metrics = ctx.measureText(testLine);
+      const testWidth = metrics.width;
+  
+      if (testWidth > boxWidth && i > 0) {
+        ctx.fillText(line, boxX, testY);
+        line = words[i] + ' ';
+        testY += fontSize; // Ajuste para a próxima linha
+      } else {
+        line = testLine;
+      }
+    }
+  
+    ctx.fillText(line, boxX, testY);
+  }
+  
