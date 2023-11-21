@@ -18,7 +18,7 @@ export default abstract class BanList extends Command {
 
         let bannedUsers = "";
 
-        for(let ban of banned) bannedUsers += `<@${ban.userId}> `;
+        for(let ban of banned) bannedUsers += `* <@${ban.userId}> - ${ban?.banReason ? ban?.banReason : "Nenhum motivo registrado."}`;
 
         await interaction.editReply({ content: `Segue a lista de usuários banidos \n> ${bannedUsers}` });
     }

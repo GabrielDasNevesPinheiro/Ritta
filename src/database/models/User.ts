@@ -8,6 +8,7 @@ interface IUser {
     partner?: String
     coins?: Number
     banned?: Boolean
+    banReason?: String
     boosterDate?: Date
     rouletteDate?: Date
     tasksDate?: Date
@@ -30,6 +31,11 @@ const userSchema = new mongoose.Schema<IUser>({
         type: String,
         required: false,
         default: "Descrição do meu perfil."
+    },
+    banReason: {
+        type: String,
+        required: false,
+        default: null,
     },
     partner: {
         type: String,
