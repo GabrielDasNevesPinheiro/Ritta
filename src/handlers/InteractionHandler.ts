@@ -38,6 +38,7 @@ import Help from "../api/commands/Help";
 import Scratch from "../api/commands/Scratch";
 import Profile from "../api/commands/Profile";
 import Aboutme from "../api/commands/Aboutme";
+import { cooldowns } from "../app";
 
 
 export const commands: { [key: string]: typeof Command } = {
@@ -82,7 +83,13 @@ export const commands: { [key: string]: typeof Command } = {
 export default function executeAction(cmdName: string, interaction: Interaction<CacheType>) {
     UserController.getUserById(interaction.user.id).then((res) => {
 
-        if(!res?.banned)
+        if(!res?.banned) {
             commands[cmdName].execute(interaction as CommandInteraction);
+            cooldowns.set(interaction.user.id, true);
+
+            setTimeout(() => {
+                cooldowns.delete(interaction.user.id);
+            }, 800);
+        }
     });
 }

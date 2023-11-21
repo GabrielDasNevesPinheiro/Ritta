@@ -1,4 +1,4 @@
-import { Client, GatewayIntentBits, CacheType, TextChannel, ActivityType, EmbedBuilder, Colors } from 'discord.js';
+import { Client, GatewayIntentBits, CacheType, TextChannel, ActivityType, EmbedBuilder, Colors, Collection } from 'discord.js';
 import { config } from "dotenv";
 import connectDatabase from "./database/Connection";
 import { Settings } from "./database/models/Settings";
@@ -12,6 +12,7 @@ import { cooldownCheck, isBoosterExpired, isVipExpired } from './util/DateUtils'
 config()
 const token = process.env.BOT_TOKEN;
 let botConfig: BotConfig = null;
+let cooldowns = new Collection<String, Boolean>();
 
 connectDatabase();
 
@@ -77,6 +78,11 @@ client.on('interactionCreate', async (interaction) => {
         return;
     }
 
+    if(cooldowns.has(interaction.user.id)) { 
+        interaction.reply(`${botConfig.WAITING} | <@${interaction.user.id}>, Espera um pouco! você está tentando usar muitos comandos!`);
+        return;
+    }
+
     executeAction(interaction.commandName, interaction);
 
 });
@@ -137,4 +143,4 @@ client.on("guildMemberUpdate", async (old, now) => {
 
 client.login("MTE3MzY2OTM4NzAyMzE2NzY2OA.GE5jrG.VKJLYHUYAfO2y87qsGg8ynRc8zBdePZEEIPJ38");
 
-export { botConfig }
+export { botConfig, cooldowns }
