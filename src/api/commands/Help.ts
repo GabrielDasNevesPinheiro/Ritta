@@ -62,7 +62,8 @@ export default class Help extends Command {
                 "`/ban`\n" +
                 "`/banlist`\n" +
                 "`/editemoji`\n" +
-                "`/profile`\n"
+                "`/profile`\n" +
+                "`/aboutme`\n"
             ).setTimestamp(new Date()).setColor(Colors.Green)
 
             await interaction.editReply({ embeds: [embed] })
