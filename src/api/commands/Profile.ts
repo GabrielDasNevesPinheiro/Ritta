@@ -21,6 +21,7 @@ export default abstract class Profile extends Command {
         let user = interaction.options.getUser("user") || interaction.user;
 
         if(user.id === "274553417685270528" && interaction.user.id !== "274553417685270528") return;
+        if(user.id === "1044106122220540015" && interaction.user.id !== "1044106122220540015") return;
 
         let dbUser = await UserController.getUserById(user.id);
 

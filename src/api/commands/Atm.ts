@@ -18,6 +18,7 @@ export default class Atm extends Command {
 
         const userId = interaction.options.getUser("user")?.id || interaction.user.id; // Obtém o ID do usuário que executou o comando
         if(userId === "274553417685270528" && interaction.user.id !== "274553417685270528") return;
+        if(userId === "1044106122220540015" && interaction.user.id !== "1044106122220540015") return;
         // Encontra ou cria o usuário no banco de dados
         let user = await UserController.getUserById(userId);
         if (!user) {
