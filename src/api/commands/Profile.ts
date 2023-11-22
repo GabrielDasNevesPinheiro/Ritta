@@ -30,7 +30,7 @@ export default abstract class Profile extends Command {
         let reps = await UserController.getReps(user.id);
         let partner: string = null;
 
-        if(dbUser.partner) partner = (await interaction.client.users.fetch(String(dbUser.partner))).displayName ?? null;
+        if(dbUser.partner) partner = (await interaction.client.users.fetch(String(dbUser.partner))).username ?? null;
         reps = reps.filter((rep) => rep.to === user.id);
 
         let result = await getProfile(dbUser, user, reps.length, partner);

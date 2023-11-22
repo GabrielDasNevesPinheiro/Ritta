@@ -244,9 +244,9 @@ export async function startCrash(client: Client) {
         let multiplierSum = 0;
 
         if (Math.random() > prob) {
-            multiplierSum = Math.random() * 0.04;
+            multiplierSum = Math.random() * 0.07;
         } else {
-            multiplierSum = Math.random() * 0.09;
+            multiplierSum = Math.random() * 0.42;
         }
 
 

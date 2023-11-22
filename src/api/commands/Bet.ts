@@ -140,7 +140,7 @@ export default class Bet extends Command {
 
                     await interaction.editReply({
                         content: `${sortedText}\n <@${winner.userId}>${winnerEmoji} venceu! Com isso recebeu ${botConfig.getCashString(calcAmmount)}` +
-                            (selectedTax > 0 ? '`' + `(${selectedTax} de taxa) ` + '`' : ``) + ` patrocinadas por <@${loser.userId}>${loserEmoji}.`, components: []
+                            (selectedTax > 0 ? '`' + `(${selectedTax} de taxa)` + '`' : ``) + ` patrocinadas por <@${loser.userId}>${loserEmoji}.`, components: []
                     })
                     return;
 
