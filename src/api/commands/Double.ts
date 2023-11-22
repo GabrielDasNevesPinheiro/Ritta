@@ -130,17 +130,18 @@ export default class Double extends Command {
 
             let ammount = bet;
             ammount = Math.floor(ammount * selectedMultiplier);
-            tax = getTax(ammount);
+            tax = tax > 0 ? getTax(ammount) : 0;
             ammount -= tax;
 
             const doubleResult = await getDouble(sorted);
-            if (sorted !== betColor) {
 
-                user = await UserController.removeCash(user, {
-                    from: user.userId,
-                    to: "para o double",
-                    ammount: bet
-                });
+            user = await UserController.removeCash(user, {
+                from: user.userId,
+                to: "para o double",
+                ammount: bet
+            });
+
+            if (sorted !== betColor) {
 
                 await interaction.editReply({
                     content:
