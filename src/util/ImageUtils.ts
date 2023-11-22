@@ -237,7 +237,7 @@ export default async function getRank(users: User[], info: IUser[]) {
             x = rightInitialPoint.x;
             y = rightInitialPoint.y + ySum * (index - 5);
         }
-        ctx.fillText(users[index].displayName, x + 180, y + 50);
+        ctx.fillText(users[index].username, x + 180, y + 50);
         ctx.font = '30px Arial';
         ctx.fillText("ID: "+users[index].id, x + 180, y + 89);
         ctx.font = '30px Arial';
@@ -274,7 +274,7 @@ export async function getProfile(user: IUser, discordProfile: User, reps: number
     ctx.fillStyle = "#FFF";
     ctx.font = '20px Arial';
 
-    ctx.fillText(discordProfile.displayName, namePoint.x, namePoint.y);
+    ctx.fillText(discordProfile.username, namePoint.x, namePoint.y);
     ctx.fillText(`${reps} Reps`, repPoint.x, repPoint.y);
     ctx.fillText(`${user.coins.toLocaleString("pt-BR")} fichas`, scorePoint.x, scorePoint.y);
     ctx.fillText(partner ? `Casado(a) com ${partner}` : `Solteiro(a)`, marryPoint.x, marryPoint.y);
