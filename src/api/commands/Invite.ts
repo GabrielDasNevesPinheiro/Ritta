@@ -14,13 +14,13 @@ export default class Invite extends Command {
         let link = "https://discord.com/api/oauth2/authorize?client_id=1173669387023167668&permissions=1514781599814&scope=bot";
 
         let invitebt = new ButtonBuilder()
-            .setLabel(`Adicione`)
+            .setLabel(`Me Adicione`)
             .setEmoji(botConfig.GG)
             .setURL(link)
             .setStyle(ButtonStyle.Link)
 
         let linkbt = new ButtonBuilder()
-            .setLabel(`👑 Servidor`)
+            .setLabel(`👑 Meu Servidor`)
             .setURL(invite)
             .setStyle(ButtonStyle.Link)
 

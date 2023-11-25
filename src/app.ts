@@ -107,7 +107,7 @@ client.on("guildMemberUpdate", async (old, now) => {
 
     if (now.guild.id !== "1174342112070869012") return;
 
-    if (now.premiumSince) {
+    if (!old.premiumSince && now.premiumSince) {
 
 
         let user = await UserController.getUserById(now.user.id);

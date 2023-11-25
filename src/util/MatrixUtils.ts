@@ -197,7 +197,7 @@ type Emoji = {
 };
 
 export function getScratch (): string[][] {
-    const emojis: string[] = ["⭐", "🎁", "🍌", "😱", "❤️", "💀"];
+    const emojis: string[] = ["🎁", "🍌", "😱", "❤️", "💀"];
 
     const matrix: string[][] = Array.from({ length: 3 }, () => Array(3).fill(''));
 

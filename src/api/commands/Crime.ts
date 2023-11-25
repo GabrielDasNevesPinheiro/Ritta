@@ -54,30 +54,30 @@ export default class Crime extends Command {
             
             if(canWin) {
 
-                user.coins = user.coins as number + cash;
+                user = await UserController.addCash(user, {
+                    from: "prendendo bandidos",
+                    to: user.userId,
+                    ammount: cash
+                });
                 user.crimedate = new Date();
                 user = await UserController.updateUser(user.userId as string, user);
-                let transaction = await TransactionController.createTransaction({
-                    to: user.userId as String,
-                    from: "prendendo bandidos",
-                    ammount: cash,
-                });
+                
                 
                 embed = new EmbedBuilder().setTitle(`${botConfig.GG} Crime Impedido`)
                     .setThumbnail(botConfig.IMG_GUN)
-                    .setDescription(`> **Perfeito** <@${transaction.to}>, você conseguiu prender um criminoso sem ninguém se machucar e ganhou ${botConfig.getCashString(cash)} como recompensa, volte em **1 hora**.`)
+                    .setDescription(`> **Perfeito** <@${user.userId}>, você conseguiu prender um criminoso sem ninguém se machucar e ganhou ${botConfig.getCashString(cash)} como recompensa, volte em **1 hora**.`)
                     .setColor(Colors.White).setTimestamp(Date.now())
                 return await interaction.reply({ embeds: [embed] });
 
             }
             if(!canWin) {
-                user.coins = user.coins as number - cash;
+                
                 user.crimedate = new Date();
                 user = await UserController.updateUser(user.userId as string, user);
-                let transaction = await TransactionController.createTransaction({
-                    to: "para a cadeia da PF",
+                user = await UserController.removeCash(user, {
                     from: user.userId,
-                    ammount: cash,
+                    to: "para a cadeia da PF",
+                    ammount: cash
                 });
                 
                 embed = new EmbedBuilder().setTitle(`O Crime Falhou!`)

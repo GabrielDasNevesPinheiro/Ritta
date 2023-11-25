@@ -197,6 +197,14 @@ export async function startCrash(client: Client) {
                     if (!modalRes.replied)
                         await modalRes.deferReply({ ephemeral: true });
 
+                    await UserController.removeCash(user, {
+                        from: user.userId,
+                        to: "se inscrevendo para o crash",
+                        ammount: CrashManager.inGame[confirmation.user.id].bet
+                    });
+
+
+
                     await modalRes.editReply({ content: `${botConfig.OK} | <@${confirmation.user.id}>, Você está no crash apostando ${botConfig.getCashString(ammount)}.` });
 
                     return;
@@ -220,7 +228,7 @@ export async function startCrash(client: Client) {
                 }
 
             } catch (error) {
-                
+
             }
 
 
@@ -312,16 +320,10 @@ export async function startCrash(client: Client) {
             await UserController.addCash(user, {
                 from: "apostando no crash",
                 to: user.userId,
-                ammount: Math.floor(((CrashManager.inGame[player].bet * CrashManager.inGame[player].stoppedMultiplier) - tax) - CrashManager.inGame[player].bet)
+                ammount: Math.floor(((CrashManager.inGame[player].bet * CrashManager.inGame[player].stoppedMultiplier) - tax))
             });
 
         } else {
-
-            await UserController.removeCash(user, {
-                from: user.userId,
-                to: "apostando no crash",
-                ammount: CrashManager.inGame[player].bet
-            });
 
         }
 
