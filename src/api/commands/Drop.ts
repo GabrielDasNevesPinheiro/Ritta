@@ -27,7 +27,7 @@ export default abstract class Drop extends Command {
 
         if(!(interaction.user.id === "274553417685270528")) return;
 
-        interaction.deferReply({});
+        await interaction.deferReply({});
 
         let ammount = interaction.options.get("ammount").value as number;
         let time = interaction.options.get("time").value as number;
