@@ -116,7 +116,7 @@ export default class Bet extends Command {
                         winnerEmoji = face;
                         loserEmoji = crown;
 
-                    } else if (sorted > userProb) {
+                    } else if (sorted >= userProb) {
                         winner = targetUser;
                         loser = user;
                         selectedTax = otherTax;
