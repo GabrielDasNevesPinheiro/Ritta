@@ -12,7 +12,7 @@ export default abstract class Top extends Command {
     static async execute(interaction: CommandInteraction<CacheType>) {
 
         await interaction.deferReply({});
-        await interaction.editReply({ content: `${botConfig.WAITING} | <@$${interaction.user.id}>, um momento...` });
+        await interaction.editReply({ content: `${botConfig.WAITING} | <@${interaction.user.id}>, um momento...` });
 
         let users = await UserController.getRanking();
         let fetched: User[] = [];
