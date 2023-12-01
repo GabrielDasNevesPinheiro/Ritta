@@ -4,8 +4,8 @@ import { commands as cmdList } from '../handlers/InteractionHandler';
 
 config();
 
-const token = "MTE3MzY2OTM4NzAyMzE2NzY2OA.GE5jrG.VKJLYHUYAfO2y87qsGg8ynRc8zBdePZEEIPJ38";
-const client_id = "1173669387023167668";
+const token = process.env.BOT_TOKEN;
+const client_id = process.env.CLIENT_ID;
 
 const rest = new REST({ version: '10' }).setToken(token);
 
