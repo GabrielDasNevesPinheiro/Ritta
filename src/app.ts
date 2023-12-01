@@ -174,6 +174,6 @@ client.on("guildMemberUpdate", async (old, now) => {
 
 );
 
-client.login("MTE3MzY2OTM4NzAyMzE2NzY2OA.GE5jrG.VKJLYHUYAfO2y87qsGg8ynRc8zBdePZEEIPJ38");
+client.login(token);
 
 export { botConfig, cooldowns }
