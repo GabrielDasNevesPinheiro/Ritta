@@ -363,7 +363,7 @@ function getEmojiString(numeroAtual: number, vermelho: boolean): string {
 
 
 export async function checkVoted(userId: string): Promise<{ voted: boolean }> {
-    const res: { voted: boolean } = (await axios.get(`https://top.gg/api/bots/1158185774823506020/check?userId=${userId}`, {
+    const res: { voted: boolean } = (await axios.get(`https://top.gg/api/bots/1173669387023167668/check?userId=${userId}`, {
         headers: {
             "Authorization": process.env.TOPGG
         }
