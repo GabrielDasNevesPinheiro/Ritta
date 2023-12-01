@@ -17,33 +17,27 @@ let cooldowns = new Collection<String, Boolean>();
 let votedPlayersChecked: { [key: string]: boolean } = {}
 connectDatabase();
 
-const startVoteChecker = async () => {
-    setInterval(async () => {
-        let players = await UserController.getAllUsers();
-        players.forEach(async (player) => {
+const assignVoted = async (userId: string) => {
 
-            let userId: string = String(player.userId);
+    let { voted } = await checkVoted(userId);
 
-            let { voted } = await checkVoted(player.userId as string);
-
-            if (!voted && votedPlayersChecked[userId]) delete votedPlayersChecked[userId];
-            if (voted && !votedPlayersChecked[userId]) {
-                player = await UserController.addCash(player, {
-                    from: "votando no top.gg",
-                    to: player.userId,
-                    ammount: 25000
-                });
-            }
-
-            votedPlayersChecked[userId] = true;
+    if (!voted && votedPlayersChecked[userId]) delete votedPlayersChecked[userId];
+    if (voted && !votedPlayersChecked[userId]) {
+        let player = await UserController.getUserById(userId);
+        if(!player) return;
+        
+        player = await UserController.addCash(player, {
+            from: "votando no top.gg",
+            to: player.userId,
+            ammount: 25000
         });
-    }, 120000);
-}
+    }
+
+    votedPlayersChecked[userId] = true;
+};
 
 const setupTopgg = async (client: Client) => {
-
     AutoPoster(process.env.TOPGG, client);
-    await startVoteChecker();
 
 }
 
@@ -89,7 +83,7 @@ client.on("ready", async (bot) => {
 
     bot.user.setUsername(botConfig.name);
     postSlashCommands();
-    
+
     //passive systems
     await setupTopgg(bot);
     setInterval(countVipPassiveCash, botConfig.vipPassiveEarningCooldown * 1000);
@@ -116,6 +110,13 @@ client.on('interactionCreate', async (interaction) => {
         return;
     }
 
+    try {
+
+        assignVoted(interaction.user.id);
+    
+    } catch {
+
+    }
     executeAction(interaction.commandName, interaction);
 
 });
