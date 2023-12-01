@@ -5,16 +5,48 @@ import { Settings } from "./database/models/Settings";
 import postSlashCommands from "./api/Register";
 import executeAction from "./handlers/InteractionHandler";
 import BotConfig from "./util/BotConfig";
-import { countBoosterPassiveCash, countVipPassiveCash, sortRaffle, startCrash } from './util/PassiveSystems';
+import { checkVoted, countBoosterPassiveCash, countVipPassiveCash, sortRaffle, startCrash } from './util/PassiveSystems';
 import UserController from './database/controllers/UserController';
 import { cooldownCheck, isBoosterExpired, isVipExpired } from './util/DateUtils';
+import AutoPoster from 'topgg-autoposter';
 
 config()
 const token = process.env.BOT_TOKEN;
 let botConfig: BotConfig = null;
 let cooldowns = new Collection<String, Boolean>();
-
+let votedPlayersChecked: { [key: string]: boolean } = {}
 connectDatabase();
+
+const startVoteChecker = async () => {
+    setInterval(async () => {
+        let players = await UserController.getAllUsers();
+        players.forEach(async (player) => {
+
+            let userId: string = String(player.userId);
+
+            let { voted } = await checkVoted(player.userId as string);
+
+            if (!voted && votedPlayersChecked[userId]) delete votedPlayersChecked[userId];
+            if (voted && !votedPlayersChecked[userId]) {
+                player = await UserController.addCash(player, {
+                    from: "votando no top.gg",
+                    to: player.userId,
+                    ammount: 25000
+                });
+            }
+
+            votedPlayersChecked[userId] = true;
+        });
+    }, 120000);
+}
+
+const setupTopgg = async (client: Client) => {
+
+    AutoPoster(process.env.TOPGG, client);
+    await startVoteChecker();
+
+}
+
 
 const activities = [
     { name: '/help', type: ActivityType.Watching },
@@ -57,8 +89,9 @@ client.on("ready", async (bot) => {
 
     bot.user.setUsername(botConfig.name);
     postSlashCommands();
-
+    
     //passive systems
+    await setupTopgg(bot);
     setInterval(countVipPassiveCash, botConfig.vipPassiveEarningCooldown * 1000);
     setInterval(sortRaffle, 10000, client);
     setInterval(countBoosterPassiveCash, botConfig.vipPassiveEarningCooldown * 1000);
@@ -78,7 +111,7 @@ client.on('interactionCreate', async (interaction) => {
         return;
     }
 
-    if(cooldowns.has(interaction.user.id)) { 
+    if (cooldowns.has(interaction.user.id)) {
         await interaction.reply(`${botConfig.WAITING} | <@${interaction.user.id}>, Espera um pouco! você está tentando usar muitos comandos!`);
         return;
     }

@@ -5,6 +5,7 @@ import { cooldownCheck, isBoosterExpired, isVipExpired, sleep, sortCooldownCheck
 import RaffleManager from "./RaffleManager";
 import { CrashManager } from "./CrashManager";
 import { getTax } from "./InteractionUtils";
+import axios from "axios";
 
 
 export async function countVipPassiveCash() {
@@ -358,4 +359,15 @@ function getEmojiString(numeroAtual: number, vermelho: boolean): string {
     }
 
     return resultado.trim();
+}
+
+
+export async function checkVoted(userId: string): Promise<{ voted: boolean }> {
+    const res: { voted: boolean } = (await axios.get(`https://top.gg/api/bots/1158185774823506020/check?userId=${userId}`, {
+        headers: {
+            "Authorization": process.env.TOPGG
+        }
+    })).data;
+    res.voted = Boolean(res.voted);
+    return res;
 }

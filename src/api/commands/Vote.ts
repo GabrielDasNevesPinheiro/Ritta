@@ -9,7 +9,7 @@ export default class Vote extends Command {
         .setDescription("Vote em mim");
 
     static async execute(interaction: CommandInteraction) {
-        await interaction.reply({ content: `${botConfig.CRYING} Eita! um ~~bug~~ processo de manutenção está ocorrendo, volte mais tarde.`})
+        await interaction.reply({ content: `${botConfig.BRIGHT} | <@${interaction.user.id}>, Vote em mim no [Top.gg](https://top.gg/bot/1173669387023167668) e ganhe ${botConfig.getCashString(25000)}.`})
     }
 
 }
