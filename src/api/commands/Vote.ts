@@ -13,7 +13,7 @@ export default class Vote extends Command {
         let button = new ButtonBuilder()
         .setStyle(ButtonStyle.Link)
         .setLabel("Votar")
-        .setCustomId("Vote")
+        .setCustomId("vote")
         .setURL("https://top.gg/bot/1173669387023167668");
 
         let row = new ActionRowBuilder<ButtonBuilder>().addComponents(button);
