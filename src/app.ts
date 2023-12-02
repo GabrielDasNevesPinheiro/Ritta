@@ -85,7 +85,8 @@ client.on("ready", async (bot) => {
     postSlashCommands();
 
     //passive systems
-    await setupTopgg(bot);
+    if(!process.env.DEV)
+        await setupTopgg(bot);
     setInterval(countVipPassiveCash, botConfig.vipPassiveEarningCooldown * 1000);
     setInterval(sortRaffle, 10000, client);
     setInterval(countBoosterPassiveCash, botConfig.vipPassiveEarningCooldown * 1000);
@@ -112,7 +113,8 @@ client.on('interactionCreate', async (interaction) => {
 
     try {
 
-        assignVoted(interaction.user.id);
+        if(!process.env.DEV)
+            assignVoted(interaction.user.id);
     
     } catch {
 
