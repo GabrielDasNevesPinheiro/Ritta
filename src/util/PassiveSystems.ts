@@ -93,7 +93,7 @@ export async function sortRaffle(client: Client) {
 
     try {
 
-        await (client.channels.cache.get("1174861456341205012") as TextChannel)?.send(`${botConfig.GG} | <@${user.userId}> é o ganhador de ${botConfig.getCashString(stats.price)} no sorteio das rifas\n` +
+        await (client.channels.cache.get("1170449276418150402") as TextChannel)?.send(`${botConfig.GG} | <@${user.userId}> é o ganhador de ${botConfig.getCashString(stats.price)} no sorteio das rifas\n` +
             (tax > 0 ? `> A casa pegou ${botConfig.getCashString(tax)} de taxa.` : ""));
 
         await client.users.cache.get(user.userId as string).send(`<@${user.userId}> Parabéns! Você ganhou ${botConfig.getCashString(stats.price)} no sorteio das rifas\n` +
@@ -109,7 +109,7 @@ export async function startCrash(client: Client) {
     if (CrashManager.running) return;
     CrashManager.running = true;
 
-    let channel = client.channels.cache.get(botConfig.crashChannel) as TextChannel || client.channels.cache.get("1174826007727972433") as TextChannel;
+    let channel = client.channels.cache.get(botConfig.crashChannel) as TextChannel ?? client.channels.cache.get("1180514195192688691") as TextChannel;
 
     let message: Message<true> = null;
 
