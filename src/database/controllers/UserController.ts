@@ -25,6 +25,35 @@ class UserController {
         }
     }
 
+    static async addItems(userId: string, ...indexes: Number[]) {
+        try {
+            let user = await UserController.getUserById(userId);
+            user.inventory.push(...indexes);
+            user = await UserController.updateUser(userId, user);
+
+            return user;
+
+        } catch (error) {
+            return null;
+        }
+    }
+
+    static async removeItem(userId: string, index: number) {
+        try {
+
+            const notEquals = (item: number) => item != index;
+
+            let user = await UserController.getUserById(userId);
+            user.inventory = user.inventory.filter(notEquals);
+            user = await UserController.updateUser(userId, user);
+
+            return user;
+
+        } catch (error) {
+            return null;
+        }
+    }
+
     static async getRanking(): Promise<IUser[]> {
         try {
             let users = await User.find().sort({ coins: -1 });
