@@ -5,6 +5,7 @@ import { transactionSchema } from "./Transaction";
 interface IUser {
     userId: String
     about?: String
+    inventory?: Array<Number>
     partner?: String
     coins?: Number
     banned?: Boolean
@@ -31,6 +32,11 @@ const userSchema = new mongoose.Schema<IUser>({
         type: String,
         required: false,
         default: "Descrição do meu perfil."
+    },
+    inventory: {
+        type: [Number],
+        default: [],
+        required: false
     },
     banReason: {
         type: String,
