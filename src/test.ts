@@ -23,7 +23,7 @@ async function resetPoints() {
 async function setupSettings() {
 
     let settings = await Settings.create({
-        botname: "Leozito",
+        botname: "Leozito Test",
         cashname: "Fichas"
     });
     await settings.save();
@@ -32,10 +32,12 @@ async function setupSettings() {
 
 async function showUsers() {
     let users = await UserController.getAllUsers();
-    users.forEach((user) => {
-        console.log(isVipExpired(user), user.userId)
-    })
+    users.forEach(async(user) => {
+        user = await UserController.removeItem(String(user.userId), 1);
+        console.log(user);
+    });
 }
 
 
 
+showUsers();

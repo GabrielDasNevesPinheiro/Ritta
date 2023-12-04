@@ -39,6 +39,7 @@ import Scratch from "../api/commands/Scratch";
 import Profile from "../api/commands/Profile";
 import Aboutme from "../api/commands/Aboutme";
 import { cooldowns } from "../app";
+import Inventory from "../api/commands/Inventory";
 
 
 export const commands: { [key: string]: typeof Command } = {
@@ -77,7 +78,8 @@ export const commands: { [key: string]: typeof Command } = {
     "help": Help,
     "scratch": Scratch,
     "profile": Profile,
-    "aboutme": Aboutme
+    "aboutme": Aboutme,
+    "inventory": Inventory
 }
 
 export default function executeAction(cmdName: string, interaction: Interaction<CacheType>) {
