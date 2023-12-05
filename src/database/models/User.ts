@@ -6,6 +6,7 @@ interface IUser {
     userId: String
     about?: String
     inventory?: Array<ObjectId>
+    activated?: Array<ObjectId>
     partner?: String
     coins?: Number
     banned?: Boolean
@@ -34,6 +35,11 @@ const userSchema = new mongoose.Schema<IUser>({
         default: "Descrição do meu perfil."
     },
     inventory: {
+        type: [mongoose.Types.ObjectId],
+        default: [],
+        required: false
+    },
+    activated: {
         type: [mongoose.Types.ObjectId],
         default: [],
         required: false
