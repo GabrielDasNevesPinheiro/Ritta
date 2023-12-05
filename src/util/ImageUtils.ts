@@ -204,7 +204,7 @@ export default async function getRank(users: User[], info: IUser[]) {
     ctx.fill();
 
     for (let user of users) {
-        images.push(await loadImageURL(user.displayAvatarURL({ extension: "png", size: 128 }) || "https://archive.org/download/discordprofilepictures/discordblue.png"));
+        images.push(await loadImageURL(user.displayAvatarURL({ extension: "png", size: 64 }) || "https://archive.org/download/discordprofilepictures/discordblue.png"));
     }
 
     let leftInitialPoint: Position = { x: 67, y: 140 };
