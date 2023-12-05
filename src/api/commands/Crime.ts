@@ -64,7 +64,6 @@ export default class Crime extends Command {
                 
                 
                 embed = new EmbedBuilder().setTitle(`${botConfig.GG} Crime Impedido`)
-                    .setThumbnail(botConfig.IMG_GUN)
                     .setDescription(`> **Perfeito** <@${user.userId}>, você conseguiu prender um criminoso sem ninguém se machucar e ganhou ${botConfig.getCashString(cash)} como recompensa, volte em **1 hora**.`)
                     .setColor(Colors.White).setTimestamp(Date.now())
                 return await interaction.reply({ embeds: [embed] });
@@ -81,7 +80,6 @@ export default class Crime extends Command {
                 });
                 
                 embed = new EmbedBuilder().setTitle(`O Crime Falhou!`)
-                    .setThumbnail(botConfig.IMG_INDIGNATED)
                     .setDescription(`> **${botConfig.FACEPALM}** <@${user.userId}>, você bateu numa senhora ao invés de bater no ladrão e teve que usar ${botConfig.getCashString(cash)} para pagar o médico, volte em **1 hora**.`)
                     .setColor(Colors.White).setTimestamp(Date.now())
                 return await interaction.reply({ embeds: [embed] });

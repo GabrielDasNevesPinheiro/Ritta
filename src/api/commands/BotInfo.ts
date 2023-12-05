@@ -15,7 +15,6 @@ export default abstract class BotInfo extends Command {
         let data = moment(interaction.client.user.createdAt);
         let embed = new EmbedBuilder().setTitle(`${botConfig.name}`)
             .setDescription(`> Olá! Eu sou o ${botConfig.name}, um bot planejado por __<@274553417685270528>__ e desenvolvido por __<@340933138039439360>__. Estou atualmente hospedado em servidores da __AWS__.`)
-            .setThumbnail(botConfig.IMG_THEROCK)
             .addFields([
                 { name: "Ajuda", value: "Use `/help` para ver meus comandos."},
                 { name: `Usuários`, value: `${interaction.client.users.cache.size}`, inline: true },

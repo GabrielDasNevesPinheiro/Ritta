@@ -54,7 +54,6 @@ export default class Claim extends Command {
 
             let embed = new EmbedBuilder()
                 .setTitle(`${botConfig.HI} Tarefas Concluídas!`)
-                .setThumbnail(`${botConfig.IMG_RAINMONEY}`)
                 .setDescription(`> Você coletou ${botConfig.getCashString(cash)} como recompensa por ter completado as tarefas diárias. Volte em breve para fazer as tarefas novamente.`)
                 .setTimestamp(Date.now()).setColor(Colors.Green)
 

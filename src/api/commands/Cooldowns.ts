@@ -51,7 +51,7 @@ export class Cooldowns extends Command {
                 { name: "VIP", value: vipString, inline: true },
                 { name: "Server Booster", value: boosterString, inline: true },
                 { name: "Voto", value: `${botConfig.CRYING} Em manutenção.`, inline: true },
-            ]).setThumbnail(`${botConfig.IMG_TIME}`).setTimestamp(new Date()).setColor(Colors.White);
+            ]).setTimestamp(new Date()).setColor(Colors.White);
 
         await interaction.reply({ embeds: [embed]});
 

@@ -36,7 +36,6 @@ export default abstract class Drop extends Command {
 
         let embed = new EmbedBuilder()
             .setTitle(`🎉 Drop Lançado`)
-            .setThumbnail(botConfig.IMG_RAINMONEY)
             .setDescription(`Patrocinado por: <@${user.userId}>.`)
             .addFields(
                 { name: "Valor para o vencedor", value: `${botConfig.getCashString(ammount)}`, inline: true },
@@ -96,7 +95,6 @@ export default abstract class Drop extends Command {
             embed = new EmbedBuilder()
                 .setTitle(`🎉 Drop Lançado`)
                 .setDescription(`Patrocinado por: <@${user.userId}>.`)
-                .setThumbnail(botConfig.IMG_RAINMONEY)
                 .addFields(
                     { name: "Valor para o vencedor", value: `${botConfig.getCashString(ammount)}`, inline: true },
                     { name: `${botConfig.WAITING} Duração`, value: "`Drop encerrado.`", inline: true },

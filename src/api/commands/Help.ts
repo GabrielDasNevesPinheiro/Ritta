@@ -24,7 +24,6 @@ export default class Help extends Command {
 
         if (category == 0) embed = new EmbedBuilder()
             .setTitle("Comandos de Economia")
-            .setThumbnail(botConfig.IMG_RAINMONEY)
             .setDescription(
                 "`/atm`\n" +
                 "`/coinflip`\n" +
@@ -51,7 +50,6 @@ export default class Help extends Command {
 
         if (category == 1) embed = new EmbedBuilder()
             .setTitle("Comandos de Utilidades")
-            .setThumbnail(botConfig.IMG_PEACE)
             .setDescription(
                 "`/botinfo`\n" +
                 "`/marry`\n" +

@@ -56,7 +56,6 @@ export default class Work extends Command {
             });
 
             embed = new EmbedBuilder().setTitle(`${botConfig.GG} Trabalho Concluído`)
-                .setThumbnail(`${botConfig.IMG_RAINMONEY}`)
                 .setDescription(`> **Ótimo** <@${transaction.to}>, completou seu trabalho com sucesso e ganhou ${botConfig.getCashString(cash)} como salário, volte em **2 horas**.`)
                 .setColor(Colors.Blue).setTimestamp(Date.now());
             return await interaction.reply({ embeds: [embed] });
