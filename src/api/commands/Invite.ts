@@ -10,7 +10,7 @@ export default class Invite extends Command {
 
     static async execute(interaction: CommandInteraction) {
 
-        let invite = "https://discord.gg/6myfy4MXXv";
+        let invite = "https://discord.com/invite/48zfhnJ954";
         let link = "https://discord.com/api/oauth2/authorize?client_id=1173669387023167668&permissions=1514781599814&scope=bot";
 
         let invitebt = new ButtonBuilder()
