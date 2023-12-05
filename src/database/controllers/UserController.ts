@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongoose';
 import { IReputation, Reputation } from '../models/Reputation';
 import { ITransaction } from '../models/Transaction';
 import { User, IUser } from '../models/User';
@@ -25,7 +26,7 @@ class UserController {
         }
     }
 
-    static async addItems(userId: string, ...indexes: Number[]) {
+    static async addItems(userId: string, ...indexes: ObjectId[]) {
         try {
             let user = await UserController.getUserById(userId);
             user.inventory.push(...indexes);
@@ -38,13 +39,45 @@ class UserController {
         }
     }
 
-    static async removeItem(userId: string, index: number) {
+    static async removeItem(userId: string, index: ObjectId) {
         try {
 
-            const notEquals = (item: number) => item != index;
+            const notEquals = (item: ObjectId) => item != index;
 
             let user = await UserController.getUserById(userId);
             user.inventory = user.inventory.filter(notEquals);
+            user = await UserController.updateUser(userId, user);
+
+            return user;
+
+        } catch (error) {
+            return null;
+        }
+    }
+
+    static async enableItem(userId: string, index: ObjectId) {
+        try {
+
+            let user = await UserController.getUserById(userId);
+            if (user?.inventory?.includes(index)) user?.activated?.push(index);
+
+            user = await UserController.updateUser(userId, user);
+
+            return user;
+
+        } catch (error) {
+            return null;
+        }
+    }
+
+    static async disableItem(userId: string, index: ObjectId) {
+        try {
+
+            const notEquals = (item: ObjectId) => item != index;
+
+            let user = await UserController.getUserById(userId);
+            user.inventory = user?.inventory?.filter(notEquals);
+
             user = await UserController.updateUser(userId, user);
 
             return user;
