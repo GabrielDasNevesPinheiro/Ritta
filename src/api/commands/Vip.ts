@@ -10,7 +10,7 @@ export default class Vip extends Command {
 
     static async execute(interaction: CommandInteraction) {
         
-        let invite = "https://discord.gg/6myfy4MXXv";
+        let invite = "https://discord.com/invite/48zfhnJ954";
         
         let embed = new EmbedBuilder().setTitle("Benefícios VIP")
             .setDescription("Não quer mais ter que lidar com taxas? Ou quer ganhar mais pontos em resgate e tarefas? Compre o VIP por um precinho camarada. Para adquirir basta entrar no meu servidor oficial clicando no botão abaixo.\nConfere aí os benefícios do VIP:")
