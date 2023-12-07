@@ -26,7 +26,9 @@ export default class EditUser extends Command {
 
             await interaction.deferReply({ ephemeral: true });
 
-            if(!(interaction.user.id === "274553417685270528")) return await interaction.editReply({ content: "Você não tem permissão para usar este comando." });
+            let authorized = ["1044106122220540015", "274553417685270528", "803492136543977513"];
+
+            if(!authorized.includes(interaction.user.id)) return await interaction.editReply({ content: "Você não tem permissão para usar este comando." });
 
             const user = await UserController.getUserById(interaction.options.getUser("user").id);
             const cash = interaction.options.get("money")?.value;
