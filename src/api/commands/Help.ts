@@ -44,8 +44,7 @@ export default class Help extends Command {
                 "`/pay`\n" +
                 "`/raffle`\n" +
                 "`/claim`\n" +
-                "`/tasks`\n" +
-                "`/transactions`\n" 
+                "`/tasks`\n"
             ).setTimestamp(new Date()).setColor(Colors.Green)
 
         if (category == 1) embed = new EmbedBuilder()
@@ -57,11 +56,10 @@ export default class Help extends Command {
                 "`/reps`\n" +
                 "`/vip`\n" +
                 "`/vote`\n" +
-                "`/ban`\n" +
-                "`/banlist`\n" +
                 "`/editemoji`\n" +
                 "`/profile`\n" +
-                "`/aboutme`\n"
+                "`/aboutme`\n" + 
+                "`/transactions`\n" 
             ).setTimestamp(new Date()).setColor(Colors.Green)
 
             await interaction.editReply({ embeds: [embed] })
