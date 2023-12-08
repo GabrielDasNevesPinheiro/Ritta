@@ -115,14 +115,14 @@ export default class BotConfig {
     GIF_7DICE = "https://i.imgur.com/290D4qc.gif"
     GIF_ROULETTE = "https://i.imgur.com/QT0os3y.gif"
     
-
+    // authorized for restricted commands
+    admins = ["1044106122220540015", "274553417685270528", "803492136543977513"];
 
     normalBetChances = 0.5;
     vipBetChances = 0.65;
     vipPassiveEarning = 7;
     vipPassiveEarningCooldown = 60;
     boosterPassiveEarning = 3;
-
     repsLimit = 10000;
     payLimit = 10000;
 

@@ -2,6 +2,7 @@ import { CacheType, CommandInteraction, Options, SlashCommandBuilder } from "dis
 import Command from "./Command";
 import UserController from "../../database/controllers/UserController";
 import { IUser, User } from "../../database/models/User";
+import { botConfig } from "../../app";
 
 export default abstract class BanList extends Command {
 
@@ -11,7 +12,7 @@ export default abstract class BanList extends Command {
 
     static async execute(interaction: CommandInteraction<CacheType>) {
 
-        if (interaction.user.id !== "274553417685270528") return;
+        if(!botConfig.admins.includes(interaction.user.id)) return await interaction.editReply({ content: "Você não tem permissão para usar este comando." });
 
         await interaction.deferReply({ ephemeral: true });
         let banned: IUser[] = await User.find({ banned: true });

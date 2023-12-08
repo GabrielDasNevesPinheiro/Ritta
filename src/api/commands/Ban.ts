@@ -1,6 +1,7 @@
 import { CacheType, CommandInteraction, Options, SlashCommandBuilder } from "discord.js";
 import Command from "./Command";
 import UserController from "../../database/controllers/UserController";
+import { botConfig } from "../../app";
 
 export default abstract class Ban extends Command {
 
@@ -23,7 +24,7 @@ export default abstract class Ban extends Command {
 
     static async execute(interaction: CommandInteraction<CacheType>) {
 
-        if (interaction.user.id !== "274553417685270528") return;
+        if(!botConfig.admins.includes(interaction.user.id)) return await interaction.editReply({ content: "Você não tem permissão para usar este comando." });
 
         await interaction.deferReply();
         let userId = interaction.options.getUser("user").id;
