@@ -9,7 +9,7 @@ export default class BotConfig {
     // LZ server
     NO_STONKS = "<:Desapontado:1180561094327148686>"
     STONKS = "<:Brilhante:1180561782801191042>"
-    CASH = "<:LZ_fichas:1174026554075005020>"
+    CASH = "<:fichas:1182514243103358976>"
     FLOWER = "<:Te_amo:1180561245829615616>"
     FEAR = "<:Medo:1180368513165168730>"
     THINKING = "<:Duvida:1180559151122878464>"
