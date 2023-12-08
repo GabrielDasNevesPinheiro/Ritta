@@ -60,7 +60,7 @@ export default class Bet extends Command {
         let confirmed: IUser[] = [];
 
         const collectorFilter = (i: ButtonInteraction) => i.user.id === targetUser.userId;
-        const collector = response.createMessageComponentCollector({ componentType: ComponentType.Button, time: 60000, filter: collectorFilter });
+        const collector = response.createMessageComponentCollector({ componentType: ComponentType.Button, time: 300000, filter: collectorFilter });
 
         collector.on("collect", async (confirmation) => {
 
