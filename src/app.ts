@@ -2,18 +2,18 @@ import { Client, GatewayIntentBits, CacheType, TextChannel, ActivityType, EmbedB
 import { config } from "dotenv";
 import connectDatabase from "./database/Connection";
 import { Settings } from "./database/models/Settings";
-import postSlashCommands from "./api/Register";
+import { postSlashCommands } from './api/Register';
 import executeAction from "./handlers/InteractionHandler";
 import BotConfig from "./util/BotConfig";
 import { checkVoted, countBoosterPassiveCash, countVipPassiveCash, sortRaffle, startCrash } from './util/PassiveSystems';
 import UserController from './database/controllers/UserController';
 import { cooldownCheck, isBoosterExpired, isVipExpired } from './util/DateUtils';
 import AutoPoster from 'topgg-autoposter';
+import { cooldowns } from './util/InteractionUtils';
 
 config()
 const token = process.env.BOT_TOKEN;
 let botConfig: BotConfig = null;
-let cooldowns = new Collection<String, Boolean>();
 let votedPlayersChecked: { [key: string]: boolean } = {}
 connectDatabase();
 
@@ -179,4 +179,4 @@ client.on("guildMemberUpdate", async (old, now) => {
 
 client.login(token);
 
-export { botConfig, cooldowns }
+export { botConfig }
