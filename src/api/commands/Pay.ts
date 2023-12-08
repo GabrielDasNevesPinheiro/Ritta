@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Colors, CommandInteraction, ComponentType, EmbedBuilder, SlashCommandBuilder } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, Colors, CommandInteraction, ComponentType, EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import Command from "./Command";
 import UserController from "../../database/controllers/UserController";
 import { botConfig } from "../../app";
@@ -34,57 +34,66 @@ export default class Pay extends Command {
 
         let res = await checkPayValues(targetUserId, String(ammount), interaction);
 
-        if(!res) return;
+        if (!res) return;
 
         let confirm = new ButtonBuilder()
             .setCustomId("agree")
-            .setLabel("PAGAR (0/2)")
+            .setLabel("Confirmar")
+            .setEmoji(botConfig.CASH)
             .setStyle(ButtonStyle.Success)
 
         let row = new ActionRowBuilder<ButtonBuilder>().addComponents(confirm);
 
-        let response = await interaction.editReply({ content: 
-            `${botConfig.HI} | <@${targetUser.userId}>, <@${user.userId}> quer te enviar ${botConfig.getCashString(ammount)}, para aceitar, você e <@${user.userId}> devem clicar no botão __PAGAR__ em até <t:${getMinutesCooldownFromNow(0.22)}:R>.\n`+
-            `**A equipe do Leozito não se responsabiliza por roubos ou golpes. **\n`, embeds: [], components: [row] });
-        let confirmed: IUser[] = [];
+        let response = await interaction.editReply({
+            content:
+                `${botConfig.BRIGHT} Você está prestes a transferir ${botConfig.getCashString(ammount)}, para <@${targetUser.userId}>.\nPara concluir o pagamento, o destinatário deve confirmar até em até <t:${getMinutesCooldownFromNow(5)}>(<t:${getMinutesCooldownFromNow(5)}:R>).\n`,
+            embeds: [], components: [row]
+        });
 
-        const collector = response.createMessageComponentCollector({ componentType: ComponentType.Button, time: 12000 });
+        const collectorFilter = (i: ButtonInteraction) => i.user.id === targetUser.userId;
+        const collector = response.createMessageComponentCollector({ componentType: ComponentType.Button, time: 300000, filter: collectorFilter });
 
         collector.on("collect", async (confirmation) => {
-            
-            if(confirmation.customId === "agree") {
-                
-                if(confirmation.user.id === user.userId && confirmed.indexOf(user) == -1) {
-                    confirmed.push(user);
-                    confirm = confirm.setLabel(`PAGAR (${confirmed.length}/2)`);
-                    await confirmation.update({ components: [row]});
-                }
-                if(confirmation.user.id === targetUser.userId && confirmed.indexOf(targetUser) == -1) {
-                    confirmed.push(targetUser);
-                    confirm = confirm.setLabel(`PAGAR (${confirmed.length}/2)`);
-                    await confirmation.update({ components: [row]});
-                }
-                
-                if(confirmed.length == 2) {
 
-                    user = await UserController.removeCash(user, {
-                        from: user.userId,
-                        to: targetUser.userId,
-                        ammount
-                    });
-
-                    targetUser = await UserController.addCash(targetUser, {
-                        from: user.userId,
-                        to: targetUser.userId,
-                        ammount
-                    });
-
-                    await confirmation.editReply({ content: `**${botConfig.GG} | <@${user.userId}>**, Você transferiu ${botConfig.getCashString(ammount)} para <@${targetUserId}> com sucesso!`, embeds: [], components: [] })
-                    return;
-                }
-
-            }
+            user = await UserController.removeCash(user, {
+                from: user.userId,
+                to: targetUser.userId,
+                ammount
             });
-        }
+
+            targetUser = await UserController.addCash(targetUser, {
+                from: user.userId,
+                to: targetUser.userId,
+                ammount
+            });
+
+            confirm = new ButtonBuilder()
+            .setCustomId("agree")
+            .setLabel("Transferido")
+            .setStyle(ButtonStyle.Secondary)
+            .setDisabled(true);
+
+            row = new ActionRowBuilder<ButtonBuilder>().addComponents(confirm);
+
+            await interaction.editReply({ components: [row]});
+
+            await confirmation.reply({ content: `**${botConfig.GG} | <@${user.userId}>**, Você transferiu ${botConfig.getCashString(ammount)} para <@${targetUserId}> com sucesso!`, embeds: [], components: [] })
+            return;
+
+        });
+
+        collector.on("end", async () => {
+
+            confirm = new ButtonBuilder()
+            .setCustomId("agree")
+            .setLabel("Transferência expirada")
+            .setStyle(ButtonStyle.Secondary)
+            .setDisabled(true);
+
+            row = new ActionRowBuilder<ButtonBuilder>().addComponents(confirm);
+
+            await interaction.editReply({ components: [row]});
+        });
+    }
 
 }
