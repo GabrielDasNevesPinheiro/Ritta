@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 
-
+enum ItemType {
+    BACKGROUND = 0,
+    BADGE = 1,
+    PET = 2
+}
 
 interface IStore {
     name: string;
@@ -33,4 +37,4 @@ const storeSchema = new mongoose.Schema<IStore>({
 const Store: mongoose.Model<IStore> = mongoose.models.Marry || mongoose.model<IStore>("Store", storeSchema);
 
 
-export { Store, type IStore }
+export { Store, type IStore, ItemType }
