@@ -1,4 +1,4 @@
-import { CacheType, CommandInteraction, Interaction } from "discord.js";
+import { CacheType, Collection, CommandInteraction, Interaction } from "discord.js";
 import Command from '../api/commands/Command';
 import path from "path";
 import fs from "fs";
@@ -7,19 +7,32 @@ import { cooldowns } from "../util/InteractionUtils";
 
 let restricted = ["edituser", "ban", "banlist"];
 
+let xpCooldown = new Collection<String, Boolean>();
+
 export const commands: { [key: string]: typeof Command } = parseSlashCommands();
 export const restrictedCommands: { [key: string]: typeof Command } = parseRestrictedCommands();
 
 export default function executeAction(cmdName: string, interaction: Interaction<CacheType>) {
-    UserController.getUserById(interaction.user.id).then((res) => {
+    UserController.getUserById(interaction.user.id).then(async (res) => {
 
         if (!res?.banned) {
             commands[cmdName].execute(interaction as CommandInteraction);
             cooldowns.set(interaction.user.id, true);
-
+            
+            if(!xpCooldown.has(interaction.user.id)) {
+                res.xp += 24;
+                await UserController.updateUser(String(res.userId), res);
+            }
+            
             setTimeout(() => {
                 cooldowns.delete(interaction.user.id);
             }, 3000);
+            
+            setTimeout(() => {
+                xpCooldown.delete(interaction.user.id);
+            }, 120000);
+            
+            xpCooldown.set(interaction.user.id, true);
         }
     });
 }
