@@ -283,7 +283,7 @@ export async function getProfile(user: IUser, discordProfile: User, reps: number
     ctx.font = 'bold 100px Outfit';
     ctx.fillText(discordProfile.username, namePoint.x, namePoint.y);
     ctx.fillText(`${reps}`, repPoint.x, repPoint.y);
-    ctx.fillText(`${user.coins.toLocaleString("pt-BR")} fichas`, scorePoint.x, scorePoint.y);
+    ctx.fillText(`${user.coins.toLocaleString("pt-BR")}`, scorePoint.x, scorePoint.y);
     ctx.fillText(partner ? `Casado(a) com ${partner}` : `Solteiro(a)`, marryPoint.x, marryPoint.y);
     ctx.fillStyle = "#bfbfbf";
     drawTextInBox(ctx, String(user.about), aboutmePoint.x, aboutmePoint.y, 932, 50, "Consolas", "bold");
