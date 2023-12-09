@@ -28,14 +28,12 @@ export default class Raffle extends Command {
                 .setLabel("Informações do vencedor")
                 .setDisabled(!RaffleManager.lastWinner)
                 .setCustomId("info")
-                .setEmoji("🏆")
                 .setStyle(ButtonStyle.Secondary)
             
             let players = new ButtonBuilder()
             .setLabel("Participantes")
             .setCustomId("players")
             .setDisabled(RaffleManager.getStats().players <= 0)
-            .setEmoji("👥")
             .setStyle(ButtonStyle.Primary)
             let row = new ActionRowBuilder<ButtonBuilder>().addComponents(players, info);
 

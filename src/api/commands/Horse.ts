@@ -50,7 +50,6 @@ export default abstract class Horse extends Command {
             row.addComponents(new ButtonBuilder()
                 .setLabel(horse.name)
                 .setCustomId(horse.name)
-                .setEmoji(horse.emoji)
                 .setStyle(ButtonStyle.Secondary)
             );
         });

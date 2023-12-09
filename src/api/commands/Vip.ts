@@ -21,7 +21,6 @@ export default class Vip extends Command {
                 .setLabel(`Comprar (R$ ${botConfig.vipPrice.toFixed(2).replace('.', ',')})`)
                 .setURL(invite)
                 .setStyle(ButtonStyle.Link)
-                .setEmoji("💵")
 
             let row = new ActionRowBuilder<ButtonBuilder>().addComponents(button);
 

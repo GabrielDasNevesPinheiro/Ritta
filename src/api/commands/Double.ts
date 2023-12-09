@@ -74,19 +74,16 @@ export default class Double extends Command {
             .setLabel("Red (2x)")
             .setStyle(ButtonStyle.Danger)
             .setCustomId("red")
-            .setEmoji(`${botConfig.CASH}`);
 
         let black = new ButtonBuilder()
             .setLabel("Black (2x)")
             .setStyle(ButtonStyle.Secondary)
             .setCustomId("black")
-            .setEmoji(`${botConfig.CASH}`)
 
         let white = new ButtonBuilder()
             .setLabel("White (14x)")
             .setStyle(ButtonStyle.Success)
             .setCustomId("white")
-            .setEmoji(`${botConfig.CASH}`)
 
         let row = new ActionRowBuilder<ButtonBuilder>().addComponents([red, black, white]);
 

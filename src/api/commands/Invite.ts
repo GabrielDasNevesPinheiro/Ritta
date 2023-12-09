@@ -15,7 +15,6 @@ export default class Invite extends Command {
 
         let invitebt = new ButtonBuilder()
             .setLabel(`Me Adicione`)
-            .setEmoji(botConfig.GG)
             .setURL(link)
             .setStyle(ButtonStyle.Link)
 
