@@ -271,6 +271,8 @@ export async function getProfile(user: IUser, discordProfile: User, reps: number
     let photoSize: Position = { x: 445, y: 442 };
 
     let namePoint: Position = { x: 605, y: 465 };
+    let levelPoint: Position = { x: 536, y: 1070 };
+    let exPoint: Position = { x: 627, y: 1027 };
     let repPoint: Position = { x: 265, y: 1260 };
     let scorePoint: Position = { x: 249, y: 690 };
     let marryPoint: Position = { x: 249, y: 879 };
@@ -283,9 +285,12 @@ export async function getProfile(user: IUser, discordProfile: User, reps: number
     ctx.font = 'bold 100px Outfit';
     ctx.fillText(discordProfile.username, namePoint.x, namePoint.y);
     ctx.fillText(`${reps}`, repPoint.x, repPoint.y);
+    ctx.fillText(`${Math.floor((user?.xp ?? 0) / 500)}`, levelPoint.x, levelPoint.y);
     ctx.fillText(`${user.coins.toLocaleString("pt-BR")}`, scorePoint.x, scorePoint.y);
-    ctx.fillText(partner ? `Casado(a) com ${partner}` : `Solteiro(a)`, marryPoint.x, marryPoint.y);
+    ctx.fillText(partner ? `${partner}` : `Solteiro(a)`, marryPoint.x, marryPoint.y);
     ctx.fillStyle = "#bfbfbf";
+    ctx.font = "bold 40px Outfit";
+    ctx.fillText(`${user?.xp ?? 0}`, exPoint.x, exPoint.y);
     drawTextInBox(ctx, String(user.about), aboutmePoint.x, aboutmePoint.y, 932, 50, "Consolas", "bold");
 
     return canvas.toBuffer();
