@@ -39,7 +39,6 @@ export default class Pay extends Command {
         let confirm = new ButtonBuilder()
             .setCustomId("agree")
             .setLabel("Confirmar")
-            .setEmoji(botConfig.CASH)
             .setStyle(ButtonStyle.Success)
 
         let row = new ActionRowBuilder<ButtonBuilder>().addComponents(confirm);
