@@ -1,4 +1,4 @@
-import { CanvasRenderingContext2D, Image, createCanvas, loadImage } from "canvas";
+import { CanvasRenderingContext2D, Image, createCanvas, loadImage, registerFont } from "canvas";
 import { botConfig } from "../app";
 import { User } from "discord.js";
 import { IUser } from "../database/models/User";
@@ -242,7 +242,7 @@ export default async function getRank(users: User[], info: IUser[], page: number
         y = reference.y + ySum * index;
 
         ctx.fillText(`${images.indexOf(image) + 1}° ${users[index].username}`, x + 279, y + 90);
-        
+
         ctx.font = 'bold 60px Arial';
         ctx.fillText(info[index].coins.toLocaleString("pt-BR") + " fichas", x + 279, y + 160);
 
@@ -258,35 +258,35 @@ export default async function getRank(users: User[], info: IUser[], page: number
 
 export async function getProfile(user: IUser, discordProfile: User, reps: number, partner: string = null) {
 
-    let width = 561;
-    let height = 420;
+    let width = 1992;
+    let height = 1314;
 
+    
     let profileImage = await loadImageURL(discordProfile.displayAvatarURL({ size: 256, extension: "png" }));
-
+    
     const canvas = createCanvas(width, height);
     const ctx: CanvasRenderingContext2D = canvas.getContext("2d");
+    
+    let photoPoint: Position = { x: 118, y: 106 };
+    let photoSize: Position = { x: 445, y: 442 };
 
-    let photoPoint: Position = { x: 24, y: 157 };
-    let photoSize: Position = { x: 150, y: 150 };
+    let namePoint: Position = { x: 605, y: 465 };
+    let repPoint: Position = { x: 265, y: 1260 };
+    let scorePoint: Position = { x: 249, y: 690 };
+    let marryPoint: Position = { x: 249, y: 879 };
+    let aboutmePoint: Position = { x: 996, y: 876 };
 
-    let namePoint: Position = { x: 191, y: 249 };
-    let repPoint: Position = { x: 191, y: 286 };
-    let scorePoint: Position = { x: 306, y: 286 };
-    let marryPoint: Position = { x: 191, y: 313 };
-    let aboutmePoint: Position = { x: 34, y: 356 };
-
-    ctx.drawImage(profileImage, photoPoint.x, photoPoint.y, photoSize.x, photoSize.y);
+    drawRoundedImage(ctx, profileImage, photoPoint.x, photoPoint.y, photoSize.x);
     ctx.drawImage(await loadImage(botConfig.LOCAL_IMG_PROFILE_TEMPLATE), 0, 0);
 
     ctx.fillStyle = "#FFF";
-    ctx.font = '20px Arial';
-
+    ctx.font = 'bold 100px Outfit';
     ctx.fillText(discordProfile.username, namePoint.x, namePoint.y);
-    ctx.fillText(`${reps} Reps`, repPoint.x, repPoint.y);
+    ctx.fillText(`${reps}`, repPoint.x, repPoint.y);
     ctx.fillText(`${user.coins.toLocaleString("pt-BR")} fichas`, scorePoint.x, scorePoint.y);
     ctx.fillText(partner ? `Casado(a) com ${partner}` : `Solteiro(a)`, marryPoint.x, marryPoint.y);
-    ctx.font = '18px Arial';
-    drawTextInBox(ctx, String(user.about), aboutmePoint.x, aboutmePoint.y, 499, 74);
+    ctx.fillStyle = "#bfbfbf";
+    drawTextInBox(ctx, String(user.about), aboutmePoint.x, aboutmePoint.y, 932, 50, "Consolas", "bold");
 
     return canvas.toBuffer();
 
@@ -299,11 +299,12 @@ function drawTextInBox(
     x: number,
     y: number,
     boxWidth: number,
-    boxHeight: number
+    fontSize: number = 23,
+    font: string = "Arial",
+    preFont: string = ""
 ) {
     // Define a fonte e alinhamento do texto
-    const fontSize = 23;
-    ctx.font = `${fontSize}px Arial`;
+    ctx.font = `${preFont} ${fontSize}px ${font}`;
 
     // Define os limites do retângulo
     const boxX = x;
@@ -329,4 +330,16 @@ function drawTextInBox(
     }
 
     ctx.fillText(line, boxX, testY);
+}
+
+
+function drawRoundedImage(ctx: CanvasRenderingContext2D, image: Image, x: number, y: number, size: number) {
+    const borderRadius = size / 2;
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(x + borderRadius, y + borderRadius, borderRadius, 0, Math.PI * 2);
+    ctx.closePath();
+    ctx.clip();
+    ctx.drawImage(image, x, y, size, size);
+    ctx.restore();
 }
