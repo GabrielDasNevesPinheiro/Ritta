@@ -191,9 +191,9 @@ export async function getRouletteResult(result: string) {
 }
 
 
-export default async function getRank(users: User[], info: IUser[]) {
-    let width = 1350;
-    let height = 900;
+export default async function getRank(users: User[], info: IUser[], page: number = 0) {
+    let width = 2020;
+    let height = 1346;
 
     const canvas = createCanvas(width, height);
     const ctx: CanvasRenderingContext2D = canvas.getContext("2d");
@@ -207,41 +207,48 @@ export default async function getRank(users: User[], info: IUser[]) {
         images.push(await loadImageURL(user.displayAvatarURL({ extension: "png", size: 64 }) || "https://archive.org/download/discordprofilepictures/discordblue.png"));
     }
 
-    let leftInitialPoint: Position = { x: 67, y: 140 };
-    let rightInitialPoint: Position = { x: 690, y: 140 };
-    let ySum = 153;
+    let top3: Position[] = [{ x: 369, y: 595 }, { x: 52, y: 733 }, { x: 688, y: 773 }];
+    let reference: Position = { x: 1080, y: 35 };
+    let ySum = 260;
 
-    images.forEach(async (image, index) => {
-        let x, y;
+    if (page * 5 > images.length) page = Math.floor(images.length / 5);
 
-        if (index < 5) {
-            x = leftInitialPoint.x;
-            y = leftInitialPoint.y + ySum * index;
-        } else {
-            x = rightInitialPoint.x;
-            y = rightInitialPoint.y + ySum * (index - 5);
-        }
+
+    ctx.drawImage(images[0], top3[0].x, top3[0].y, 322, 322);
+    ctx.drawImage(images[1], top3[1].x, top3[1].y, 322, 322);
+    ctx.drawImage(images[2], top3[2].x, top3[2].y, 322, 322);
+
+    images.slice(page * 5, (page * 5) + 5).forEach(async (image, index) => {
+
+        let x: number, y: number;
+
+        ctx.drawImage(image, reference.x, (reference.y + (ySum * (index))), 257, 257);
+
         ctx.drawImage(image, x, y, 150, 150);
+
+
     });
+
 
     ctx.drawImage(await loadImage(botConfig.LOCAL_IMG_RANK), 0, 0);
 
-    images.forEach(async (image, index) => {
-        let x, y;
-        ctx.fillStyle = "#FFF";
-        ctx.font = '50px Arial';
-        if (index < 5) {
-            x = leftInitialPoint.x;
-            y = leftInitialPoint.y + ySum * index;
-        } else {
-            x = rightInitialPoint.x;
-            y = rightInitialPoint.y + ySum * (index - 5);
-        }
-        ctx.fillText(users[index].username, x + 180, y + 50);
-        ctx.font = '30px Arial';
-        ctx.fillText("ID: "+users[index].id, x + 180, y + 89);
-        ctx.font = '30px Arial';
-        ctx.fillText(info[index].coins.toLocaleString("pt-BR") + " fichas", x + 180, y + 129);
+    images.slice(page * 5, (page * 5) + 5).forEach(async (image, index) => {
+        let x: number, y: number;
+        ctx.fillStyle = "#000";
+        ctx.font = 'bold 70px Arial';
+
+
+        x = reference.x;
+        y = reference.y + ySum * index;
+
+        ctx.fillText(`${images.indexOf(image) + 1}° ${users[index].username}`, x + 279, y + 90);
+        
+        ctx.font = 'bold 60px Arial';
+        ctx.fillText(info[index].coins.toLocaleString("pt-BR") + " fichas", x + 279, y + 160);
+
+        ctx.fillStyle = "#333333";
+        ctx.font = '40px Arial';
+        ctx.fillText("ID: " + users[index].id, x + 279, y + 215);
     });
 
     return canvas.toBuffer();
@@ -250,7 +257,7 @@ export default async function getRank(users: User[], info: IUser[]) {
 
 
 export async function getProfile(user: IUser, discordProfile: User, reps: number, partner: string = null) {
-    
+
     let width = 561;
     let height = 420;
 
@@ -263,14 +270,14 @@ export async function getProfile(user: IUser, discordProfile: User, reps: number
     let photoSize: Position = { x: 150, y: 150 };
 
     let namePoint: Position = { x: 191, y: 249 };
-    let repPoint: Position = { x: 191 , y: 286 };
-    let scorePoint: Position = { x: 306 , y: 286 };
-    let marryPoint: Position = { x: 191 , y: 313 };
+    let repPoint: Position = { x: 191, y: 286 };
+    let scorePoint: Position = { x: 306, y: 286 };
+    let marryPoint: Position = { x: 191, y: 313 };
     let aboutmePoint: Position = { x: 34, y: 356 };
 
     ctx.drawImage(profileImage, photoPoint.x, photoPoint.y, photoSize.x, photoSize.y);
     ctx.drawImage(await loadImage(botConfig.LOCAL_IMG_PROFILE_TEMPLATE), 0, 0);
-    
+
     ctx.fillStyle = "#FFF";
     ctx.font = '20px Arial';
 
@@ -282,7 +289,7 @@ export async function getProfile(user: IUser, discordProfile: User, reps: number
     drawTextInBox(ctx, String(user.about), aboutmePoint.x, aboutmePoint.y, 499, 74);
 
     return canvas.toBuffer();
-    
+
 }
 
 
@@ -293,34 +300,33 @@ function drawTextInBox(
     y: number,
     boxWidth: number,
     boxHeight: number
-  ) {
+) {
     // Define a fonte e alinhamento do texto
     const fontSize = 23;
     ctx.font = `${fontSize}px Arial`;
-  
+
     // Define os limites do retângulo
     const boxX = x;
     const boxY = y;
-  
+
     // Verifica se o texto se ajusta aos limites da caixa
     const words = text.split(' ');
     let line = '';
     let testY = boxY;
-    
+
     for (let i = 0; i < words.length; i++) {
-      const testLine = line + words[i] + ' ';
-      const metrics = ctx.measureText(testLine);
-      const testWidth = metrics.width;
-  
-      if (testWidth > boxWidth && i > 0) {
-        ctx.fillText(line, boxX, testY);
-        line = words[i] + ' ';
-        testY += fontSize; // Ajuste para a próxima linha
-      } else {
-        line = testLine;
-      }
+        const testLine = line + words[i] + ' ';
+        const metrics = ctx.measureText(testLine);
+        const testWidth = metrics.width;
+
+        if (testWidth > boxWidth && i > 0) {
+            ctx.fillText(line, boxX, testY);
+            line = words[i] + ' ';
+            testY += fontSize; // Ajuste para a próxima linha
+        } else {
+            line = testLine;
+        }
     }
-  
+
     ctx.fillText(line, boxX, testY);
-  }
-  
+}
