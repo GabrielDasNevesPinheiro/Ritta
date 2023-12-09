@@ -279,7 +279,12 @@ export async function getProfile(user: IUser, discordProfile: User, reps: number
     let aboutmePoint: Position = { x: 996, y: 876 };
 
     drawRoundedImage(ctx, profileImage, photoPoint.x, photoPoint.y, photoSize.x);
-    ctx.drawImage(await loadImage(botConfig.LOCAL_IMG_PROFILE_TEMPLATE), 0, 0);
+
+    let background: Image = null;
+
+    background = await loadImage(user.activated.length == 0 ? botConfig.LOCAL_IMG_PROFILE_TEMPLATE_NOBG : botConfig.LOCAL_IMG_PROFILE_TEMPLATE);
+
+    ctx.drawImage(background, 0, 0);
 
     ctx.fillStyle = "#FFF";
     ctx.font = 'bold 100px Outfit';
