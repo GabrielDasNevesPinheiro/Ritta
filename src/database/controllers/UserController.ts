@@ -87,9 +87,9 @@ class UserController {
         }
     }
 
-    static async getRanking(): Promise<IUser[]> {
+    static async getRanking(max: number = 30): Promise<IUser[]> {
         try {
-            let users = await User.find().sort({ coins: -1 });
+            let users = await User.find().sort({ coins: -1 }).limit(max);
             users = users.filter(user => (user.userId !== "274553417685270528") && (user.userId !== "1044106122220540015"));
             return users;
         } catch (error) {
