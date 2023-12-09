@@ -7,6 +7,7 @@ interface IUser {
     about?: String
     inventory?: Array<ObjectId>
     activated?: Array<ObjectId>
+    xp?: number
     partner?: String
     coins?: Number
     banned?: Boolean
@@ -43,6 +44,11 @@ const userSchema = new mongoose.Schema<IUser>({
         type: [mongoose.Types.ObjectId],
         default: [],
         required: false
+    },
+    xp: {
+        type: Number,
+        required: false,
+        default: 0
     },
     banReason: {
         type: String,
