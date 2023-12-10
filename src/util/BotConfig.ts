@@ -130,125 +130,125 @@ export default class BotConfig {
     vipPrice = 10.00;
 
     emojis = ["🐵", "🐶"];
-    
-    pets: [{ [key: string]: { name: string, emoji: string, price: number } }] = [{
-        "Alexanduck": {
+
+    pets: Array<{ name: string, emoji: string, price: number }> = [
+        {
             "name": "Alexanduck",
             "emoji": "<a:Alexanduck:1180519634164785224>",
             "price": 160000
         },
-        "Axeon": {
+        {
             "name": "Axeon",
             "emoji": "<a:Axeon:1180518434442854421>",
             "price": 140000
         },
-        "Billance": {
+        {
             "name": "Billance",
             "emoji": "<a:Billance:1180521545727221841>",
             "price": 135000
         },
-        "Blazehound": {
+        {
             "name": "Blazehound",
             "emoji": "<a:Blazehound:1180518403832815626>",
             "price": 275000
         },
-        "Bulla": {
+        {
             "name": "Bulla",
             "emoji": "<a:Bulla:1180518460728553543>",
             "price": 85000
         },
-        "Chimpmunk": {
+        {
             "name": "Chimpmunk",
             "emoji": "<a:Chimpmunk:1180518500696064080>",
             "price": 115000
         },
-        "Croakur": {
+        {
             "name": "Croakur",
             "emoji": "<a:Croakur:1180518919891595304>",
             "price": 235000
         },
-        "Doyle": {
+        {
             "name": "Doyle",
             "emoji": "<a:Doyle:1180521567608901742>",
             "price": 95000
         },
-        "Firestorm": {
+        {
             "name": "Firestorm",
             "emoji": "<a:Firestorm:1180519502597849229>",
             "price": 220000
         },
-        "Frongue": {
+        {
             "name": "Frongue",
             "emoji": "<a:Frongue:1180519571036323940>",
             "price": 75000
         },
-        "Furlion": {
+        {
             "name": "Furlion",
             "emoji": "<a:Furlion:1180519533996429373>",
             "price": 90000
         },
-        "Gartesque": {
+        {
             "name": "Gartesque",
             "emoji": "<a:Gartesque:1180519732651233360>",
             "price": 285000
         },
-        "Gorryson": {
+        {
             "name": "Gorryson",
             "emoji": "<a:Gorryson:1180568264850546839>",
             "price": 300000
         },
-        "Grizzitch": {
+        {
             "name": "Grizzitch",
             "emoji": "<a:Grizzitch:1180521213936816190>",
             "price": 230000
         },
-        "Murko": {
+        {
             "name": "Murko",
             "emoji": "<a:Murko:1180521244936900660>",
             "price": 65000
         },
-        "Ozy": {
+        {
             "name": "Ozy",
             "emoji": "<a:Ozy:1180521274892632094>",
             "price": 155000
         },
-        "Quaggi": {
+        {
             "name": "Quaggi",
             "emoji": "<a:Quaggi:1180522208368525392>",
             "price": 60000
         },
-        "Roawrath": {
+        {
             "name": "Roawrath",
             "emoji": "<a:Roawrath:1180521430778134558>",
             "price": 190000
         },
-        "Snowbane": {
+        {
             "name": "Snowbane",
             "emoji": "<a:Snowbane:1180521491184500937>",
             "price": 130000
         },
-        "Sparky": {
+        {
             "name": "Sparky",
             "emoji": "<a:Sparky:1180521458976424037>",
             "price": 150000
         },
-        "Suntaur": {
+        {
             "name": "Suntaur",
             "emoji": "<a:Suntaur:1180568277878046810>",
             "price": 245000
         },
-        "Reaper": {
+        {
             "name": "Reaper",
             "emoji": "<a:Reaper:1180521301681647707>",
             "price": 215000
         },
-        "Vampy": {
+        {
             "name": "Vampy",
             "emoji": "<a:Vampy:1180521520863395873>",
             "price": 80000
         }
-    }];
-    
+    ];
+
     crashChannel = "1180514195192688691";
 
     public constructor(config: ISettings) {
