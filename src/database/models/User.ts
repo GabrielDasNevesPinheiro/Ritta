@@ -7,7 +7,7 @@ interface IUser {
     about?: String
     inventory?: Array<ObjectId>
     activated?: Array<ObjectId>
-    pets: Array<String>
+    pets?: Array<String>
     xp?: number
     partner?: String
     coins?: Number
