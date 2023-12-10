@@ -29,7 +29,8 @@ class UserController {
     static async addItems(userId: string, ...indexes: ObjectId[]) {
         try {
             let user = await UserController.getUserById(userId);
-            user.inventory.push(...indexes);
+            user.inventory?.push(...indexes);
+            if(!user?.inventory) user.inventory = [...indexes];
             user = await UserController.updateUser(userId, user);
 
             return user;
@@ -77,6 +78,7 @@ class UserController {
 
             let user = await UserController.getUserById(userId);
             if (user?.inventory?.includes(index)) user?.activated?.push(index);
+            if(!user?.activated) user.activated = [index];
 
             user = await UserController.updateUser(userId, user);
 
