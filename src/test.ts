@@ -51,8 +51,6 @@ async function addBadges() {
     const names = ["Yoroi", "Poke Ball", "Luxury Ball", "Hattmos", "Blizzard King", "Black Panther", "Mr Potato", "Elite Troll", "Mythical King", "Mr Capybara", "Lion", "Love Cat", "Hana Hana no Mi", "Ito Ito no Mi", "Gomu Gomu no Mi", "Expert Wizard", "Squire", "Red Demon", "Golden Demon", "Havoc", "Stylish Panda", "Archery", "Wolf cub", "Night Wolf", "Golden Tiger", "Diamond Tiger", "Bat", "Skeleton", "Skeleton Legend", "King Cat", "Paw", "Mask", "Fire Demon", "RGB Demon", "Medal of Honor", "Medal of Respect", "Golden Reaper", "Scary Mask", "Ninja", "Flower", "Lion", "Leozito"];
     const rarities = [Rarity.RARE, Rarity.COMMON, Rarity.COMMON, Rarity.MYTHIC, Rarity.MYTHIC, Rarity.RARE, Rarity.COMMON, Rarity.MYTHIC, Rarity.MYTHIC, Rarity.COMMON, Rarity.COMMON, Rarity.COMMON, Rarity.RARE, Rarity.RARE, Rarity.RARE, Rarity.RARE, Rarity.COMMON, Rarity.MYTHIC, Rarity.MYTHIC, Rarity.MYTHIC, Rarity.COMMON, Rarity.COMMON, Rarity.RARE, Rarity.RARE, Rarity.MYTHIC, Rarity.MYTHIC, Rarity.MYTHIC, Rarity.RARE, Rarity.MYTHIC, Rarity.COMMON, Rarity.COMMON, Rarity.COMMON, Rarity.COMMON, Rarity.COMMON, Rarity.MYTHIC, Rarity.MYTHIC, Rarity.COMMON, Rarity.COMMON, Rarity.COMMON, Rarity.COMMON, Rarity.ULTRA_MYTHIC, Rarity.ULTRA_MYTHIC];
     const prices = [500000, 200000, 215000, 4500000, 3000000, 900000, 400000, 4000000, 5500000, 300000, 500000, 450000, 700000, 700000, 700000, 800000, 500000, 1000000, 1000000, 4200000, 650000, 200000, 1300000, 2000000, 9200000, 10700000, 3100000, 3000000, 4000000, 930000, 355000, 100000, 300000, 400000, 5500000, 6000000, 250000, 70000, 80000, 120000, 25000000, 50000000]
-    
-    
 
     images.forEach(async (image, index) => await addItemToStore(image, names[index], prices[index], rarities[index]));
 
