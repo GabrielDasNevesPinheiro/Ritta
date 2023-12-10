@@ -59,7 +59,9 @@ class UserController {
         try {
 
             let user = await UserController.getUserById(userId);
+
             user.pets?.push(pet);
+            if(!user?.pets) user.pets = [...pet];
 
             user = await UserController.updateUser(userId, user);
 
