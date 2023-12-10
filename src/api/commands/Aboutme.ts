@@ -12,7 +12,7 @@ export default abstract class Aboutme extends Command {
             option.setName("text")
             .setDescription("O texto que será sua descrição")
             .setRequired(true)
-            .setMinLength(5).setMaxLength(80)
+            .setMinLength(5).setMaxLength(250)
             ).setDescription("Modifique o texto do seu perfil")
 
         static async execute(interaction: CommandInteraction<CacheType>) {
