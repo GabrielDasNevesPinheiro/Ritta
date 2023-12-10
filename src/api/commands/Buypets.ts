@@ -20,7 +20,7 @@ export default abstract class Buypets extends Command {
 
         let pets = botConfig.pets.filter((pet) => user.pets?.indexOf(pet.emoji) == -1);
 
-        if(pets.length == 0) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, Parece que você já tem todos os pets.` });
+        if (pets.length == 0) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, Parece que você já tem todos os pets.` });
 
         const buildEmbed = (item: { name: string, price: number, emoji: string }) =>
             new EmbedBuilder().setTitle(`${item.name} `)
@@ -73,13 +73,13 @@ export default abstract class Buypets extends Command {
                 await confirmation.update({});
                 await interaction.followUp({ content: `${botConfig.FRIGHT} | <@${interaction.user.id}>, Você adquiriu o pet ${pets[active].emoji}.`, ephemeral: true });
 
-                
+
                 pets = botConfig.pets.filter((pet) => user.pets?.indexOf(pet.emoji) == -1);
                 embeds = pets.map(buildEmbed);
 
                 let text = `${botConfig.BRIGHT} Exibindo pet ${active + 1} de ${embeds.length}.`;
 
-                if(embeds.length == 0) {
+                if (embeds.length == 0) {
                     await interaction.editReply({ content: `${botConfig.FRIGHT} | <@${interaction.user.id}>, Parece que não temos mais nada aqui.`, components: [], embeds: [] });
                     return;
                 }
