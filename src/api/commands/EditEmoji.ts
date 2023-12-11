@@ -2,9 +2,10 @@ import { CacheType, CommandInteraction, SlashCommandBuilder } from "discord.js";
 import { isVipExpired } from "../../util/DateUtils";
 import UserController from "../../database/controllers/UserController";
 import { botConfig } from "../../app";
+import Command from "./Command";
 
 
-export default abstract class EditEmoji {
+export default abstract class EditEmoji extends Command {
 
     static command: SlashCommandBuilder = new SlashCommandBuilder()
         .setName("editemoji")
