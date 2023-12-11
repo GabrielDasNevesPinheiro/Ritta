@@ -88,16 +88,16 @@ export default class Bet extends Command {
                 loser = targetUser;
                 selectedTax = tax;
                 sortedText = "**CARA!**"
-                winnerEmoji = face;
-                loserEmoji = crown;
+                winnerEmoji = winner?.pet as string ?? face;
+                loserEmoji = loser?.pet as string ?? crown;
 
             } else if (sorted >= 0.5) {
                 winner = targetUser;
                 loser = user;
                 selectedTax = otherTax;
                 sortedText = "**COROA!**";
-                winnerEmoji = crown;
-                loserEmoji = face;
+                winnerEmoji = winner?.pet as string || crown;
+                loserEmoji = loser?.pet as string || face;
             }
 
             let calcAmmount = ammount - selectedTax;
