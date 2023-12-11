@@ -73,6 +73,22 @@ class UserController {
         }
     }
 
+    static async setPet(userId: string, pet: string) {
+        try {
+
+            let user = await UserController.getUserById(userId);
+
+            user.pet = pet;
+
+            user = await UserController.updateUser(userId, user);
+
+            return user;
+
+        } catch (error) {
+            return null;
+        }
+    }
+
     static async enableItem(userId: string, index: ObjectId) {
         try {
 
