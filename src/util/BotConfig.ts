@@ -109,6 +109,7 @@ export default class BotConfig {
     LOCAL_IMG_ROULETTEVIP = "./src/assets/roleta_vip.png"
     LOCAL_IMG_PROFILE_TEMPLATE = "./src/assets/profile_template.png"
     LOCAL_IMG_PROFILE_TEMPLATE_NOBG = "./src/assets/profile_template_nobg.png"
+    LOCAL_IMG_STORE_BACKGROUND = "./src/assets/store_background.jpg"
     GIF_DOUBLE = "https://i.imgur.com/onMSkcv.gif"
     GIF_TIGER = "https://i.imgur.com/XfWN4e6.gif"
     GIF_2DICE = "https://i.imgur.com/KnnOITl.gif"
