@@ -31,11 +31,11 @@ export default abstract class EditEmoji {
 
         let user = await UserController.getUserById(interaction.user.id);
 
-        if(!user) return;
+        if (!user) return;
 
-        if(isVipExpired(user).allowed) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${user.userId}>, Você precisa ser __VIP__ para realizar esta ação.` });
+        if (isVipExpired(user).allowed) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${user.userId}>, Você precisa ser __VIP__ para realizar esta ação.` });
 
-        if(!isEmoji(emoji)) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${user.userId}>, Você precisa me fornecer um emoji.` });
+        if (!isEmoji(emoji)) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${user.userId}>, Você precisa me fornecer um emoji.` });
 
         botConfig.emojis[index] = emoji;
 
@@ -47,4 +47,4 @@ export default abstract class EditEmoji {
 function isEmoji(character: string): boolean {
     const emojiRegex = /[\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{2600}-\u{26FF}]/u;
     return emojiRegex.test(character);
-  }
+}
