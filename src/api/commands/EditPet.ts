@@ -29,10 +29,10 @@ export default abstract class EditPet extends Command {
         );
 
         let prev = createNormalButton("<", "0", true);
-        let setPet = createSuccessButton("Ativar", "1");
+        let setPet = createSuccessButton("Ativar", "1", user?.pet === user.pets[active]);
         let next = createNormalButton(">", "2");
 
-        const checkButtons = () => checkDisable(prev, setPet, next, active < 1, false, active >= embeds.length - 1);
+        const checkButtons = () => checkDisable(prev, setPet, next, active < 1, user?.pet === user.pets[active], active >= embeds.length - 1);
 
         const prevPage = async (confirmation: ButtonInteraction<CacheType>) => {
             active -= 1;

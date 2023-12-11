@@ -123,6 +123,6 @@ export function createSuccessButton(label: string, customId: string, disabled: b
 
 export function checkDisable (prev: ButtonBuilder, action: ButtonBuilder, next: ButtonBuilder, con1: boolean, con2: boolean, con3: boolean)  {
     prev.setDisabled(con1);
-    next.setDisabled(con2);
+    action.setDisabled(con2);
     next.setDisabled(con3);
 }
