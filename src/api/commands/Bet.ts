@@ -42,9 +42,9 @@ export default class Bet extends Command {
 
         let emojis = botConfig.emojis;
 
-        let face = emojis[0];
+        let face = user?.pet as string ?? emojis[0];
 
-        let crown = emojis[1];
+        let crown = targetUser?.pet as string ?? emojis[1];
 
         let confirm = new ButtonBuilder()
             .setCustomId("agree")
@@ -88,16 +88,16 @@ export default class Bet extends Command {
                 loser = targetUser;
                 selectedTax = tax;
                 sortedText = "**CARA!**"
-                winnerEmoji = winner?.pet as string ?? face;
-                loserEmoji = loser?.pet as string ?? crown;
+                winnerEmoji = face;
+                loserEmoji =  crown;
 
             } else if (sorted >= 0.5) {
                 winner = targetUser;
                 loser = user;
                 selectedTax = otherTax;
                 sortedText = "**COROA!**";
-                winnerEmoji = winner?.pet as string || crown;
-                loserEmoji = loser?.pet as string || face;
+                winnerEmoji = crown;
+                loserEmoji = face;
             }
 
             let calcAmmount = ammount - selectedTax;
