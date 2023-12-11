@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, CacheType, Collection, CommandInteraction, ComponentType, Message } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, CacheType, Collection, CommandInteraction, ComponentType, EmbedBuilder, Message } from "discord.js";
 import { botConfig } from "../app";
 import UserController from "../database/controllers/UserController";
 import { isVipExpired } from "./DateUtils";
@@ -121,8 +121,13 @@ export function createSuccessButton(label: string, customId: string, disabled: b
     return createNormalButton(label, customId, disabled).setStyle(ButtonStyle.Success);
 }
 
-export function checkDisable (prev: ButtonBuilder, action: ButtonBuilder, next: ButtonBuilder, con1: boolean, con2: boolean, con3: boolean)  {
+export function checkDisable(prev: ButtonBuilder, action: ButtonBuilder, next: ButtonBuilder, con1: boolean, con2: boolean, con3: boolean) {
     prev.setDisabled(con1);
     action.setDisabled(con2);
     next.setDisabled(con3);
+}
+
+export async function updateConfirmation(interaction: CommandInteraction, confirmation: ButtonInteraction, embed: EmbedBuilder, components: Array<ActionRowBuilder<ButtonBuilder>>) {
+    await interaction.editReply({ components, embeds: [embed] });
+    await confirmation.update({});
 }

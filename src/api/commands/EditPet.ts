@@ -2,7 +2,7 @@ import { ActionRow, ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonSt
 import Command from "./Command";
 import UserController from "../../database/controllers/UserController";
 import { botConfig } from "../../app";
-import { checkDisable, createNormalButton, createPagination, createSuccessButton } from "../../util/InteractionUtils";
+import { checkDisable, createNormalButton, createPagination, createSuccessButton, updateConfirmation } from "../../util/InteractionUtils";
 
 export default abstract class EditPet extends Command {
 
@@ -37,21 +37,19 @@ export default abstract class EditPet extends Command {
         const prevPage = async (confirmation: ButtonInteraction<CacheType>) => {
             active -= 1;
             checkButtons();
-            await interaction.editReply({ components: [row], embeds: [embeds[active]] });
-            await confirmation.update({});
+            await updateConfirmation(interaction, confirmation, embeds[active], [row]);
         }
 
         const nextPage = async (confirmation: ButtonInteraction<CacheType>) => {
             active += 1;
             checkButtons();
-            await interaction.editReply({ components: [row], embeds: [embeds[active]] });
-            await confirmation.update({});
+            await updateConfirmation(interaction, confirmation, embeds[active], [row]);
         }
 
         const buyPet = async (confirmation: ButtonInteraction<CacheType>) => {
             
             user = await UserController.setPet(user.userId as string, user.pets[active] as string);
-            checkButtons()
+            checkButtons();
 
             await interaction.editReply({ components: [row] });
             await interaction.followUp({ content: `${botConfig.FRIGHT} | <@${interaction.user.id}>, Seu pet foi ativado com sucesso.` });
@@ -63,7 +61,7 @@ export default abstract class EditPet extends Command {
 
         let response = await interaction.editReply({ components: [row], embeds: [embeds[active]] });
 
-        await createPagination(response, row, prevPage, buyPet, nextPage)
+        await createPagination(response, row, prevPage, buyPet, nextPage);
     }
 
 }
