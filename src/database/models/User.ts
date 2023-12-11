@@ -7,6 +7,7 @@ interface IUser {
     about?: String
     inventory?: Array<ObjectId>
     activated?: Array<ObjectId>
+    pet?: String
     pets?: Array<String>
     xp?: number
     partner?: String
@@ -50,6 +51,11 @@ const userSchema = new mongoose.Schema<IUser>({
         type: [String],
         required: false,
         default: []
+    },
+    pet: {
+        type: String,
+        required: false,
+        default: null,
     },
     xp: {
         type: Number,
