@@ -1,4 +1,4 @@
-import { CacheType, Collection, CommandInteraction } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, CacheType, Collection, CommandInteraction, ComponentType, Message } from "discord.js";
 import { botConfig } from "../app";
 import UserController from "../database/controllers/UserController";
 import { isVipExpired } from "./DateUtils";
@@ -94,4 +94,35 @@ export function getIntegerOption(num: string) {
 export function getTax(valor: number): number {
     const desconto = valor * 0.1;
     return desconto;
+}
+
+export async function createPagination(response: Message<boolean>, row: ActionRowBuilder<ButtonBuilder>, ...callbacks: Array<(confirmation: ButtonInteraction<CacheType>) => void | Promise<void>>) {
+
+    let collectorFilter = (i: ButtonInteraction) => i.user.id === response.interaction.user.id;
+    let collector = response.createMessageComponentCollector({ componentType: ComponentType.Button, filter: collectorFilter, time: 140000 });
+
+    collector.on("collect", async (confirmation) => {
+
+        row.components.forEach(async (_, index: number) => {
+
+            if (confirmation.customId === `${index}`) await callbacks[index](confirmation);
+
+        })
+
+    });
+
+}
+
+export function createNormalButton(label: string, customId: string, disabled: boolean = false): ButtonBuilder {
+    return new ButtonBuilder().setLabel(label).setCustomId(customId).setStyle(ButtonStyle.Secondary).setDisabled(disabled);
+}
+
+export function createSuccessButton(label: string, customId: string, disabled: boolean = false): ButtonBuilder {
+    return createNormalButton(label, customId, disabled).setStyle(ButtonStyle.Success);
+}
+
+export function checkDisable (prev: ButtonBuilder, action: ButtonBuilder, next: ButtonBuilder, con1: boolean, con2: boolean, con3: boolean)  {
+    prev.setDisabled(con1);
+    next.setDisabled(con2);
+    next.setDisabled(con3);
 }

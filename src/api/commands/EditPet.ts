@@ -1,7 +1,8 @@
-import { ActionRow, ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, CacheType, Colors, CommandInteraction, ComponentType, EmbedBuilder, SlashCommandBuilder } from "discord.js";
+import { ActionRow, ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, CacheType, Colors, CommandInteraction, ComponentType, EmbedBuilder, Message, SlashCommandBuilder } from "discord.js";
 import Command from "./Command";
 import UserController from "../../database/controllers/UserController";
 import { botConfig } from "../../app";
+import { checkDisable, createNormalButton, createPagination, createSuccessButton } from "../../util/InteractionUtils";
 
 export default abstract class EditPet extends Command {
 
@@ -15,8 +16,8 @@ export default abstract class EditPet extends Command {
 
         let user = await UserController.getUserById(interaction.user.id);
 
-        if(!user || !user?.pets) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, Você não tem nenhum Pet.`});
-        if(user.pets.length == 0) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, Você não tem nenhum Pet.`});
+        if (!user || !user?.pets) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, Você não tem nenhum Pet.` });
+        if (user.pets.length == 0) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, Você não tem nenhum Pet.` });
 
         let active = 0;
 
@@ -27,53 +28,42 @@ export default abstract class EditPet extends Command {
             .setColor(Colors.Green)
         );
 
-        let prev = new ButtonBuilder()
-            .setLabel("<")
-            .setCustomId("prev")
-            .setDisabled(true)
-            .setStyle(ButtonStyle.Secondary);
+        let prev = createNormalButton("<", "0", true);
+        let setPet = createSuccessButton("Ativar", "1");
+        let next = createNormalButton(">", "2");
 
-        let next = new ButtonBuilder()
-            .setLabel(">")
-            .setCustomId("next")
-            .setStyle(ButtonStyle.Secondary);
+        const checkButtons = () => checkDisable(prev, setPet, next, active < 1, false, active >= embeds.length - 1);
 
-        let setPet = new ButtonBuilder()
-            .setLabel("Ativar")
-            .setCustomId("active")
-            .setDisabled(user?.pet === user.pets[active])
-            .setStyle(ButtonStyle.Success);
+        const prevPage = async (confirmation: ButtonInteraction<CacheType>) => {
+            active -= 1;
+            checkButtons();
+            await interaction.editReply({ components: [row], embeds: [embeds[active]] });
+            await confirmation.update({});
+        }
+
+        const nextPage = async (confirmation: ButtonInteraction<CacheType>) => {
+            active += 1;
+            checkButtons();
+            await interaction.editReply({ components: [row], embeds: [embeds[active]] });
+            await confirmation.update({});
+        }
+
+        const buyPet = async (confirmation: ButtonInteraction<CacheType>) => {
+            
+            user = await UserController.setPet(user.userId as string, user.pets[active] as string);
+            checkButtons()
+
+            await interaction.editReply({ components: [row] });
+            await interaction.followUp({ content: `${botConfig.FRIGHT} | <@${interaction.user.id}>, Seu pet foi ativado com sucesso.` });
+            await confirmation.update({});
+            return;
+        }
 
         let row = new ActionRowBuilder<ButtonBuilder>().addComponents(prev, setPet, next);
 
-        let response = await interaction.editReply({ components: [row], embeds: [embeds[active]]});
+        let response = await interaction.editReply({ components: [row], embeds: [embeds[active]] });
 
-        let collectorFilter = (i: ButtonInteraction) => i.user.id === interaction.user.id;
-        let collector = response.createMessageComponentCollector({ componentType: ComponentType.Button, filter: collectorFilter, time: 140000 });
-
-        collector.on("collect", async(confirmation) => {
-
-            if(confirmation.customId === "active") {
-                
-                user = await UserController.setPet(user.userId as string, user.pets[active] as string);
-                setPet.setDisabled(user?.pet === user.pets[active]);
-
-                await interaction.editReply({ components: [row] });
-                await interaction.followUp({ content: `${botConfig.FRIGHT} | <@${interaction.user.id}>, Seu pet foi ativado com sucesso.` });
-                await confirmation.update({});
-                return;
-            }
-
-            active += confirmation.customId === "next" ? 1 : -1;
-
-            next.setDisabled(active >= embeds.length - 1);
-            prev.setDisabled(active == 0);
-            setPet.setDisabled(user?.pet === user.pets[active]);
-
-            await interaction.editReply({ components: [row], embeds: [embeds[active]]});
-            await confirmation.update({});
-
-        });
+        await createPagination(response, row, prevPage, buyPet, nextPage)
     }
 
 }
