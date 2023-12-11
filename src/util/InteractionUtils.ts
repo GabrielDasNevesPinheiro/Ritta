@@ -96,10 +96,12 @@ export function getTax(valor: number): number {
     return desconto;
 }
 
-export async function createPagination(response: Message<boolean>, row: ActionRowBuilder<ButtonBuilder>, ...callbacks: Array<(confirmation: ButtonInteraction<CacheType>) => void | Promise<void>>) {
+export async function createPagination(response: Message<boolean>, 
+    row: ActionRowBuilder<ButtonBuilder>, 
+    ...callbacks: Array<(confirmation: ButtonInteraction<CacheType>) => void | Promise<void>>) {
 
     let collectorFilter = (i: ButtonInteraction) => i.user.id === response.interaction.user.id;
-    let collector = response.createMessageComponentCollector({ componentType: ComponentType.Button, filter: collectorFilter, time: 140000 });
+    let collector = response.createMessageComponentCollector({ componentType: ComponentType.Button, filter: collectorFilter, time: 300000 });
 
     collector.on("collect", async (confirmation) => {
 
@@ -127,7 +129,7 @@ export function checkDisable(prev: ButtonBuilder, action: ButtonBuilder, next: B
     next.setDisabled(con3);
 }
 
-export async function updateConfirmation(interaction: CommandInteraction, confirmation: ButtonInteraction, embed: EmbedBuilder, components: Array<ActionRowBuilder<ButtonBuilder>>) {
-    await interaction.editReply({ components, embeds: [embed] });
+export async function updateConfirmation(interaction: CommandInteraction, confirmation: ButtonInteraction, embed: EmbedBuilder, components: Array<ActionRowBuilder<ButtonBuilder>>, content: string = null, files: Array<Buffer> = null) {
+    await interaction.editReply({ content: content ? content : "",components, embeds: embed ? [embed] : [], files: files ? files : [] });
     await confirmation.update({});
 }

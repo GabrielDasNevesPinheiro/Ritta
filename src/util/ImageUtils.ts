@@ -2,6 +2,7 @@ import { CanvasRenderingContext2D, Image, createCanvas, loadImage, registerFont 
 import { botConfig } from "../app";
 import { User } from "discord.js";
 import { IUser } from "../database/models/User";
+import { IStore } from "../database/models/Store";
 
 
 export async function getDouble(sorted: string) {
@@ -302,6 +303,43 @@ export async function getProfile(user: IUser, discordProfile: User, reps: number
 
 }
 
+
+export async function getBadgeView(badge: IStore) {
+    let width = 1280;
+    let height = 720;
+
+    const rarities = {
+        0: "Comum",
+        1: "Raro",
+        2: "Mítico",
+        3: "Ultra Mítico"
+    };
+
+    let badgePosition: Position = { x: 485, y: 200 };
+    let badgeSize: Position = { x: 310, y: 310 };
+
+    let namePosition: Position = { x: width / 2, y: 95 };
+    let nameWidth = 1280;
+
+    let rarityPosition: Position = { x: width / 2, y: 630 };
+
+    const canvas = createCanvas(width, height);
+    const ctx: CanvasRenderingContext2D = canvas.getContext("2d");
+    
+    let bg = await loadImage(botConfig.LOCAL_IMG_STORE_BACKGROUND);
+    let badgeImg = await loadImageURL(badge.url);
+    ctx.drawImage(bg, 0, 0, width, height);
+    ctx.drawImage(badgeImg, badgePosition.x, badgePosition.y, badgeSize.x, badgeSize.y);
+
+    ctx.font = `bold 100px Outfit`;
+    ctx.fillStyle = "#FFF";
+    ctx.textAlign = "center";
+    ctx.fillText(`${badge.name}`, namePosition.x, namePosition.y, nameWidth);
+    ctx.fillText(`${rarities[badge.rarity]}`, rarityPosition.x, rarityPosition.y, nameWidth);
+
+    return canvas.toBuffer();
+
+}
 
 function drawTextInBox(
     ctx: CanvasRenderingContext2D,
