@@ -327,7 +327,7 @@ export async function getBadgeView(badge: IStore) {
     const ctx: CanvasRenderingContext2D = canvas.getContext("2d");
     
     let bg = await loadImage(botConfig.LOCAL_IMG_STORE_BACKGROUND);
-    let badgeImg = await loadImageURL(badge.url);
+    let badgeImg = await loadImage(badge.url);
     ctx.drawImage(bg, 0, 0, width, height);
     ctx.drawImage(badgeImg, badgePosition.x, badgePosition.y, badgeSize.x, badgeSize.y);
 

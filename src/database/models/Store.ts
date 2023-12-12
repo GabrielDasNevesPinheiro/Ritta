@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { ObjectId } from "mongoose";
 
 enum ItemType {
     BACKGROUND = 0,
@@ -14,6 +14,7 @@ enum Rarity {
 }
 
 interface IStore {
+    _id?: ObjectId;
     name: string;
     price: number;
     url: string;
