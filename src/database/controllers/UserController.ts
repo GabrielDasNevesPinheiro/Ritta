@@ -120,10 +120,10 @@ class UserController {
     static async disableItem(userId: string, index: ObjectId) {
         try {
 
-            const notEquals = (item: ObjectId) => item != index;
+            const notEquals = (item: ObjectId) => String(item) !== String(index);
 
             let user = await UserController.getUserById(userId);
-            user.inventory = user?.inventory?.filter(notEquals);
+            user.activated = user?.activated?.filter(notEquals);
 
             user = await UserController.updateUser(userId, user);
 
