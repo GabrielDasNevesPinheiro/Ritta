@@ -2,7 +2,7 @@ import { CanvasRenderingContext2D, Image, createCanvas, loadImage, registerFont 
 import { botConfig } from "../app";
 import { User } from "discord.js";
 import { IUser } from "../database/models/User";
-import { IStore } from "../database/models/Store";
+import { IStore, ItemType, Store } from "../database/models/Store";
 
 
 export async function getDouble(sorted: string) {
@@ -205,7 +205,7 @@ export default async function getRank(users: User[], info: IUser[], page: number
     ctx.fill();
 
     for (let user of users) {
-        images.push(await loadImageURL(user.displayAvatarURL({ extension: "png", size: 64 }) || "https://archive.org/download/discordprofilepictures/discordblue.png"));
+        images.push(await loadImage(user.displayAvatarURL({ extension: "png", size: 64 }) || "https://archive.org/download/discordprofilepictures/discordblue.png"));
     }
 
     let top3: Position[] = [{ x: 369, y: 595 }, { x: 52, y: 733 }, { x: 688, y: 773 }];
@@ -263,7 +263,7 @@ export async function getProfile(user: IUser, discordProfile: User, reps: number
     let height = 1314;
 
     
-    let profileImage = await loadImageURL(discordProfile.displayAvatarURL({ size: 256, extension: "png" }));
+    let profileImage = await loadImage(discordProfile.displayAvatarURL({ size: 256, extension: "png" }));
     
     const canvas = createCanvas(width, height);
     const ctx: CanvasRenderingContext2D = canvas.getContext("2d");
@@ -279,13 +279,34 @@ export async function getProfile(user: IUser, discordProfile: User, reps: number
     let marryPoint: Position = { x: 249, y: 879 };
     let aboutmePoint: Position = { x: 996, y: 876 };
 
+    let badgesPosition: Position[] = [
+        { x: 1211, y: 580 },
+        { x: 1355, y: 580 },
+        { x: 1511, y: 580 },
+        { x: 1662, y: 580 },
+        { x: 1795, y: 580 },
+    ];
+
+    let badges: IStore[] = (await Promise.all(user?.activated?.map(async(id) => {
+        return await Store.findById(id);
+    }))).filter((item) => item.itemType == ItemType.BADGE);
+
+    
     drawRoundedImage(ctx, profileImage, photoPoint.x, photoPoint.y, photoSize.x);
-
+    
     let background: Image = null;
-
+    
     background = await loadImage(user.activated.length == 0 ? botConfig.LOCAL_IMG_PROFILE_TEMPLATE_NOBG : botConfig.LOCAL_IMG_PROFILE_TEMPLATE);
-
+    
     ctx.drawImage(background, 0, 0);
+    
+    for(let item of badges) {
+
+        let index = badges.indexOf(item)
+        let cache = await loadImage(item.url);
+        ctx.drawImage(cache, badgesPosition[index].x, badgesPosition[index].y, 130, 130);
+
+    }
 
     ctx.fillStyle = "#FFF";
     ctx.font = 'bold 100px Outfit';
