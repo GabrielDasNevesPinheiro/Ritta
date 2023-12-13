@@ -3,6 +3,7 @@ import { IReputation, Reputation } from '../models/Reputation';
 import { ITransaction } from '../models/Transaction';
 import { User, IUser } from '../models/User';
 import TransactionController from './TransactionController';
+import { IStore, Store } from '../models/Store';
 
 class UserController {
     // Create a new user
@@ -87,6 +88,17 @@ class UserController {
         } catch (error) {
             return null;
         }
+    }
+
+    static async getUserStore(user: IUser): Promise<IStore[]> {
+        let items: IStore[] = [];
+
+        for(let id of user?.store) {
+            items.push(await Store.findById(id));
+        }
+
+        return items;
+
     }
 
     static async enableItem(userId: string, index: ObjectId) {

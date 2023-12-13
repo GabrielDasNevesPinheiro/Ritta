@@ -33,7 +33,10 @@ export function cooldownCheck (cooldown: number, cmpDate: Date, resethours: bool
     const lastVoteDate = cmpDate;
 
     if(!lastVoteDate) {
-        return { allowed: true, time: 0, textTime: "" };
+        let today = moment(new Date());
+        today.add(24, "hours");
+
+        return { allowed: true, time: today.unix(), textTime: "" };
     }
     
     const nextVoteDate = new Date(lastVoteDate.getTime() + cooldown * 60 * 60 * 1000);
@@ -46,8 +49,11 @@ export function cooldownCheck (cooldown: number, cmpDate: Date, resethours: bool
     const offset = moment(currentTime).diff(lastVoteDate, 'hours');
     
     if (cooldown - offset <= 0) {
+      let today = moment(new Date());
+        today.add(24, "hours");
+
       
-      return { allowed: true, time: 0, textTime: "" };
+      return { allowed: true, time: today.unix(), textTime: "" };
 
     }
     let date1 = moment(lastVoteDate);

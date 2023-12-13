@@ -6,7 +6,8 @@ import { getBadgeView } from "../../util/ImageUtils";
 import UserController from "../../database/controllers/UserController";
 import { botConfig } from "../../app";
 import { IUser } from "../../database/models/User";
-import { ObjectId } from "mongoose";
+import mongoose, { ObjectId } from "mongoose";
+import { cooldownCheck } from "../../util/DateUtils";
 
 
 export default abstract class Store extends Command {
@@ -29,7 +30,12 @@ export default abstract class Store extends Command {
     }
 
     static async storeView(interaction: CommandInteraction, user: IUser) {
-        let store: IStore[] = await Store.getStore();
+
+        let canReset = cooldownCheck(24, user?.storeDate).allowed;
+        let resetTime = cooldownCheck(24, user?.storeDate).time;
+
+        let store: IStore[] = canReset ? await Store.getStore() : await UserController.getUserStore(user);
+        user.store = store.map((item) => item._id);
 
         const notOnInventory = (item: IStore) => user?.inventory?.indexOf(item?._id) == -1;
 
@@ -42,7 +48,7 @@ export default abstract class Store extends Command {
         let next = createNormalButton(">", "2");
 
         const checkButtons = () => checkDisable(prev, buy, next, active < 1, (store[active].price > Number(user.coins)) || user?.inventory?.indexOf(store[active]._id) != -1, active >= store.length - 1);
-        const getText = () => `Exibindo ${active + 1} de ${store.length}.`;
+        const getText = () => `Exibindo ${active + 1} de ${store.length}. Sua loja reseta em <t:${resetTime}:R>`;
         const getImage = async () => await getBadgeView(store[active]);
         const setPrice = () => buy.setLabel(`${store[active]?.price?.toLocaleString("pt-BR") ?? "Comprar"}`);
         
@@ -103,6 +109,10 @@ export default abstract class Store extends Command {
         let row = new ActionRowBuilder<ButtonBuilder>().addComponents(prev, buy, next);
 
         let image = await getImage();
+
+        user.storeDate = new Date();
+        user = await UserController.updateUser(String(user.userId), user);
+
         let response = await interaction.editReply({ content: getText(), components: [row], files: [image] });
 
         let collectorFilter = (i: ButtonInteraction<CacheType>) => i.user.id === interaction.user.id;

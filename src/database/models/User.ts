@@ -7,6 +7,7 @@ interface IUser {
     about?: String
     inventory?: Array<ObjectId>
     activated?: Array<ObjectId>
+    store?: Array<ObjectId>
     pet?: String
     pets?: Array<String>
     xp?: number
@@ -14,6 +15,7 @@ interface IUser {
     coins?: Number
     banned?: Boolean
     banReason?: String
+    storeDate?: Date
     boosterDate?: Date
     rouletteDate?: Date
     tasksDate?: Date
@@ -43,6 +45,11 @@ const userSchema = new mongoose.Schema<IUser>({
         required: false
     },
     activated: {
+        type: [mongoose.Types.ObjectId],
+        default: [],
+        required: false
+    },
+    store: {
         type: [mongoose.Types.ObjectId],
         default: [],
         required: false
@@ -88,6 +95,11 @@ const userSchema = new mongoose.Schema<IUser>({
         default: null,
     },
     rouletteDate: {
+        type: Date,
+        required: false,
+        default: null
+    },
+    storeDate: {
         type: Date,
         required: false,
         default: null
