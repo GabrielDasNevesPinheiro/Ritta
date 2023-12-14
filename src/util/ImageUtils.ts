@@ -5,6 +5,7 @@ import { IUser } from "../database/models/User";
 import { IStore, ItemType, Store } from "../database/models/Store";
 
 let cached: { [url: string]: Image } = {};
+let cached_badge: { [url: string]: Image } = {};
 
 export async function getDouble(sorted: string) {
     let width = 653;
@@ -303,7 +304,8 @@ export async function getProfile(user: IUser, discordProfile: User, reps: number
         return await Store.findById(id);
     }))).filter((item) => item.itemType == ItemType.BADGE);
 
-    
+    let bg = await loadImage(botConfig.LOCAL_IMG_DEFAULT_PROFILE_BG);
+    ctx.drawImage(bg, 0, 0);
     drawRoundedImage(ctx, profileImage, photoPoint.x, photoPoint.y, photoSize.x);
     
     let background: Image = null;
@@ -314,8 +316,10 @@ export async function getProfile(user: IUser, discordProfile: User, reps: number
     
     for(let item of badges) {
 
-        let index = badges.indexOf(item)
-        let cache = await loadImage(item.url);
+        let index = badges.indexOf(item);
+
+        if(!cached_badge[item.url]) cached_badge[item.url] = await loadImage(item.url);
+        let cache = cached_badge[item.url];
         ctx.drawImage(cache, badgesPosition[index].x, badgesPosition[index].y, 130, 130);
 
     }
