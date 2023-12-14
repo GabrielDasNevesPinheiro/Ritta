@@ -4,6 +4,7 @@ import { User } from "discord.js";
 import { IUser } from "../database/models/User";
 import { IStore, ItemType, Store } from "../database/models/Store";
 
+let cached: { [url: string]: Image } = {};
 
 export async function getDouble(sorted: string) {
     let width = 653;
@@ -199,13 +200,24 @@ export default async function getRank(users: User[], info: IUser[], page: number
     const canvas = createCanvas(width, height);
     const ctx: CanvasRenderingContext2D = canvas.getContext("2d");
     let images: Image[] = [];
+    let urls: string[] = [];
 
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.fill();
 
     for (let user of users) {
-        images.push(await loadImage(user.displayAvatarURL({ extension: "png", size: 64 }) || "https://archive.org/download/discordprofilepictures/discordblue.png"));
+
+        let url = user.displayAvatarURL({ extension: "png", size: 64 }) || "https://archive.org/download/discordprofilepictures/discordblue.png";
+        urls.push(url);
+        if(!cached[url]) cached[url] = await loadImage(url);
+        
+        images.push(cached[url]);
+        
+    }
+
+    for (let url in cached) {
+        if(urls.indexOf(url) == -1) delete cached[url];
     }
 
     let top3: Position[] = [{ x: 369, y: 595 }, { x: 52, y: 733 }, { x: 688, y: 773 }];
