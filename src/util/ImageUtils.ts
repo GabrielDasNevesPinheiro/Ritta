@@ -258,7 +258,7 @@ export default async function getRank(users: User[], info: IUser[], page: number
         ctx.fillText(`${images.indexOf(image) + 1}° ${users[index].username}`, x + 279, y + 90);
 
         ctx.font = 'bold 60px Arial';
-        ctx.fillText(info[index].coins.toLocaleString("pt-BR") + " fichas", x + 279, y + 160);
+        ctx.fillText(Number(info[index].coins.toFixed(0)).toLocaleString("pt-BR") + " fichas", x + 279, y + 160);
 
         ctx.fillStyle = "#333333";
         ctx.font = '40px Arial';
