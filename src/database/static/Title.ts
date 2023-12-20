@@ -23,7 +23,7 @@ export default class Title {
 
     }
 
-    public setupChars(chars: string[]) {
+    public setupChars(...chars: string[]) {
         let codes = "abcdefghijklmnopqrstuvwxyz0123456789".split("");
         codes.forEach((code, index) => this.chars.set(code, chars[index]));
     }
