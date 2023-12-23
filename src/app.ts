@@ -10,6 +10,9 @@ import UserController from './database/controllers/UserController';
 import { cooldownCheck, isBoosterExpired, isVipExpired } from './util/DateUtils';
 import AutoPoster from 'topgg-autoposter';
 import { cooldowns } from './util/InteractionUtils';
+import { cached_badge } from './util/ImageUtils';
+import { IStore, ItemType, Store } from './database/models/Store';
+import { loadImage } from 'canvas';
 
 config()
 const token = process.env.BOT_TOKEN;
@@ -65,6 +68,13 @@ function setNextActivity() {
     currentActivityIndex = (currentActivityIndex + 1) % activities.length;
 }
 
+const loadAssets = async () => {
+    let products: IStore[] = await Store.find({ itemType: ItemType.BADGE });
+    console.log("PRELOADING ASSETS");
+    products.forEach(async (prod) => cached_badge[prod.url] = await loadImage(prod.url));
+    console.log("ASSETS LOADED");
+};
+
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
@@ -78,7 +88,7 @@ const client = new Client({
 client.on("ready", async (bot) => {
 
     let settings = (await Settings.find())[0];
-
+    await loadAssets();
     botConfig = new BotConfig(settings);
 
     bot.user.setUsername(botConfig.name);
