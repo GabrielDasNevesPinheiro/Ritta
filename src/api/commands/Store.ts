@@ -51,7 +51,7 @@ export default abstract class Store extends Command {
         const getText = () => `Exibindo ${active + 1} de ${store.length}. Sua loja reseta em <t:${resetTime}:R>`;
         const getImage = async () => await getBadgeView(store[active]);
         const setPrice = () => buy.setLabel(`${store[active]?.price?.toLocaleString("pt-BR") ?? "Comprar"}`);
-        
+
 
 
 
@@ -60,7 +60,7 @@ export default abstract class Store extends Command {
             checkButtons();
             //store = store.filter(notOnInventory);
             setPrice();
-            if(!notOnInventory(store[active])) buy.setLabel("Comprado");
+            if (!notOnInventory(store[active])) buy.setLabel("Comprado");
             await confirmation.update({ components: [row], content: `Carregando...` });
             let image = await getImage();
             await interaction.editReply({ content: getText(), components: [row], files: [image] });
@@ -71,7 +71,7 @@ export default abstract class Store extends Command {
             checkButtons();
             //store = store.filter(notOnInventory);
             setPrice();
-            if(!notOnInventory(store[active])) buy.setLabel("Comprado");
+            if (!notOnInventory(store[active])) buy.setLabel("Comprado");
             await confirmation.update({ components: [row], content: `Carregando...` });
             let image = await getImage();
             await interaction.editReply({ content: getText(), components: [row], files: [image] });
@@ -91,7 +91,7 @@ export default abstract class Store extends Command {
                 checkButtons();
                 //store = store.filter(notOnInventory);
                 active = active > store.length - 1 ? store.length - 1 : active;
-                if(!notOnInventory(store[active])) buy.setLabel("Comprado");
+                if (!notOnInventory(store[active])) buy.setLabel("Comprado");
                 if (store.length == 0) {
                     return await interaction.editReply({ content: `${botConfig.BRIGHT} | <@${interaction.user.id}>, Você adquiriu toda a sua lojinha!`, components: [], files: [] });
                 }
@@ -137,26 +137,26 @@ export default abstract class Store extends Command {
 
 
     static async getStore(): Promise<IStore[]> {
-        // Encontre todos os registros excluindo aqueles com IDs na lista fornecida
+
         const todosOsItens: IStore[] = await DBStore.find({ restricted: false });
 
-        // Defina as probabilidades
+
         const chances = {
-            [Rarity.COMMON]: 0.7,
-            [Rarity.RARE]: 0.2,
-            [Rarity.MYTHIC]: 0.099,
-            [Rarity.ULTRA_MYTHIC]: 0.001,
+            [Rarity.COMMON]: 0.9,
+            [Rarity.RARE]: 0.09,
+            [Rarity.MYTHIC]: 0.007,
+            [Rarity.ULTRA_MYTHIC]: 0.003,
         };
 
         const itensAleatorios: IStore[] = [];
         const totalChances = Object.values(chances).reduce((acc, chance) => acc + chance, 0);
 
-        // Gere 5 itens aleatórios baseados nas probabilidades sem repetição
+
         for (let i = 0; i < 5; i++) {
             let randomChance = Math.random() * totalChances;
             let selectedRarity: Rarity | undefined;
 
-            // Encontre a raridade baseada na chance aleatória
+
             for (const [rarity, chance] of Object.entries(chances)) {
                 randomChance -= chance;
                 if (randomChance <= 0) {
@@ -165,17 +165,17 @@ export default abstract class Store extends Command {
                 }
             }
 
-            // Filtra os itens que correspondem à raridade selecionada
+
             const availableItems = todosOsItens.filter(item => item.rarity === selectedRarity);
 
             if (availableItems.length > 0) {
-                // Seleciona aleatoriamente um item da raridade selecionada
+
                 const randomIndex = Math.floor(Math.random() * availableItems.length);
                 const selectedItem = availableItems[randomIndex];
 
                 itensAleatorios.push(selectedItem);
 
-                // Remove o item selecionado para evitar repetição
+
                 todosOsItens.splice(todosOsItens.indexOf(selectedItem), 1);
             }
         }
