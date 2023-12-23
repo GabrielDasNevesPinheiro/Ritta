@@ -251,7 +251,7 @@ export default class BotConfig {
         }
     ];
 
-    crashChannel = "1180514195192688691";
+    crashChannel = process.env.CRASH_CHANNEL;
 
     public constructor(config: ISettings) {
         this._name = config.botname as string;
