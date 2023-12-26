@@ -3,8 +3,9 @@ import connectDatabase from "./database/Connection";
 import UserController from "./database/controllers/UserController";
 import { Settings } from "./database/models/Settings";
 import { ItemType, Rarity, Store } from "./database/models/Store";
+import Title from "./database/static/Title";
 
-connectDatabase();
+//connectDatabase();
 
 async function resetPoints() {
     let users = await UserController.getAllUsers();
@@ -64,4 +65,3 @@ async function addRestrictedBadges() {
 
     images.forEach(async (image, index) => await addItemToStore(image, names[index], 0, Rarity.COMMON, true));
 }
-
