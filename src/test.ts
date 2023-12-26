@@ -4,6 +4,7 @@ import UserController from "./database/controllers/UserController";
 import { Settings } from "./database/models/Settings";
 import { ItemType, Rarity, Store } from "./database/models/Store";
 import Title from "./database/static/Title";
+import { deleteCommands } from "./api/Register";
 
 //connectDatabase();
 
@@ -65,3 +66,6 @@ async function addRestrictedBadges() {
 
     images.forEach(async (image, index) => await addItemToStore(image, names[index], 0, Rarity.COMMON, true));
 }
+
+
+deleteCommands();
