@@ -5,7 +5,7 @@ import fs from "fs";
 import UserController from "../database/controllers/UserController";
 import { cooldowns } from "../util/InteractionUtils";
 
-let restricted = ["edituser", "ban", "banlist"];
+let restricted = ["edituser", "ban", "banlist", "addbadge"];
 
 let xpCooldown = new Collection<String, Boolean>();
 
@@ -16,22 +16,27 @@ export default function executeAction(cmdName: string, interaction: Interaction<
     UserController.getUserById(interaction.user.id).then(async (res) => {
 
         if (!res?.banned) {
-            commands[cmdName].execute(interaction as CommandInteraction);
+
+            if (commands[cmdName])
+                commands[cmdName].execute(interaction as CommandInteraction);
+            else
+                restrictedCommands[cmdName].execute(interaction as CommandInteraction);
+
             cooldowns.set(interaction.user.id, true);
-            
-            if(!xpCooldown.has(interaction.user.id)) {
+
+            if (!xpCooldown.has(interaction.user.id)) {
                 res.xp += 24;
                 await UserController.updateUser(String(res.userId), res);
             }
-            
+
             setTimeout(() => {
                 cooldowns.delete(interaction.user.id);
             }, 3000);
-            
+
             setTimeout(() => {
                 xpCooldown.delete(interaction.user.id);
             }, 120000);
-            
+
             xpCooldown.set(interaction.user.id, true);
         }
     });
@@ -50,13 +55,13 @@ function parseSlashCommands(): { [key: string]: typeof Command } {
         if ((file.endsWith(".js") || file.endsWith(".ts"))) {
 
             if (file.startsWith("Command")) return;
-            
+
             const command = require(path.join(commandsDir, file)).default;
-            
+
             if (restricted.includes(command?.command.name)) return;
-            
+
             if (command?.command && typeof command.execute === "function") {
-                if(command?.command)
+                if (command?.command)
                     cmdlist[command.command.name] = command;
             }
         }
@@ -82,7 +87,7 @@ function parseRestrictedCommands(): { [key: string]: typeof Command } {
             const command = require(path.join(commandsDir, file)).default;
             if (!restricted.includes(command?.command.name)) return;
             if (command?.command && typeof command.execute === "function") {
-                if(command?.command)
+                if (command?.command)
                     cmdlist[command.command.name] = command;
             }
         }
