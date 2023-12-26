@@ -21,7 +21,7 @@ for (let cmd in cmdList) {
 for (let cmd in restrictedCommands) {
 
     privateCommands.push(restrictedCommands[cmd].command.toJSON());
-    
+
 }
 
 
@@ -30,10 +30,10 @@ export function postSlashCommands() {
     try {
 
         rest.put(Routes.applicationCommands(client_id), { body: commands })
-        .then(() => console.log("GLOBAL COMMANDS UPDATED"));
-        
-        rest.put(Routes.applicationGuildCommands(client_id, "1178356953274142820"), { body: privateCommands })
-        .then(() => console.log("ADMIN COMMANDS UPDATED"));
+            .then(() => console.log("GLOBAL COMMANDS UPDATED"));
+
+        rest.put(Routes.applicationGuildCommands(client_id, process.env.ADM_GUILD), { body: privateCommands })
+            .then(() => console.log("ADMIN COMMANDS UPDATED"));
 
     } catch (error) {
 
@@ -44,7 +44,8 @@ export function postSlashCommands() {
 
 
 export function deleteCommands() {
-    rest.put(Routes.applicationCommands(client_id), { body: [] })
+    rest.put(Routes.applicationCommands(client_id), { body: [] });
+    rest.put(Routes.applicationGuildCommands(client_id, process.env.ADM_GUILD), { body: [] });
 
 }
 
