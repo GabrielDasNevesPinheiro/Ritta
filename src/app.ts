@@ -86,7 +86,6 @@ const client = new Client({
 });
 
 client.on("ready", async (bot) => {
-
     let settings = (await Settings.find())[0];
     await loadAssets();
     botConfig = new BotConfig(settings);
