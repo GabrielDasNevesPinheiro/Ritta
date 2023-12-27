@@ -1,4 +1,6 @@
+import UserController from "../database/controllers/UserController";
 import { ISettings } from "../database/models/Settings";
+import { titles } from "../database/static/TitleList";
 
 export default class BotConfig {
 
@@ -268,5 +270,15 @@ export default class BotConfig {
 
     public getCashString(ammount: number): string {
         return `**${this.CASH} ${ammount.toLocaleString("pt-BR").split(",")[0]} ${this.cashname}**`
+    }
+
+    public async mention(userId: string): Promise<string> {
+        let user = await UserController.getUserById(userId);
+        let str = "";
+        if(user.activatedTitle) str += titles[String(user.activatedTitle)].translate(String(user.titleName));
+
+        if(str !== "") str += `<@${userId}>`; else str += `(<@${userId}>)`;
+
+        return str;
     }
 }
