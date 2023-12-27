@@ -54,15 +54,16 @@ export default class Daily extends Command {
             let transaction = await TransactionController.createTransaction(trans);
             user.dailydate = new Date();
             let res = UserController.updateUser(user.userId as string, user);
-
+            let mention = await botConfig.mention(trans.to as string);
             if(transaction && res) {
-                await interaction.reply({ content: `**${botConfig.STONKS} | Ótimo** <@${trans.to}>, você ganhou ${botConfig.getCashString(cash)} na **recompensa diária**, volte amanhã.`})
+                await interaction.reply({ content: `**${botConfig.STONKS} | Ótimo** ${mention}, você ganhou ${botConfig.getCashString(cash)} na **recompensa diária**, volte amanhã.`})
             } else {
                 await interaction.reply({ content: "ocorreu um erro, tente novamente" });
             }
 
         } else {
-            await interaction.reply({ content: `**${botConfig.WAITING} | <@${user.userId}>**, volte em <t:${dailyCheck.time}> para coletar sua recompensa novamente.`});
+            let mention = await botConfig.mention(interaction.user.id);
+            await interaction.reply({ content: `**${botConfig.WAITING} | ${mention}**, volte em <t:${dailyCheck.time}> para coletar sua recompensa novamente.`});
         }
 
     }

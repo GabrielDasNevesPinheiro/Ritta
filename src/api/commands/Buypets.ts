@@ -15,12 +15,12 @@ export default abstract class Buypets extends Command {
         await interaction.deferReply({});
 
         let user = await UserController.getUserById(interaction.user.id);
-
-        if (!user) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, Tente realizar suas tarefas diárias primeiro.` });
+        let mention = await botConfig.mention(interaction.user.id);
+        if (!user) return await interaction.editReply({ content: `${botConfig.CONFUSED} | ${mention}, Tente realizar suas tarefas diárias primeiro.` });
 
         let pets = botConfig.pets.filter((pet) => user.pets?.indexOf(pet.emoji) == -1);
 
-        if (pets.length == 0) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, Parece que você já tem todos os pets.` });
+        if (pets.length == 0) return await interaction.editReply({ content: `${botConfig.CONFUSED} | ${mention}, Parece que você já tem todos os pets.` });
 
         const buildEmbed = (item: { name: string, price: number, emoji: string }) =>
             new EmbedBuilder().setTitle(`${item.name} `)
@@ -71,7 +71,7 @@ export default abstract class Buypets extends Command {
                 user = await UserController.addPet(String(user.userId), pets[active].emoji);
 
                 await confirmation.update({});
-                await interaction.followUp({ content: `${botConfig.FRIGHT} | <@${interaction.user.id}>, Você adquiriu o pet ${pets[active].emoji}.`, ephemeral: true });
+                await interaction.followUp({ content: `${botConfig.FRIGHT} | ${mention}, Você adquiriu o pet ${pets[active].emoji}.`, ephemeral: true });
 
 
                 pets = botConfig.pets.filter((pet) => user.pets?.indexOf(pet.emoji) == -1);
@@ -80,7 +80,7 @@ export default abstract class Buypets extends Command {
                 let text = `${botConfig.BRIGHT} Exibindo pet ${active + 1} de ${embeds.length}.`;
 
                 if (embeds.length == 0) {
-                    await interaction.editReply({ content: `${botConfig.FRIGHT} | <@${interaction.user.id}>, Parece que não temos mais nada aqui.`, components: [], embeds: [] });
+                    await interaction.editReply({ content: `${botConfig.FRIGHT} | ${mention}, Parece que não temos mais nada aqui.`, components: [], embeds: [] });
                     return;
                 }
                 await interaction.editReply({ content: text, components: [row], embeds: [embeds[active]] });

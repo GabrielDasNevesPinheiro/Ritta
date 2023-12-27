@@ -28,6 +28,9 @@ export default class Pay extends Command {
         let targetUserId = interaction.options.getUser("user").id;
         let ammount: number = interaction.options.get("ammount").value as number;
 
+        let mention = await botConfig.mention(interaction.user.id);
+        let targetmention = await botConfig.mention(interaction.user.id);
+        
 
         let targetUser = await UserController.getUserById(targetUserId);
         let user = await UserController.getUserById(interaction.user.id);
@@ -45,7 +48,7 @@ export default class Pay extends Command {
 
         let response = await interaction.editReply({
             content:
-                `${botConfig.BRIGHT} Você está prestes a transferir ${botConfig.getCashString(ammount)}, para <@${targetUser.userId}>.\nPara concluir o pagamento, o destinatário deve confirmar até em até <t:${getMinutesCooldownFromNow(5)}>(<t:${getMinutesCooldownFromNow(5)}:R>).\n`,
+                `${botConfig.BRIGHT} Você está prestes a transferir ${botConfig.getCashString(ammount)}, para ${targetmention}.\nPara concluir o pagamento, o destinatário deve confirmar até em até <t:${getMinutesCooldownFromNow(5)}>(<t:${getMinutesCooldownFromNow(5)}:R>).\n`,
             embeds: [], components: [row]
         });
 
@@ -76,7 +79,7 @@ export default class Pay extends Command {
 
             await interaction.editReply({ components: [row]});
 
-            await confirmation.reply({ content: `**${botConfig.GG} | <@${user.userId}>**, Você transferiu ${botConfig.getCashString(ammount)} para <@${targetUserId}> com sucesso!`, embeds: [], components: [] })
+            await confirmation.reply({ content: `**${botConfig.GG} | ${mention}**, Você transferiu ${botConfig.getCashString(ammount)} para ${targetmention} com sucesso!`, embeds: [], components: [] })
             return;
 
         });

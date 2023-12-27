@@ -19,6 +19,7 @@ export default class Raffle extends Command {
     static async execute(interaction: CommandInteraction) {
         
         let ammount = interaction.options.get("ammount")?.value as number;
+        let mention = await botConfig.mention(interaction.user.id);
 
         if(isNaN(ammount)) {
 
@@ -86,7 +87,7 @@ export default class Raffle extends Command {
 
             if(!user) user = await UserController.createUser({ userId: interaction.user.id});
 
-            if(Number(user.coins) < RaffleManager.rafflePrice * ammount) return await interaction.reply({ content: `${botConfig.NERVOUS} | <@${user.userId}>, Você não tem ${botConfig.cashname.toLowerCase()} o suficiente para isto.`})
+            if(Number(user.coins) < RaffleManager.rafflePrice * ammount) return await interaction.reply({ content: `${botConfig.NERVOUS} | ${mention}, Você não tem ${botConfig.cashname.toLowerCase()} o suficiente para isto.`})
         
             await UserController.removeCash(user, {
                 from: user.userId,
@@ -98,7 +99,7 @@ export default class Raffle extends Command {
 
             
 
-            await interaction.reply({ content: `${botConfig.OK} | <@${interaction.user.id}>, Você comprou **${ammount} Tickets** por ${botConfig.getCashString(ammount * RaffleManager.rafflePrice)}.` });
+            await interaction.reply({ content: `${botConfig.OK} | ${mention}, Você comprou **${ammount} Tickets** por ${botConfig.getCashString(ammount * RaffleManager.rafflePrice)}.` });
 
             
         }

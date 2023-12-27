@@ -26,11 +26,12 @@ export default class Double extends Command {
         await interaction.deferReply();
 
         let bet: number = interaction.options.get("ammount").value as number;
+        let mention = await botConfig.mention(interaction.user.id);
 
         if (isNaN(bet)) {
-            return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, por favor insira um valor válido para a aposta.` });
+            return await interaction.editReply({ content: `${botConfig.CONFUSED} | ${mention}, por favor insira um valor válido para a aposta.` });
         }
-        if (bet < 20) return await interaction.editReply({ content: `**${botConfig.CONFUSED} | <@${interaction.user.id}>, Você precisa inserir no mínimo ${botConfig.getCashString(20)}.**` })
+        if (bet < 20) return await interaction.editReply({ content: `**${botConfig.CONFUSED} | ${mention}, Você precisa inserir no mínimo ${botConfig.getCashString(20)}.**` })
         let user = await UserController.getUserById(interaction.user.id);
 
         if (!user) {
@@ -94,7 +95,7 @@ export default class Double extends Command {
         collector.on('collect', async (confirmation) => {
             customId = confirmation.customId;
             await interaction.editReply({
-                content: `${botConfig.CASH} <@${user.userId}>, Boa sorte!`, embeds: [
+                content: `${botConfig.CASH} ${mention}, Boa sorte!`, embeds: [
                     new EmbedBuilder().setTitle(`**${botConfig.THINKING} Hmmmmm...**`)
                         .setImage(botConfig.GIF_DOUBLE)
                         .setColor(Colors.Green)], components: []
@@ -142,7 +143,7 @@ export default class Double extends Command {
 
                 await interaction.editReply({
                     content:
-                        `> ${botConfig.NO_STONKS} | <@${interaction.user.id}>, Você apostou no __${betColor}__ e o jogo sorteou __${sorted}__. Você perdeu ${botConfig.getCashString(bet)}!`,
+                        `> ${botConfig.NO_STONKS} | ${mention}, Você apostou no __${betColor}__ e o jogo sorteou __${sorted}__. Você perdeu ${botConfig.getCashString(bet)}!`,
                     files: [doubleResult],
                     components: [],
                     embeds: []
@@ -162,7 +163,7 @@ export default class Double extends Command {
 
             await interaction.editReply({
                 content:
-                    `> ${botConfig.STONKS} | <@${interaction.user.id}>, Você apostou no __${betColor}__ e o jogo sorteou __${sorted}__. Você ganhou ${botConfig.getCashString(ammount)} **(${bet}x${selectedMultiplier})!**\n` + (tax > 0 ? `${botConfig.getCashString(tax)} de taxa.` : ""),
+                    `> ${botConfig.STONKS} | ${mention}, Você apostou no __${betColor}__ e o jogo sorteou __${sorted}__. Você ganhou ${botConfig.getCashString(ammount)} **(${bet}x${selectedMultiplier})!**\n` + (tax > 0 ? `${botConfig.getCashString(tax)} de taxa.` : ""),
                 files: [doubleResult],
                 components: [],
                 embeds: []

@@ -29,6 +29,10 @@ export default abstract class Mines extends Command {
     static async execute(interaction: CommandInteraction<CacheType>) {
         
         await interaction.deferReply({});
+
+        let mention = await botConfig.mention(interaction.user.id);
+
+
         let ammount = interaction.options.get("ammount").value as number;
         let bombs = interaction.options.get("bombs").value as number;
 
@@ -74,7 +78,7 @@ export default abstract class Mines extends Command {
             if(confirmation.customId === "draw") {
 
                 if(diamondsLeft == (20 - bombs)) {
-                    await interaction.editReply({ content: `**${botConfig.OK} | <@${user.userId}>**, Como você não achou nenhum diamante, o jogo foi anulado.`, components: [], embeds: [] });
+                    await interaction.editReply({ content: `**${botConfig.OK} | ${mention}**, Como você não achou nenhum diamante, o jogo foi anulado.`, components: [], embeds: [] });
                     collector.stop();
                     return;
                 }
@@ -86,7 +90,7 @@ export default abstract class Mines extends Command {
                     ammount: count - ammount
                 });
 
-                await interaction.editReply({ content: `**${botConfig.OK} | <@${user.userId}>**, Você ganhou um total de ${botConfig.getCashString(count)}.\n` +
+                await interaction.editReply({ content: `**${botConfig.OK} | ${mention}**, Você ganhou um total de ${botConfig.getCashString(count)}.\n` +
                 (tax > 0 ? `${botConfig.getCashString(tax)} de taxa.` : ``), components: [] });
                 collector.stop();
                 return;
@@ -109,7 +113,7 @@ export default abstract class Mines extends Command {
                     ammount
                 });
 
-                await confirmation.update({ content: `**${botConfig.OK} | <@${user.userId}>**, Você perdeu um total de ${botConfig.getCashString(ammount)}`, components: rows });
+                await confirmation.update({ content: `**${botConfig.OK} | ${mention}**, Você perdeu um total de ${botConfig.getCashString(ammount)}`, components: rows });
                 collector.stop();
                 return;
             }
@@ -130,7 +134,7 @@ export default abstract class Mines extends Command {
                     ammount: count - ammount
                 });
 
-                await interaction.editReply({ content: `**${botConfig.OK} | <@${user.userId}>**, Você ganhou um total de ${botConfig.getCashString(count)}.\n` +
+                await interaction.editReply({ content: `**${botConfig.OK} | ${mention}**, Você ganhou um total de ${botConfig.getCashString(count)}.\n` +
                 (tax > 0 ? `${botConfig.getCashString(tax)} de taxa.` : ``), components: [] });
                 collector.stop();
             }

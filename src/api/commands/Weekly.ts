@@ -18,6 +18,8 @@ export default class Weekly extends Command {
         let max = 7000;
         let prob = 0.3;
 
+        let mention = await botConfig.mention(interaction.user.id);
+
         let user = await UserController.getUserById(interaction.user.id);
 
         if (!user) {
@@ -26,14 +28,14 @@ export default class Weekly extends Command {
             });
         }
 
-        if(!isVipExpired(user).allowed) {
+        if (!isVipExpired(user).allowed) {
             min = 10000;
             max = 16000;
             prob = botConfig.vipBetChances;
         }
 
         let cash = 0;
-        if(Math.random() <= prob) { 
+        if (Math.random() <= prob) {
             cash = max;
         } else {
             cash = Math.floor(Math.random() * (max - min + 1) + min);
@@ -59,7 +61,7 @@ export default class Weekly extends Command {
                 weeklyCheck = cooldownCheck(168, user.weeklydate);
 
                 let embed = new EmbedBuilder().setTitle(`${botConfig.GG} Semanal Resgatado`)
-                    .setDescription(`> **Espetacular** ein <@${transaction.to}>, você resgatou sua recompensa semanal e ganhou ${botConfig.getCashString(cash)} como recompensa.`)
+                    .setDescription(`> **Espetacular** ein ${mention}, você resgatou sua recompensa semanal e ganhou ${botConfig.getCashString(cash)} como recompensa.`)
                     .setColor(Colors.Blue).addFields([
                         { name: "**Próxima Recompensa**", value: `<t:${weeklyCheck.time}>` }
                     ]).setTimestamp(Date.now())
@@ -70,7 +72,7 @@ export default class Weekly extends Command {
             }
 
         } else {
-            await interaction.reply({ content: `**${botConfig.WAITING} | <@${user.userId}>**, volte em <t:${weeklyCheck.time}> para coletar sua recompensa novamente.` });
+            await interaction.reply({ content: `**${botConfig.WAITING} | ${mention}**, volte em <t:${weeklyCheck.time}> para coletar sua recompensa novamente.` });
         }
 
     }

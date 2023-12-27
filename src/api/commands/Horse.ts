@@ -21,6 +21,9 @@ export default abstract class Horse extends Command {
 
         await interaction.deferReply({});
 
+        let mention = await botConfig.mention(interaction.user.id);
+
+
         let ammount = interaction.options.get("ammount").value as number;
         let res = await checkBetValues(String(ammount), interaction);
 
@@ -55,7 +58,7 @@ export default abstract class Horse extends Command {
         });
 
         let response = await interaction.editReply({
-            content: `${botConfig.HORSE} | <@${user.userId}>, Escolha uma **cor** de cavalo para te **representar** nessa corrida!\n**Esta corrida está valendo** ${botConfig.getCashString(ammount)}.`,
+            content: `${botConfig.HORSE} | ${mention}, Escolha uma **cor** de cavalo para te **representar** nessa corrida!\n**Esta corrida está valendo** ${botConfig.getCashString(ammount)}.`,
             components: [row]
         });
 
@@ -64,7 +67,7 @@ export default abstract class Horse extends Command {
         collector.on("collect", async (confirmation) => {
             if (confirmation.user.id !== user.userId) return;
 
-            await interaction.editReply({ content: `${botConfig.OK} | <@${user.userId}>, Você escolheu **${confirmation.customId}** para te representar na corrida valendo${botConfig.getCashString(ammount)}.`})
+            await interaction.editReply({ content: `${botConfig.OK} | ${mention}, Você escolheu **${confirmation.customId}** para te representar na corrida valendo${botConfig.getCashString(ammount)}.`})
 
             for (let i = 0; i < 5; i++) {
 
@@ -99,7 +102,7 @@ export default abstract class Horse extends Command {
                 });
 
                 await interaction.followUp({
-                    content: `**${botConfig.STONKS} | <@${user.userId}>**, O Cavalo **${winner.name}** se saiu vitorioso e você ganhou ${botConfig.getCashString(Math.floor(ammount))}. \n` +
+                    content: `**${botConfig.STONKS} | ${mention}**, O Cavalo **${winner.name}** se saiu vitorioso e você ganhou ${botConfig.getCashString(Math.floor(ammount))}. \n` +
                         (tax > 0 ? `${botConfig.getCashString(tax)} de taxa.` : ``)
                 })
 
@@ -110,7 +113,7 @@ export default abstract class Horse extends Command {
                     to: "apostando em cavalos",
                     ammount: ammount
                 })
-                await interaction.followUp({ content: `**${botConfig.STONKS} | <@${user.userId}>**, O Cavalo **${winner.name}** se saiu vitorioso e você perdeu ${botConfig.getCashString(ammount)}.` });
+                await interaction.followUp({ content: `**${botConfig.STONKS} | ${mention}**, O Cavalo **${winner.name}** se saiu vitorioso e você perdeu ${botConfig.getCashString(ammount)}.` });
             }
             collector.stop();
 

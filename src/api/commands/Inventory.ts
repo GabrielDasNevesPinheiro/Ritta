@@ -34,8 +34,9 @@ export default abstract class Inventory extends Command {
                 .setImage(`${item.url}`).setTimestamp(new Date());
 
         }));
+        let mention = await botConfig.mention(interaction.user.id);
 
-        if(embeds.length == 0) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, Você não tem nada em seu inventário ainda.` });
+        if(embeds.length == 0) return await interaction.editReply({ content: `${botConfig.CONFUSED} | ${mention}, Você não tem nada em seu inventário ainda.` });
         let active = 0;
 
         let prev = createNormalButton("<", "prev", true);

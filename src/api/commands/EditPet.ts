@@ -13,11 +13,11 @@ export default abstract class EditPet extends Command {
 
     static async execute(interaction: CommandInteraction<CacheType>) {
         await interaction.deferReply({});
-
+        let mention = await botConfig.mention(interaction.user.id);
         let user = await UserController.getUserById(interaction.user.id);
 
-        if (!user || !user?.pets) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, Você não tem nenhum Pet.` });
-        if (user.pets.length == 0) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, Você não tem nenhum Pet.` });
+        if (!user || !user?.pets) return await interaction.editReply({ content: `${botConfig.CONFUSED} | ${mention}, Você não tem nenhum Pet.` });
+        if (user.pets.length == 0) return await interaction.editReply({ content: `${botConfig.CONFUSED} | ${mention}, Você não tem nenhum Pet.` });
 
         let active = 0;
 
@@ -52,7 +52,7 @@ export default abstract class EditPet extends Command {
             checkButtons();
 
             await interaction.editReply({ components: [row] });
-            await interaction.followUp({ content: `${botConfig.FRIGHT} | <@${interaction.user.id}>, Seu pet foi ativado com sucesso.` });
+            await interaction.followUp({ content: `${botConfig.FRIGHT} | ${mention}, Seu pet foi ativado com sucesso.` });
             await confirmation.update({});
             return;
         }

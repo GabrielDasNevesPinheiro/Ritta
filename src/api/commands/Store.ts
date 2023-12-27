@@ -20,17 +20,19 @@ export default abstract class Store extends Command {
     static async execute(interaction: CommandInteraction<CacheType>) {
 
         await interaction.deferReply({});
+        let mention = await botConfig.mention(interaction.user.id);
 
         let user = await UserController.getUserById(interaction.user.id);
 
-        if (!user) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, Tente realizar suas tarefas diárias primeiro.` });
+        if (!user) return await interaction.editReply({ content: `${botConfig.CONFUSED} | ${mention}, Tente realizar suas tarefas diárias primeiro.` });
 
         await Store.storeView(interaction, user);
 
     }
 
     static async storeView(interaction: CommandInteraction, user: IUser) {
-
+        let mention = await botConfig.mention(interaction.user.id);
+        
         let canReset = cooldownCheck(24, user?.storeDate).allowed;
         let resetTime = cooldownCheck(24, user?.storeDate).time;
 
@@ -39,7 +41,7 @@ export default abstract class Store extends Command {
 
         const notOnInventory = (item: IStore) => user?.inventory?.indexOf(item?._id) == -1;
 
-        if (store.length == 0) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, Você já adquiriu tudo o que há na loja!` });
+        if (store.length == 0) return await interaction.editReply({ content: `${botConfig.CONFUSED} | ${mention}, Você já adquiriu tudo o que há na loja!` });
 
         let active = 0;
 
@@ -93,14 +95,14 @@ export default abstract class Store extends Command {
                 active = active > store.length - 1 ? store.length - 1 : active;
                 if (!notOnInventory(store[active])) buy.setLabel("Comprado");
                 if (store.length == 0) {
-                    return await interaction.editReply({ content: `${botConfig.BRIGHT} | <@${interaction.user.id}>, Você adquiriu toda a sua lojinha!`, components: [], files: [] });
+                    return await interaction.editReply({ content: `${botConfig.BRIGHT} | ${mention}, Você adquiriu toda a sua lojinha!`, components: [], files: [] });
                 }
 
                 setPrice();
                 await confirmation.update({ components: [row], content: `Carregando...`, });
                 let image = await getImage();
                 await interaction.editReply({ content: getText(), files: [image] });
-                await interaction.followUp({ ephemeral: true, content: `${botConfig.BRIGHT} | <@${interaction.user.id}>, Você adquiriu ${bought} com sucesso.` });
+                await interaction.followUp({ ephemeral: true, content: `${botConfig.BRIGHT} | ${mention}, Você adquiriu ${bought} com sucesso.` });
 
             }
         }

@@ -19,8 +19,10 @@ export default abstract class Top extends Command {
         let page: number = interaction.options.get("page")?.value as number ?? 1;
         page = page > 0 ? page - 1 : page;
 
+        let mention = await botConfig.mention(interaction.user.id);
+
         await interaction.deferReply({});
-        await interaction.editReply({ content: `${botConfig.WAITING} | <@${interaction.user.id}>, um momento...` });
+        await interaction.editReply({ content: `${botConfig.WAITING} | ${mention}, um momento...` });
 
         let users = await UserController.getRanking();
         let fetched: User[] = [];

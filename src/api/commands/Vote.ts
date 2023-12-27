@@ -14,10 +14,10 @@ export default class Vote extends Command {
         .setStyle(ButtonStyle.Link)
         .setLabel("Votar")
         .setURL("https://top.gg/bot/1173669387023167668");
-
+        let mention = await botConfig.mention(interaction.user.id);
         let row = new ActionRowBuilder<ButtonBuilder>().addComponents(button);
 
-        await interaction.reply({ content: `${botConfig.BRIGHT} | <@${interaction.user.id}>, Vote em mim e ganhe ${botConfig.getCashString(25000)}.`, components: [row]})
+        await interaction.reply({ content: `${botConfig.BRIGHT} | ${mention}, Vote em mim e ganhe ${botConfig.getCashString(25000)}.`, components: [row]})
     }
 
 }

@@ -29,18 +29,18 @@ export default abstract class EditEmoji extends Command {
         let index = interaction.options.get("slot").value as number;
         let emoji = interaction.options.get("emoji").value as string;
 
-
+        let mention = await botConfig.mention(interaction.user.id);
         let user = await UserController.getUserById(interaction.user.id);
 
         if (!user) return;
 
-        if (isVipExpired(user).allowed) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${user.userId}>, Você precisa ser __VIP__ para realizar esta ação.` });
+        if (isVipExpired(user).allowed) return await interaction.editReply({ content: `${botConfig.CONFUSED} | ${mention}, Você precisa ser __VIP__ para realizar esta ação.` });
 
-        if (!isEmoji(emoji)) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${user.userId}>, Você precisa me fornecer um emoji.` });
+        if (!isEmoji(emoji)) return await interaction.editReply({ content: `${botConfig.CONFUSED} | ${mention}, Você precisa me fornecer um emoji.` });
 
         botConfig.emojis[index] = emoji;
 
-        await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${user.userId}>, Agora o emoji ${emoji} estará na aposta.` })
+        await interaction.editReply({ content: `${botConfig.CONFUSED} | ${mention}, Agora o emoji ${emoji} estará na aposta.` })
 
     }
 }

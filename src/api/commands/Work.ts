@@ -18,6 +18,8 @@ export default class Work extends Command {
         let max = 2100;
         let prob = 0.3;
 
+        let mention = await botConfig.mention(interaction.user.id);
+
         let user = await UserController.getUserById(interaction.user.id)
         let embed: EmbedBuilder = null;
 
@@ -40,7 +42,7 @@ export default class Work extends Command {
         let workCheck = cooldownCheck(2, user.workdate, false);
 
         if (!workCheck.allowed) {
-            return await interaction.reply({ content: `**${botConfig.WAITING} |** <@${user.userId}>, volte em <t:${workCheck.time}> para trabalhar novamente.` });
+            return await interaction.reply({ content: `**${botConfig.WAITING} |** ${mention}, volte em <t:${workCheck.time}> para trabalhar novamente.` });
         }
 
         user.coins = user.coins as number + cash;
@@ -56,7 +58,7 @@ export default class Work extends Command {
             });
 
             embed = new EmbedBuilder().setTitle(`${botConfig.GG} Trabalho Concluído`)
-                .setDescription(`> **Ótimo** <@${transaction.to}>, completou seu trabalho com sucesso e ganhou ${botConfig.getCashString(cash)} como salário, volte em **2 horas**.`)
+                .setDescription(`> **Ótimo** ${mention}, completou seu trabalho com sucesso e ganhou ${botConfig.getCashString(cash)} como salário, volte em **2 horas**.`)
                 .setColor(Colors.Blue).setTimestamp(Date.now());
             return await interaction.reply({ embeds: [embed] });
         }

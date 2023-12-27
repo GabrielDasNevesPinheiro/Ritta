@@ -23,10 +23,13 @@ export default class Reps extends Command {
         await interaction.deferReply({});
 
         let targetUser = interaction.options.getUser("user") || interaction.user;
+        let mention = await botConfig.mention(interaction.user.id);
+
+        
 
         let reps = await UserController.getReps(targetUser.id);
 
-        if(reps.length == 0) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, Não encontrei reputações.` });
+        if(reps.length == 0) return await interaction.editReply({ content: `${botConfig.CONFUSED} | ${mention}, Não encontrei reputações.` });
 
 
         let list = generateReputationPage(targetUser.id, reps);

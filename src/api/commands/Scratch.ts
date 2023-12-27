@@ -15,11 +15,11 @@ export default abstract class Scratch extends Command {
 
     static async execute(interaction: CommandInteraction<CacheType>) {
         await interaction.deferReply({});
-
+        let mention = await botConfig.mention(interaction.user.id);
         let user = await UserController.getUserById(interaction.user.id);
 
-        if (!user) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, Tente realizar suas tarefas primeiro.` });
-        if (Number(user.coins) < 500) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, Você precisa ter no mínimo ${botConfig.getCashString(2000)} para comprar a raspadinha.` });
+        if (!user) return await interaction.editReply({ content: `${botConfig.CONFUSED} | ${mention}, Tente realizar suas tarefas primeiro.` });
+        if (Number(user.coins) < 500) return await interaction.editReply({ content: `${botConfig.CONFUSED} | ${mention}, Você precisa ter no mínimo ${botConfig.getCashString(2000)} para comprar a raspadinha.` });
 
         let game = getScratch();
         let calc = calcScratchPrize(game);
@@ -65,7 +65,7 @@ export default abstract class Scratch extends Command {
                         to: "jogando raspadinha",
                         ammount: 2500
                     });
-                    await interaction.followUp({ content: `${botConfig.NO_STONKS} | <@${interaction.user.id}>, Você foi penalizado em ${botConfig.getCashString(2500)}.` })
+                    await interaction.followUp({ content: `${botConfig.NO_STONKS} | ${mention}, Você foi penalizado em ${botConfig.getCashString(2500)}.` })
                     collector.stop();
                     return;
 
@@ -77,7 +77,7 @@ export default abstract class Scratch extends Command {
                         ammount: calc - tax
                     });
                     await interaction.editReply({
-                        content: `${botConfig.STONKS} | <@${interaction.user.id}>, Você retirou ${botConfig.getCashString(calc)}.\n` +
+                        content: `${botConfig.STONKS} | ${mention}, Você retirou ${botConfig.getCashString(calc)}.\n` +
                             (tax > 0) ? `${botConfig.getCashString(tax)} de taxa.` : ``
                     });
                     collector.stop();

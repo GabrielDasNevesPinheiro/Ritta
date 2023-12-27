@@ -19,15 +19,16 @@ export default abstract class Roulette extends Command {
         await interaction.deferReply({});
         let result = sortRoulette();
         let image = await getRouletteResult(result);
+        let mention = await botConfig.mention(interaction.user.id);
 
         let user = await UserController.getUserById(interaction.user.id);
 
-        if(!user) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, Tente realizar suas tarefas primeiro.` });
-        if(user.coins as number < 1500) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, Você precisa ter no mínimo ${botConfig.getCashString(1500)}.` });
+        if(!user) return await interaction.editReply({ content: `${botConfig.CONFUSED} | ${mention}, Tente realizar suas tarefas primeiro.` });
+        if(user.coins as number < 1500) return await interaction.editReply({ content: `${botConfig.CONFUSED} | ${mention}, Você precisa ter no mínimo ${botConfig.getCashString(1500)}.` });
 
         let canPlay = cooldownCheck(48, user.rouletteDate);
         if(!canPlay.allowed) {
-            return await interaction.editReply({ content: `${botConfig.WAITING} | <@${interaction.user.id}>, Você só poderá jogar <t:${canPlay.time}:R>.`});
+            return await interaction.editReply({ content: `${botConfig.WAITING} | ${mention}, Você só poderá jogar <t:${canPlay.time}:R>.`});
         }
 
         user = await UserController.removeCash(user, {
@@ -41,17 +42,17 @@ export default abstract class Roulette extends Command {
 
         await interaction.editReply({ embeds: [
             new EmbedBuilder().setTitle(`${botConfig.GG} Boa sorte Jogador!`).setImage(botConfig.GIF_ROULETTE).setColor(Colors.Red)
-        ], content: `<@${user.userId}>, Você pagou ${botConfig.getCashString(1500)}.` });
+        ], content: `${mention}, Você pagou ${botConfig.getCashString(1500)}.` });
 
         await sleep(2800);
 
         let messages = {
-            "Perdeu": `${botConfig.CRYING} | <@${interaction.user.id}>, Infelizmente você perdeu.`,
-            "1k": `${botConfig.STONKS} | <@${interaction.user.id}>, Você ganhou a recompensa de `,
-            "5k": `${botConfig.STONKS} | <@${interaction.user.id}>, Você ganhou a recompensa de `,
-            "9k": `${botConfig.STONKS} | <@${interaction.user.id}>, Você ganhou a recompensa de `,
-            "15k": `${botConfig.STONKS} | <@${interaction.user.id}>, Você ganhou a recompensa de `,
-            "VIP": `${botConfig.GG} | <@${interaction.user.id}>, Você ganhou um __VIP__.`,
+            "Perdeu": `${botConfig.CRYING} | ${mention}, Infelizmente você perdeu.`,
+            "1k": `${botConfig.STONKS} | ${mention}, Você ganhou a recompensa de `,
+            "5k": `${botConfig.STONKS} | ${mention}, Você ganhou a recompensa de `,
+            "9k": `${botConfig.STONKS} | ${mention}, Você ganhou a recompensa de `,
+            "15k": `${botConfig.STONKS} | ${mention}, Você ganhou a recompensa de `,
+            "VIP": `${botConfig.GG} | ${mention}, Você ganhou um __VIP__.`,
         }
 
         let prices = {

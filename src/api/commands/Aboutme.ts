@@ -25,7 +25,8 @@ export default abstract class Aboutme extends Command {
             user.about = interaction.options.get("text").value as string;
 
             await UserController.updateUser(String(user.userId), user);
+            let mention = await botConfig.mention(interaction.user.id);
 
-            await interaction.editReply({ content: `${botConfig.OK} | <@${interaction.user.id}>, Sua descrição foi alterada com sucesso! ` });
+            await interaction.editReply({ content: `${botConfig.OK} | ${mention}, Sua descrição foi alterada com sucesso! ` });
         }
 }

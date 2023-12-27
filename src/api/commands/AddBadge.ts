@@ -50,7 +50,8 @@ export default abstract class AddBadge extends Command {
             if (!user.inventory.includes(badge._id)) {
                 user.inventory.push(badge._id);
                 user = await UserController.updateUser(String(user.userId), user);
-                await confirmation.followUp({ ephemeral: true, content: `Insígnia ${badge.name} adicionada no inventário de <@${targetUser.id}>.` });
+                let mention = await botConfig.mention(interaction.user.id);
+                await confirmation.followUp({ ephemeral: true, content: `Insígnia ${badge.name} adicionada no inventário de ${mention}.` });
             } else {
                 await confirmation.update({ components: [] });
                 await interaction.editReply({ content: `O usuário já possui esta insígnia.` });

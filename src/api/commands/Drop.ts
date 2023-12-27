@@ -33,10 +33,10 @@ export default abstract class Drop extends Command {
         let time = interaction.options.get("time").value as number;
 
         let user = await UserController.getUserById(interaction.user.id);
-
+        let mention = await botConfig.mention(interaction.user.id);
         let embed = new EmbedBuilder()
             .setTitle(`🎉 Drop Lançado`)
-            .setDescription(`Patrocinado por: <@${user.userId}>.`)
+            .setDescription(`Patrocinado por: ${mention}.`)
             .addFields(
                 { name: "Valor para o vencedor", value: `${botConfig.getCashString(ammount)}`, inline: true },
                 { name: `${botConfig.WAITING} Duração`, value: `<t:${getMinutesCooldownFromNow(time)}:R>`, inline: true },
@@ -73,7 +73,7 @@ export default abstract class Drop extends Command {
             let sortedUserId = players[Math.floor(Math.random() * (players.length - 1))];
 
             if (!sortedUserId) {
-                await interaction.followUp({ content: `**${botConfig.FACEPALM} | <@${interaction.user.id}>,** Ninguém estava participando no drop, você recebeu a quantia de volta.`, components: [] })
+                await interaction.followUp({ content: `**${botConfig.FACEPALM} | ${mention},** Ninguém estava participando no drop, você recebeu a quantia de volta.`, components: [] })
                 return;
             }
 
@@ -91,19 +91,19 @@ export default abstract class Drop extends Command {
                 to: "patrocinando um drop",
                 ammount
             });
-
+            let winnerMention = await botConfig.mention(winner.userId as string);
             embed = new EmbedBuilder()
                 .setTitle(`🎉 Drop Lançado`)
-                .setDescription(`Patrocinado por: <@${user.userId}>.`)
+                .setDescription(`Patrocinado por: ${mention}.`)
                 .addFields(
                     { name: "Valor para o vencedor", value: `${botConfig.getCashString(ammount)}`, inline: true },
                     { name: `${botConfig.WAITING} Duração`, value: "`Drop encerrado.`", inline: true },
                     { name: `✨ Para participar`, value: `Clique no botão __PARTICIPAR__` },
-                    { name: `😘 Ganhador`, value: `<@${winner.userId}>` }
+                    { name: `😘 Ganhador`, value: `${winnerMention}` }
                 ).setColor(Colors.White);
 
             await interaction.editReply({ embeds: [embed], components: [] });
-            await interaction.followUp({ content: `**${botConfig.STONKS} | Parabéns <@${sortedUserId}>**, Você ganhou ${botConfig.getCashString(ammount)} no drop Patrocinado por <@${interaction.user.id}>.` });
+            await interaction.followUp({ content: `**${botConfig.STONKS} | Parabéns ${winnerMention}**, Você ganhou ${botConfig.getCashString(ammount)} no drop Patrocinado por ${mention}.` });
 
         });
 

@@ -24,8 +24,9 @@ export default class Invite extends Command {
             .setStyle(ButtonStyle.Link)
 
         let row = new ActionRowBuilder<ButtonBuilder>().addComponents(invitebt, linkbt);
+        let mention = await botConfig.mention(interaction.user.id);
 
-        await interaction.reply({ content: `<@${interaction.user.id}>, Clique nos botões para ser redirecionado.`, components: [row] });
+        await interaction.reply({ content: `${mention}, Clique nos botões para ser redirecionado.`, components: [row] });
     }
 
 }

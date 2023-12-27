@@ -37,7 +37,7 @@ export default abstract class Ban extends Command {
         user.banned = operation == 0 ? true : false;
         user.banReason = reason;
         user = await UserController.updateUser(userId, user);
-
+        
         await interaction.editReply({ content: `O usuário <@${userId}> foi ${user.banned ? "banido" : "desbanido"} com sucesso.` });
     }
 }

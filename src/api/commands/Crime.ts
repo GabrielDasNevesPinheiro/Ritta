@@ -38,11 +38,11 @@ export default class Crime extends Command {
             cash = Math.floor(Math.random() * (max - min + 1) + min);
         }
 
-
+        let mention = await botConfig.mention(interaction.user.id);
         let crimeCheck = cooldownCheck(1, user.crimedate, false)
         let canWin = true;
         if (!crimeCheck.allowed) {
-            return await interaction.reply({ content: `**${botConfig.WAITING} |** <@${user.userId}>, volte em <t:${crimeCheck.time}> para prender outro criminoso novamente.`});
+            return await interaction.reply({ content: `**${botConfig.WAITING} |** ${mention}, volte em <t:${crimeCheck.time}> para prender outro criminoso novamente.`});
         }
             if(!isVipExpired(user).allowed && Math.random() <= botConfig.vipBetChances) {
                 canWin = true;
@@ -64,7 +64,7 @@ export default class Crime extends Command {
                 
                 
                 embed = new EmbedBuilder().setTitle(`${botConfig.GG} Crime Impedido`)
-                    .setDescription(`> **Perfeito** <@${user.userId}>, você conseguiu prender um criminoso sem ninguém se machucar e ganhou ${botConfig.getCashString(cash)} como recompensa, volte em **1 hora**.`)
+                    .setDescription(`> **Perfeito** ${mention}, você conseguiu prender um criminoso sem ninguém se machucar e ganhou ${botConfig.getCashString(cash)} como recompensa, volte em **1 hora**.`)
                     .setColor(Colors.White).setTimestamp(Date.now())
                 return await interaction.reply({ embeds: [embed] });
 
@@ -80,7 +80,7 @@ export default class Crime extends Command {
                 });
                 
                 embed = new EmbedBuilder().setTitle(`O Crime Falhou!`)
-                    .setDescription(`> **${botConfig.FACEPALM}** <@${user.userId}>, você bateu numa senhora ao invés de bater no ladrão e teve que usar ${botConfig.getCashString(cash)} para pagar o médico, volte em **1 hora**.`)
+                    .setDescription(`> **${botConfig.FACEPALM}** ${mention}, você bateu numa senhora ao invés de bater no ladrão e teve que usar ${botConfig.getCashString(cash)} para pagar o médico, volte em **1 hora**.`)
                     .setColor(Colors.White).setTimestamp(Date.now())
                 return await interaction.reply({ embeds: [embed] });
             }

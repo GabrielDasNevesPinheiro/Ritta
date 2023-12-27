@@ -25,10 +25,11 @@ export abstract class Tiger extends Command {
 
         await interaction.deferReply();
         
+        let mention = await botConfig.mention(interaction.user.id);
 
         let ammount: number = interaction.options.get("ammount").value as number;
 
-        if (ammount < 20) return await interaction.editReply({ content: `**${botConfig.CONFUSED} | <@${interaction.user.id}>, Você precisa inserir no mínimo ${botConfig.getCashString(20)}.**` })
+        if (ammount < 20) return await interaction.editReply({ content: `**${botConfig.CONFUSED} | ${mention}, Você precisa inserir no mínimo ${botConfig.getCashString(20)}.**` })
 
         let user = await UserController.getUserById(interaction.user.id);
 
@@ -39,7 +40,7 @@ export abstract class Tiger extends Command {
         if (!res) return;
 
         await interaction.editReply({
-            content: `${botConfig.CASH} <@${user.userId}>, Boa sorte!`, embeds: [
+            content: `${botConfig.CASH} ${mention}, Boa sorte!`, embeds: [
                 new EmbedBuilder().setTitle(`**${botConfig.THINKING} Hmmmmm...**`)
                     .setImage(botConfig.GIF_TIGER)
                     .setColor(Colors.Green)], components: []
@@ -87,7 +88,7 @@ export abstract class Tiger extends Command {
                 ammount: ammount
             });
 
-            await interaction.editReply({ content: `${botConfig.STONKS} | <@${user.userId}>, Você ganhou ${botConfig.getCashString(ammount)} no tigrinho `+ '`' + `(${multiplier}x bônus)!` + '` ' +
+            await interaction.editReply({ content: `${botConfig.STONKS} | ${mention}, Você ganhou ${botConfig.getCashString(ammount)} no tigrinho `+ '`' + `(${multiplier}x bônus)!` + '` ' +
             (tax > 0 ? `\n${botConfig.getCashString(tax)} de taxa.` : ``), files: [response], embeds: [] });
             
         } else {
@@ -97,7 +98,7 @@ export abstract class Tiger extends Command {
                 ammount: ammount
             });
 
-            await interaction.editReply({ content: `${botConfig.NO_STONKS} | <@${user.userId}>, Você perdeu ${botConfig.getCashString(ammount)} no tigrinho, boa sorte na próxima vez!`, files: [response], embeds: [] });
+            await interaction.editReply({ content: `${botConfig.NO_STONKS} | ${mention}, Você perdeu ${botConfig.getCashString(ammount)} no tigrinho, boa sorte na próxima vez!`, files: [response], embeds: [] });
 
         }
 

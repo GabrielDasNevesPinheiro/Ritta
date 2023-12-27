@@ -24,21 +24,24 @@ export default abstract class Marry extends Command {
         let targetUser = await UserController.getUserById(interaction.options.getUser("user")?.id);
         let operation = interaction.options.get("operation").value as number;
 
+        let thismention = await botConfig.mention(interaction.user.id);
+        let targetmention = await botConfig.mention(String(targetUser.userId));
+
         if(operation == 2) {
 
-            if(!thisuser?.partner) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, Você não tem casamento nenhum.`, components: [] });
+            if(!thisuser?.partner) return await interaction.editReply({ content: `${botConfig.CONFUSED} | ${thismention}, Você não tem casamento nenhum.`, components: [] });
 
-            await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${thisuser.userId}>, Você está em um casamento com <@${thisuser.partner}>.`, components: [] });
+            await interaction.editReply({ content: `${botConfig.CONFUSED} | ${thismention}, Você está em um casamento com <@${thisuser.partner}>.`, components: [] });
             return ;
         }
-        if (!thisuser) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, Você não pode se casar.` });
-        if (!targetUser || thisuser?.userId === targetUser?.userId) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, Você precisa escolher outro usuário.` });
+        if (!thisuser) return await interaction.editReply({ content: `${botConfig.CONFUSED} | ${thismention}, Você não pode se casar.` });
+        if (!targetUser || thisuser?.userId === targetUser?.userId) return await interaction.editReply({ content: `${botConfig.CONFUSED} | ${thismention}, Você precisa escolher outro usuário.` });
 
 
         if (operation == 0) {
 
-            if(thisuser.partner) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, Você já está em um casamento.` });
-            if(targetUser.partner) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${targetUser.userId}>, Você já está em um casamento.` });
+            if(thisuser.partner) return await interaction.editReply({ content: `${botConfig.CONFUSED} | ${thismention}, Você já está em um casamento.` });
+            if(targetUser.partner) return await interaction.editReply({ content: `${botConfig.CONFUSED} | ${targetmention}, Você já está em um casamento.` });
 
 
             let row = new ActionRowBuilder<ButtonBuilder>().addComponents(
@@ -46,7 +49,7 @@ export default abstract class Marry extends Command {
                 new ButtonBuilder().setLabel("Recusar").setCustomId("denie").setStyle(ButtonStyle.Danger),
             );
 
-            let res = await interaction.editReply({ content: `${botConfig.PEPEHEART} | <@${targetUser.userId}>, <@${thisuser.userId}> quer se casar com você!`, components: [row] });
+            let res = await interaction.editReply({ content: `${botConfig.PEPEHEART} | ${targetmention}, ${thismention} quer se casar com você!`, components: [row] });
 
             const collector = res.createMessageComponentCollector({ componentType: ComponentType.Button, time: 15000 });
 
@@ -59,10 +62,10 @@ export default abstract class Marry extends Command {
                     thisuser = await UserController.updateUser(String(thisuser.userId), thisuser);
                     targetUser = await UserController.updateUser(String(targetUser.userId), targetUser);
 
-                    await interaction.editReply({ content: `${botConfig.LOVE} | <@${targetUser.userId}>, <@${thisuser.userId}> Parabéns! Vocês agora são um casal💝.`, components: [] });
+                    await interaction.editReply({ content: `${botConfig.LOVE} | ${targetmention}, ${thismention} Parabéns! Vocês agora são um casal💝.`, components: [] });
 
                 } else {
-                    await interaction.editReply({ content: `${botConfig.CRYING} | <@${thisuser.userId}>, <@${targetUser.userId}> não quis se casar com você, bola pra frente!`, components: [] });
+                    await interaction.editReply({ content: `${botConfig.CRYING} | ${thismention}, ${targetmention} não quis se casar com você, bola pra frente!`, components: [] });
                     return;
                 }
             });
@@ -72,9 +75,9 @@ export default abstract class Marry extends Command {
                 new ButtonBuilder().setLabel("Recusar").setCustomId("denie").setStyle(ButtonStyle.Danger),
             );
 
-            if(thisuser.partner !== targetUser.userId) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}>, Você não é casado com <@${targetUser.userId}>.` });
+            if(thisuser.partner !== targetUser.userId) return await interaction.editReply({ content: `${botConfig.CONFUSED} | ${thismention}, Você não é casado com ${targetmention}.` });
 
-            let res = await interaction.editReply({ content: `${botConfig.CRYING} | <@${targetUser.userId}>, <@${thisuser.userId}> quer se divorciar de você!`, components: [row] });
+            let res = await interaction.editReply({ content: `${botConfig.CRYING} | ${targetmention}, ${thismention} quer se divorciar de você!`, components: [row] });
 
             const collector = res.createMessageComponentCollector({ componentType: ComponentType.Button, time: 15000 });
 
@@ -87,10 +90,10 @@ export default abstract class Marry extends Command {
                     thisuser = await UserController.updateUser(String(thisuser.userId), thisuser);
                     targetUser = await UserController.updateUser(String(targetUser.userId), targetUser);
 
-                    await interaction.editReply({ content: `${botConfig.CRYING} | <@${targetUser.userId}>, <@${thisuser.userId}> vocês se divorciaram.`, components: [] });
+                    await interaction.editReply({ content: `${botConfig.CRYING} | ${targetmention}, ${thismention} vocês se divorciaram.`, components: [] });
 
                 } else {
-                    await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${thisuser.userId}>, <@${targetUser.userId}> recusou o divórcio.`, components: [] });
+                    await interaction.editReply({ content: `${botConfig.CONFUSED} | ${thismention}, ${targetmention} recusou o divórcio.`, components: [] });
                     return;
                 }
             });

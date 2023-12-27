@@ -18,21 +18,24 @@ export default abstract class TitleCommand extends Command {
 
     static async execute(interaction: CommandInteraction<CacheType>) {
         await interaction.deferReply({});
+
+        let mention = await botConfig.mention(interaction.user.id);
+
         let name = (interaction.options.get("name")?.value as string).toLowerCase();
 
         let user = await UserController.getUserById(interaction.user.id);
         
-        if (!user) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}> Complete suas tarefas diárias primeiro.` });
+        if (!user) return await interaction.editReply({ content: `${botConfig.CONFUSED} | ${mention} Complete suas tarefas diárias primeiro.` });
         
         user.titleName = name;
         user = await UserController.updateUser(String(user.userId), user);
 
         let values = Object.keys(titles).filter((name) => !user?.titles?.includes(name));
 
-        if(values.length < 1) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}> Você já adquiriu todos os títulos.` });
+        if(values.length < 1) return await interaction.editReply({ content: `${botConfig.CONFUSED} | ${mention} Você já adquiriu todos os títulos.` });
 
         if (!titles[values[0]].translate(name)) {
-            return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}> Digite apenas caracteres válidos para seu título.` });
+            return await interaction.editReply({ content: `${botConfig.CONFUSED} | ${mention} Digite apenas caracteres válidos para seu título.` });
         }
 
         let select = new StringSelectMenuBuilder()
@@ -76,7 +79,7 @@ export default abstract class TitleCommand extends Command {
 
             await confirmation.update({ components: [] });
 
-            if (selected.price > Number(user.coins)) return await interaction.followUp({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}> Parece que você não tem a quantia necessária para a compra.` });
+            if (selected.price > Number(user.coins)) return await interaction.followUp({ content: `${botConfig.CONFUSED} | ${mention} Parece que você não tem a quantia necessária para a compra.` });
             
             user = await UserController.removeCash(user, {
                 from: user.userId,
@@ -85,7 +88,7 @@ export default abstract class TitleCommand extends Command {
             });
             user = await UserController.addTitle(String(user.userId), selectedName);
 
-            await confirmation.followUp({ content: `${botConfig.FRIGHT} | <@${interaction.user.id}> Você comprou ${selectedName} com sucesso.` });
+            await confirmation.followUp({ content: `${botConfig.FRIGHT} | ${mention} Você comprou ${selectedName} com sucesso.` });
 
         } catch (error) {
             await interaction.editReply({ components: [], content: `Tempo de compra expirado.` });

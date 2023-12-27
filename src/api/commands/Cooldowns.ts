@@ -39,10 +39,10 @@ export class Cooldowns extends Command {
         let boosterString = !boosterCooldown.allowed ? `${botConfig.VIP_YES} Válido até <t:${boosterCooldown.time}:d>` : `${botConfig.VIP_NO} Desativado. `;
 
         
-
+        let mention = await botConfig.mention(userId);
         let embed = new EmbedBuilder()
             .setTitle(`${botConfig.WAITING} Tempos de Espera`)
-            .setDescription(`> Esses são os cooldowns de <@${userId}>`)
+            .setDescription(`> Esses são os cooldowns de ${mention}`)
             .addFields([
                 { name: "Diário", value: dailyString, inline: true },
                 { name: "Trabalho", value: workString, inline: true },

@@ -14,9 +14,10 @@ export default abstract class SetTitle extends Command {
         await interaction.deferReply({ ephemeral: true });
 
         let user = await UserController.getUserById(interaction.user.id);
+        let mention = await botConfig.mention(interaction.user.id);
 
-        if (!user) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}> Complete suas tarefas diárias primeiro.` });
-        if(user?.titles?.length < 1) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}> Você não possui nenhum título.` });
+        if (!user) return await interaction.editReply({ content: `${botConfig.CONFUSED} | ${mention} Complete suas tarefas diárias primeiro.` });
+        if(user?.titles?.length < 1) return await interaction.editReply({ content: `${botConfig.CONFUSED} | ${mention} Você não possui nenhum título.` });
 
         let select = new StringSelectMenuBuilder()
             .setCustomId("select")
@@ -34,7 +35,7 @@ export default abstract class SetTitle extends Command {
             user.activatedTitle = user.titles[Number(confirmation.values[0])];
             user = await UserController.updateUser(interaction.user.id, user);
             await confirmation.update({ components: [] });
-            await interaction.editReply({ content: `${botConfig.OK} | <@${interaction.user.id}>, Você ativou ${user.titles[Number(confirmation.values[0])]} com sucesso.` });
+            await interaction.editReply({ content: `${botConfig.OK} | ${mention}, Você ativou ${user.titles[Number(confirmation.values[0])]} com sucesso.` });
 
         } catch (error) {
             

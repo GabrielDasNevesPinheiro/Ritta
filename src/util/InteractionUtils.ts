@@ -9,13 +9,14 @@ export const cooldowns = new Collection<String, Boolean>();
 
 export async function checkPayValues(targetUserId: string, optionAmmount: string, interaction: CommandInteraction<CacheType>): Promise<boolean> {
 
+    let mention = await botConfig.mention(interaction.user.id);
     let ammount: number = Number(Number(optionAmmount).toFixed(0));
 
     let targetUser = await UserController.getUserById(targetUserId);
     let user = await UserController.getUserById(interaction.user.id);
 
     if (ammount < 20) {
-        await interaction.editReply({ content: `**${botConfig.CONFUSED} | <@${interaction.user.id}>, Você precisa inserir no mínimo ${botConfig.getCashString(20)}.**` })
+        await interaction.editReply({ content: `**${botConfig.CONFUSED} | ${mention}, Você precisa inserir no mínimo ${botConfig.getCashString(20)}.**` })
         return false;
     }
 
@@ -24,7 +25,7 @@ export async function checkPayValues(targetUserId: string, optionAmmount: string
         return false;
     }
     if (!user) {
-        await interaction.editReply({ content: `**${botConfig.CONFUSED} | <@${interaction.user.id}>, Tente realizar suas tarefas diárias primeiro.**` });
+        await interaction.editReply({ content: `**${botConfig.CONFUSED} | ${mention}, Tente realizar suas tarefas diárias primeiro.**` });
         return false;
     }
 
@@ -34,7 +35,7 @@ export async function checkPayValues(targetUserId: string, optionAmmount: string
     }
 
     if ((user.coins as number < ammount)) {
-        await interaction.editReply({ content: `**${botConfig.NO} | <@${interaction.user.id}>, Você não tem a quantia fornecida.**` })
+        await interaction.editReply({ content: `**${botConfig.NO} | ${mention}, Você não tem a quantia fornecida.**` })
         return false;
     }
 
@@ -42,15 +43,16 @@ export async function checkPayValues(targetUserId: string, optionAmmount: string
 }
 
 export async function checkBetValues(optionAmmount: string, interaction: CommandInteraction<CacheType>): Promise<boolean> {
+    let mention = await botConfig.mention(interaction.user.id);
 
     let ammount: number = getIntegerOption(optionAmmount);
     let max = 100000;
     if (isNaN(ammount)) {
-        await interaction.editReply({ content: `**${botConfig.CONFUSED} | <@${interaction.user.id}>, Você precisa inserir um valor válido.**` })
+        await interaction.editReply({ content: `**${botConfig.CONFUSED} | ${mention}, Você precisa inserir um valor válido.**` })
         return false;
     }
     if (ammount < 20) {
-        await interaction.editReply({ content: `**${botConfig.CONFUSED} | <@${interaction.user.id}>, Você precisa inserir no mínimo ${botConfig.getCashString(20)}.**` })
+        await interaction.editReply({ content: `**${botConfig.CONFUSED} | ${mention}, Você precisa inserir no mínimo ${botConfig.getCashString(20)}.**` })
         return false;
     }
 
@@ -58,12 +60,12 @@ export async function checkBetValues(optionAmmount: string, interaction: Command
 
 
     if (!user) {
-        await interaction.editReply({ content: `**${botConfig.CONFUSED} | <@${interaction.user.id}>, Tente realizar suas tarefas diárias primeiro.**` });
+        await interaction.editReply({ content: `**${botConfig.CONFUSED} | ${mention}, Tente realizar suas tarefas diárias primeiro.**` });
         return false;
     }
 
     if ((user.coins as number < ammount)) {
-        await interaction.editReply({ content: `**${botConfig.NO} | <@${interaction.user.id}>, Você não tem a quantia fornecida.**` })
+        await interaction.editReply({ content: `**${botConfig.NO} | ${mention}, Você não tem a quantia fornecida.**` })
         return false;
     }
 
@@ -72,6 +74,7 @@ export async function checkBetValues(optionAmmount: string, interaction: Command
 
 
 export async function checkMaxValues(interaction: CommandInteraction<CacheType>, user: IUser, ammount: number, bet: boolean = false): Promise<boolean> {
+    let mention = await botConfig.mention(interaction.user.id);
 
     let max = 100000;
 
@@ -79,7 +82,7 @@ export async function checkMaxValues(interaction: CommandInteraction<CacheType>,
 
 
     if (ammount > max) {
-        await interaction.followUp({ content: `**${botConfig.CONFUSED} | <@${interaction.user.id}>, Você só pode usar até** ${botConfig.getCashString(max)}.` });
+        await interaction.followUp({ content: `**${botConfig.CONFUSED} | ${mention}, Você só pode usar até** ${botConfig.getCashString(max)}.` });
         return false;
     }
 

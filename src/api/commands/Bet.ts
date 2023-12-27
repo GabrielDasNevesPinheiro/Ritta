@@ -34,9 +34,10 @@ export default class Bet extends Command {
 
         let user = await UserController.getUserById(interaction.user.id);
         let targetUser = await UserController.getUserById(targetUserId);
-
+        let mention = await botConfig.mention(targetUser.userId as string);
+        let usermention = await botConfig.mention(interaction.user.id);
         if (Number(targetUser.coins) < ammount) {
-            return await interaction.editReply({ content: `${botConfig.CRYING} | <@${targetUser.userId}> não tem a quantia necessária para esta aposta.` })
+            return await interaction.editReply({ content: `${botConfig.CRYING} | ${mention} não tem a quantia necessária para esta aposta.` })
         }
 
 
@@ -54,7 +55,7 @@ export default class Bet extends Command {
         let row = new ActionRowBuilder<ButtonBuilder>().addComponents(confirm);
 
         let response = await interaction.editReply({
-            content: `**<@${user.userId}>${face}** está desafiando ${crown}<@${targetUserId}> para uma aposta\n${botConfig.BRIGHT} Cada um apostará ${botConfig.getCashString(ammount)} e o vencedor leva tudo!(${botConfig.getCashString(getTax(ammount))} de taxa).\nPara continuar, <@${targetUser.userId}> deve confirmar abaixo!.\n`,
+            content: `**${usermention} ${face}** está desafiando ${crown}${mention} para uma aposta\n${botConfig.BRIGHT} Cada um apostará ${botConfig.getCashString(ammount)} e o vencedor leva tudo!(${botConfig.getCashString(getTax(ammount))} de taxa).\nPara continuar, ${mention} deve confirmar abaixo!.\n`,
                 embeds: [], components: [row]
         });
         let confirmed: IUser[] = [];
@@ -83,8 +84,13 @@ export default class Bet extends Command {
             let winnerEmoji = "";
             let loserEmoji = ""
 
+            let winnerMention = "";
+            let loserMention = "";
+
             if (sorted < 0.5) {
                 winner = user
+                winnerMention = usermention;
+                loserMention = mention;
                 loser = targetUser;
                 selectedTax = tax;
                 sortedText = "**CARA!**"
@@ -93,6 +99,8 @@ export default class Bet extends Command {
 
             } else if (sorted >= 0.5) {
                 winner = targetUser;
+                winnerMention = mention;
+                loserMention = usermention;
                 loser = user;
                 selectedTax = otherTax;
                 sortedText = "**COROA!**";
@@ -114,8 +122,8 @@ export default class Bet extends Command {
             });
 
             await interaction.editReply({
-                content: `${sortedText}\n <@${winner.userId}>${winnerEmoji} venceu! Com isso recebeu ${botConfig.getCashString(calcAmmount)}` +
-                    (selectedTax > 0 ? '`' + `(${selectedTax} de taxa)` + '`' : ``) + ` patrocinadas por <@${loser.userId}>${loserEmoji}.`, components: []
+                content: `${sortedText}\n ${winnerMention} ${winnerEmoji} venceu! Com isso recebeu ${botConfig.getCashString(calcAmmount)}` +
+                    (selectedTax > 0 ? '`' + `(${selectedTax} de taxa)` + '`' : ``) + ` patrocinadas por ${loserMention} ${loserEmoji}.`, components: []
             })
             return;
 

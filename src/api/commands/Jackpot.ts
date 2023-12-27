@@ -9,69 +9,71 @@ import { botConfig } from "../../app";
 
 
 export default abstract class Jackpot extends Command {
-    
+
     static command: SlashCommandBuilder = new SlashCommandBuilder()
         .setName("jackpot")
-        .addIntegerOption(option => 
+        .addIntegerOption(option =>
             option.setName("ammount")
-            .setDescription("Quantidade da aposta")
-            .setMinValue(100)
-            .setRequired(true)
-            ).setDescription("Aposte no jackpot")
-            
+                .setDescription("Quantidade da aposta")
+                .setMinValue(100)
+                .setRequired(true)
+        ).setDescription("Aposte no jackpot")
+
     static async execute(interaction: CommandInteraction<CacheType>) {
-        
+
         await interaction.deferReply({});
+        let mention = await botConfig.mention(interaction.user.id);
 
         let ammount = interaction.options.get("ammount").value as number;
 
         let res = await checkBetValues(String(ammount), interaction);
-        
-        if(!res) return;
-        
-        
+
+        if (!res) return;
+
+
         let jackpot = sortJackpotArray();
         let result = await getJackpotResult(jackpot);
         let operation = getJackpotOperation(jackpot);
         let tax = getTax(ammount);
-        
+
         let user = await UserController.getUserById(interaction.user.id);
         let canBet = await checkMaxValues(interaction, user, ammount);
 
-        if(!canBet) return;
+        if (!canBet) return;
 
-        if(!isVipExpired(user).allowed) {
+        if (!isVipExpired(user).allowed) {
             tax = 0;
         }
 
-        if(operation === "win") {
+        if (operation === "win") {
             ammount = Math.floor(ammount * 2);
-            if(tax > 0) tax = getTax(ammount);
+            if (tax > 0) tax = getTax(ammount);
             ammount -= tax;
             user = await UserController.addCash(user, {
                 from: "jogando jackpot",
                 to: user.userId,
                 ammount: ammount
             });
-            
-            return await interaction.editReply({ content: `${botConfig.STONKS} | <@${user.userId}>, Você ganhou ${botConfig.getCashString(ammount)}`+ '`'+`(2x Bônus)`+'`'+` no Jackpot!\n`+
-            (tax > 0 ? `${botConfig.getCashString(tax)} de taxa.` : ``), files: [result]
-        });
-    }
 
-        if(operation === "defeat") {
-            
+            return await interaction.editReply({
+                content: `${botConfig.STONKS} | ${mention}, Você ganhou ${botConfig.getCashString(ammount)}` + '`' + `(2x Bônus)` + '`' + ` no Jackpot!\n` +
+                    (tax > 0 ? `${botConfig.getCashString(tax)} de taxa.` : ``), files: [result]
+            });
+        }
+
+        if (operation === "defeat") {
+
             user = await UserController.removeCash(user, {
                 from: user.userId,
                 to: "jogando jackpot",
                 ammount: ammount
             });
 
-            return await interaction.editReply({ content: `${botConfig.NO_STONKS} | <@${user.userId}>, Você perdeu ${botConfig.getCashString(ammount)} no Jackpot.\n`, files: [result]});
+            return await interaction.editReply({ content: `${botConfig.NO_STONKS} | ${mention}, Você perdeu ${botConfig.getCashString(ammount)} no Jackpot.\n`, files: [result] });
 
         }
 
-        if(operation === "removePoints") {
+        if (operation === "removePoints") {
             ammount += getTax(ammount);
             user = await UserController.removeCash(user, {
                 from: user.userId,
@@ -79,7 +81,7 @@ export default abstract class Jackpot extends Command {
                 ammount: ammount
             });
 
-            return await interaction.editReply({ content: `${botConfig.NO_STONKS} | <@${user.userId}>, Você perdeu ${botConfig.getCashString(ammount)} no Jackpot.\n` + `Pelo resultado **A Casa** leva mais ${botConfig.getCashString(getTax(ammount))}.`, files: [result]});
+            return await interaction.editReply({ content: `${botConfig.NO_STONKS} | ${mention}, Você perdeu ${botConfig.getCashString(ammount)} no Jackpot.\n` + `Pelo resultado **A Casa** leva mais ${botConfig.getCashString(getTax(ammount))}.`, files: [result] });
 
         }
     }
