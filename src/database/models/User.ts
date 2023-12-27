@@ -13,6 +13,7 @@ interface IUser {
     xp?: number
     partner?: String
     titles?: Array<String>
+    activatedTitle?: String
     titleName?: String
     coins?: Number
     banned?: Boolean
@@ -45,6 +46,11 @@ const userSchema = new mongoose.Schema<IUser>({
         type: String,
         required: false,
         default: "titulo"
+    },
+    activatedTitle: {
+        type: String,
+        required: false,
+        default: null
     },
     inventory: {
         type: [mongoose.Types.ObjectId],
