@@ -58,7 +58,12 @@ export default class Help extends Command {
                 "`/vote`\n" +
                 "`/editemoji`\n" +
                 "`/profile`\n" +
-                "`/aboutme`\n" + 
+                "`/buypets`\n" + 
+                "`/editpet`\n" + 
+                "`/titles`\n" + 
+                "`/settitle`\n" + 
+                "`/store`\n" + 
+                "`/inventory`\n" + 
                 "`/transactions`\n" 
             ).setTimestamp(new Date()).setColor(Colors.Green)
 
