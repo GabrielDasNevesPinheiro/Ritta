@@ -39,8 +39,7 @@ export default abstract class AddBadge extends Command {
 
         let res = await interaction.editReply({ components: [row] });
 
-        //let collectorFilter = (i: StringSelectMenuInteraction) => botConfig.admins.includes(i.user.id);
-        let collectorFilter = (i: StringSelectMenuInteraction) => true;
+        let collectorFilter = (i: StringSelectMenuInteraction) => botConfig.admins.includes(i.user.id);
         let collector = res.createMessageComponentCollector({ componentType: ComponentType.StringSelect, filter: collectorFilter, time: 60_000 });
 
         collector.on('collect', async (confirmation) => {
@@ -51,7 +50,7 @@ export default abstract class AddBadge extends Command {
             if (!user.inventory.includes(badge._id)) {
                 user.inventory.push(badge._id);
                 user = await UserController.updateUser(String(user.userId), user);
-                await confirmation.followUp({ ephemeral: true, content: `Insígnia ${badge.name} adicionada para <@${targetUser.id}> com sucesso.` });
+                await confirmation.followUp({ ephemeral: true, content: `Insígnia ${badge.name} adicionada no inventário de <@${targetUser.id}>.` });
             } else {
                 await confirmation.update({ components: [] });
                 await interaction.editReply({ content: `O usuário já possui esta insígnia.` });
