@@ -2,6 +2,7 @@ import { ActionRowBuilder, ButtonBuilder, ButtonStyle, CacheType, CommandInterac
 import Command from "./Command";
 import { titles } from "../../database/static/TitleList";
 import { botConfig } from '../../app';
+import UserController from '../../database/controllers/UserController';
 
 
 export default abstract class TitleCommand extends Command {
@@ -19,7 +20,16 @@ export default abstract class TitleCommand extends Command {
         await interaction.deferReply({});
         let name = (interaction.options.get("name")?.value as string).toLowerCase();
 
-        let values = Object.keys(titles);
+        let user = await UserController.getUserById(interaction.user.id);
+        
+        if (!user) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}> Complete suas tarefas diárias primeiro.` });
+        
+        user.titleName = name;
+        user = await UserController.updateUser(String(user.userId), user);
+
+        let values = Object.keys(titles).filter((name) => !user?.titles?.includes(name));
+
+        if(values.length < 1) return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}> Você já adquiriu todos os títulos.` });
 
         if (!titles[values[0]].translate(name)) {
             return await interaction.editReply({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}> Digite apenas caracteres válidos para seu título.` });
@@ -44,7 +54,7 @@ export default abstract class TitleCommand extends Command {
 
             let selectedName = values[Number(response.values[0])];
             let selected = titles[selectedName];
-            
+
             let embed = new EmbedBuilder()
                 .setTitle("CONFIRMAR")
                 .addFields(
@@ -52,19 +62,29 @@ export default abstract class TitleCommand extends Command {
                     { name: "Preço", value: `${selected.price.toLocaleString("pt-BR")}`, inline: true },
                     { name: "Exemplo", value: `${selected.icon} ${selected.translate(name)}`, inline: false }
                 );
-        
+
             let buy = new ButtonBuilder()
-                    .setLabel("CONFIRMAR")
-                    .setStyle(ButtonStyle.Success)
-                    .setCustomId("buy")
+                .setLabel("CONFIRMAR")
+                .setStyle(ButtonStyle.Success)
+                .setCustomId("buy")
             let row = new ActionRowBuilder<ButtonBuilder>().addComponents(buy);
 
             let buttonRes = await interaction.followUp({ embeds: [embed], components: [row] });
 
             let confirmation = await buttonRes.awaitMessageComponent({ componentType: ComponentType.Button, filter, time: 60_000 });
 
+
+            await confirmation.update({ components: [] });
+
+            if (selected.price > Number(user.coins)) return await interaction.followUp({ content: `${botConfig.CONFUSED} | <@${interaction.user.id}> Parece que você não tem a quantia necessária para a compra.` });
             
-            await confirmation.update({});
+            user = await UserController.removeCash(user, {
+                from: user.userId,
+                to: `comprando o título ${selectedName}`,
+                ammount: selected.price
+            });
+            user = await UserController.addTitle(String(user.userId), selectedName);
+
             await confirmation.followUp({ content: `${botConfig.FRIGHT} | <@${interaction.user.id}> Você comprou ${selectedName} com sucesso.` });
 
         } catch (error) {
