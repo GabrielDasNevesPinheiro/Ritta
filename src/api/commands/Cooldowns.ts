@@ -4,7 +4,7 @@ import UserController from "../../database/controllers/UserController";
 import { botConfig } from "../../app";
 import { cooldownCheck, dailyCooldownCheck } from "../../util/DateUtils";
 
-export class Cooldowns extends Command {
+export default abstract class Cooldowns extends Command {
     
     public static command: SlashCommandBuilder = new SlashCommandBuilder()
         .setName("cooldowns")
@@ -14,7 +14,7 @@ export class Cooldowns extends Command {
             )
         .setDescription("Exibe os tempos de recarga do usuário")
     
-    public static async execute(interaction: CommandInteraction<CacheType>) {
+    static async execute(interaction: CommandInteraction<CacheType>) {
 
         let userId = interaction.options.getUser("user")?.id || interaction.user.id;
 

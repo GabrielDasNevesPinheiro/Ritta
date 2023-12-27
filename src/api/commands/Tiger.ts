@@ -8,7 +8,7 @@ import { isVipExpired, sleep } from "../../util/DateUtils";
 import { generateNeverMatchedArray, generateSparseArray, getTotalMultiplier } from "../../util/MatrixUtils";
 
 
-export abstract class Tiger extends Command {
+export default abstract class Tiger extends Command {
 
 
     static command: SlashCommandBuilder = new SlashCommandBuilder()
