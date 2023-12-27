@@ -12,6 +12,8 @@ interface IUser {
     pets?: Array<String>
     xp?: number
     partner?: String
+    titles?: Array<String>
+    titleName?: String
     coins?: Number
     banned?: Boolean
     banReason?: String
@@ -39,6 +41,11 @@ const userSchema = new mongoose.Schema<IUser>({
         required: false,
         default: "Descrição do meu perfil."
     },
+    titleName: {
+        type: String,
+        required: false,
+        default: "titulo"
+    },
     inventory: {
         type: [mongoose.Types.ObjectId],
         default: [],
@@ -55,6 +62,11 @@ const userSchema = new mongoose.Schema<IUser>({
         required: false
     },
     pets: {
+        type: [String],
+        required: false,
+        default: []
+    },
+    titles: {
         type: [String],
         required: false,
         default: []

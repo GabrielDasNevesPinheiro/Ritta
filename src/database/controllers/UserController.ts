@@ -252,6 +252,24 @@ class UserController {
 
         }
     }
+
+    static async getTitles(userId: string): Promise<Array<String>> {
+        let user = await User.findOne({ userId });
+        return user?.titles;
+    }
+
+    static async addTitle(userId: string, title: string): Promise<IUser> {
+
+        let user: IUser = await User.findOne({ userId });
+        
+        if(!user?.titles) user.titles = [];
+
+        user?.titles.push(title);
+        user = await this.updateUser(user.userId as string, user);
+
+        return user;
+
+    }
 }
 
 export default UserController;
