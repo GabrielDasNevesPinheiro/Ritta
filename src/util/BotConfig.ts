@@ -277,7 +277,7 @@ export default class BotConfig {
         let str = "";
         if(user.activatedTitle) str += titles[String(user.activatedTitle)].translate(String(user.titleName));
 
-        if(str !== "") str += `<@${userId}>`; else str += `(<@${userId}>)`;
+        str += (str === "") ? `<@${userId}>` : `(<@${userId}>)`;
 
         return str;
     }
