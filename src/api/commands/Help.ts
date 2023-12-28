@@ -60,7 +60,7 @@ export default class Help extends Command {
                 "`/profile`\n" +
                 "`/buypets`\n" + 
                 "`/editpet`\n" + 
-                "`/titles`\n" + 
+                "`/title`\n" + 
                 "`/settitle`\n" + 
                 "`/store`\n" + 
                 "`/inventory`\n" + 
