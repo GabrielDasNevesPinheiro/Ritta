@@ -245,7 +245,7 @@ export default async function getRank(users: User[], info: IUser[], page: number
 
 
     ctx.drawImage(await loadImage(botConfig.LOCAL_IMG_RANK), 0, 0);
-
+    users = users.slice(page * 5, (page * 5) + 5);
     images.slice(page * 5, (page * 5) + 5).forEach(async (image, index) => {
         let x: number, y: number;
         ctx.fillStyle = "#000";
