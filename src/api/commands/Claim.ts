@@ -4,6 +4,7 @@ import UserController from "../../database/controllers/UserController";
 import { botConfig } from "../../app";
 import { claimCooldownCheck, cooldownCheck, dailyCooldownCheck } from "../../util/DateUtils";
 import TransactionController from "../../database/controllers/TransactionController";
+import { checkVoted } from "../../util/PassiveSystems";
 
 export default class Claim extends Command {
 
@@ -27,13 +28,14 @@ export default class Claim extends Command {
         let crimePlayed = !cooldownCheck(1, user.crimedate).allowed;
         let tasksPlayed = !claimCooldownCheck(24, user.tasksDate).allowed;
         let tasksTime = cooldownCheck(24, user.tasksDate).time;
+        let voted = await checkVoted(user.userId as string);
 
         if (tasksPlayed) {
             let mention = await botConfig.mention(interaction.user.id);
             return await interaction.reply({ content: `${botConfig.WAITING} | ${mention}, volte <t:${tasksTime}:R> para resgatar as recompensas das tarefas.` });
         }
 
-        if (dailyPlayed && weeklyPlayed && workPlayed && crimePlayed) {
+        if (dailyPlayed && weeklyPlayed && workPlayed && crimePlayed && voted) {
 
             let cash = 0;
             if (Math.random() <= prob) {

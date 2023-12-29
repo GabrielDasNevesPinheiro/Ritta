@@ -3,6 +3,7 @@ import Command from "./Command";
 import UserController from "../../database/controllers/UserController";
 import { botConfig } from "../../app";
 import { cooldownCheck } from "../../util/DateUtils";
+import { checkVoted } from "../../util/PassiveSystems";
 
 export default class Tasks extends Command {
 
@@ -26,11 +27,13 @@ export default class Tasks extends Command {
         let workPlayed = !cooldownCheck(2, user.workdate).allowed;
         let crimePlayed = !cooldownCheck(1, user.crimedate).allowed;
         let tasksPlayed = !cooldownCheck(24, user.tasksDate, true).allowed;
+        let voted = await checkVoted(userId);
 
         let dailyString = dailyPlayed ? `:white_check_mark: 🎁 Você resgatou a recompensa diária!` : `:black_large_square: 🎁 Você não resgatou a recompensa diária!`;
         let workString = workPlayed ? `:white_check_mark: 💼 Você trabalhou!` : `:black_large_square: 💼 Você não trabalhou!`;
         let crimeString = crimePlayed ? `:white_check_mark: 💰 Você impediu um crime!` : `:black_large_square: 💰 Você não impediu um crime!`;
         let weeklyString = weeklyPlayed ? `:white_check_mark: 💸 Você coletou o semanal!` : `:black_large_square: 💸 Você não coletou o semanal!`;
+        let voteString = voted ? `:white_check_mark: 🗳️ Você já votou!` : `:black_large_square: 🗳️ Para votar prossiga com __/vote__!`;
         let tasksString = tasksPlayed ? `:white_check_mark: 🎉 Você reivindicou sua recompensa das tarefas!` : `:black_large_square: 🎉 Colete suas recompensas com o comando __/claim__!`;
 
 
@@ -42,6 +45,7 @@ export default class Tasks extends Command {
                 { name: ":two: Work", value: workString },
                 { name: ":three: Crime", value: crimeString },
                 { name: ":four: Semanal", value: weeklyString },
+                { name: ":five: Voto", value: voteString },
                 { name: "Resgate das Recompensas", value: tasksString },
             ]).setColor(Colors.White).setTimestamp(new Date());
 

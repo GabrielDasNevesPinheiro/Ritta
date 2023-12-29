@@ -3,6 +3,7 @@ import Command from "./Command";
 import UserController from "../../database/controllers/UserController";
 import { botConfig } from "../../app";
 import { cooldownCheck, dailyCooldownCheck } from "../../util/DateUtils";
+import { checkVoted } from "../../util/PassiveSystems";
 
 export default abstract class Cooldowns extends Command {
     
@@ -37,7 +38,7 @@ export default abstract class Cooldowns extends Command {
         let weeklyString = weeklyCooldown.allowed ? `${botConfig.OK} Disponível.` : `${botConfig.WAITING} ` + `<t:${weeklyCooldown.time}:R>`;
         let vipString = !vipCooldown.allowed ? `${botConfig.VIP_YES} Válido até <t:${vipCooldown.time}:d>` : `${botConfig.VIP_NO} Desativado. `;
         let boosterString = !boosterCooldown.allowed ? `${botConfig.VIP_YES} Válido até <t:${boosterCooldown.time}:d>` : `${botConfig.VIP_NO} Desativado. `;
-
+        let votedString = (await checkVoted(userId)) ? `${botConfig.WAITING} Voto indisponível` : `${botConfig.VIP_YES} Pode votar`;
         
         let mention = await botConfig.mention(userId);
         let embed = new EmbedBuilder()
