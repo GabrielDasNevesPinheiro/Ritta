@@ -28,7 +28,7 @@ export default class Claim extends Command {
         let crimePlayed = !cooldownCheck(1, user.crimedate).allowed;
         let tasksPlayed = !claimCooldownCheck(24, user.tasksDate).allowed;
         let tasksTime = cooldownCheck(24, user.tasksDate).time;
-        let voted = await checkVoted(user.userId as string);
+        let { voted } = await checkVoted(user.userId as string);
 
         if (tasksPlayed) {
             let mention = await botConfig.mention(interaction.user.id);
