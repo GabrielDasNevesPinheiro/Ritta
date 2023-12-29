@@ -13,6 +13,7 @@ import { cooldowns } from './util/InteractionUtils';
 import { cached_badge } from './util/ImageUtils';
 import { IStore, ItemType, Store } from './database/models/Store';
 import { loadImage } from 'canvas';
+import TransactionController from './database/controllers/TransactionController';
 
 config()
 const token = process.env.BOT_TOKEN;
@@ -29,11 +30,13 @@ const assignVoted = async (userId: string) => {
         let player = await UserController.getUserById(userId);
         if(!player) return;
         
-        player = await UserController.addCash(player, {
-            from: "votando no top.gg",
-            to: player.userId,
-            ammount: 25000
-        });
+        let transaction = (await TransactionController.getAllTransactions(userId))[0];
+        if(!transaction.from.startsWith("votando"))
+            player = await UserController.addCash(player, {
+                from: "votando no top.gg",
+                to: player.userId,
+                ammount: 25000
+            });
     }
 
     votedPlayersChecked[userId] = true;
