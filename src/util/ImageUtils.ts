@@ -315,7 +315,7 @@ export async function getProfile(user: IUser, discordProfile: User, reps: number
     
     ctx.drawImage(background, 0, 0);
     
-    for(let item of badges) {
+    for(let item of badges.slice(0, 5)) {
 
         let index = badges.indexOf(item);
 
