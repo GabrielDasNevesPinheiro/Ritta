@@ -39,6 +39,10 @@ export default abstract class Store extends Command {
         let store: IStore[] = canReset ? await Store.getStore() : await UserController.getUserStore(user);
         user.store = store.map((item) => item._id);
 
+        if(canReset)
+            user.storeDate = new Date();
+            user = await UserController.updateUser(String(user.userId), user);
+
         const notOnInventory = (item: IStore) => user?.inventory?.indexOf(item?._id) == -1;
 
         if (store.length == 0) return await interaction.editReply({ content: `${botConfig.CONFUSED} | ${mention}, Você já adquiriu tudo o que há na loja!` });
@@ -111,9 +115,6 @@ export default abstract class Store extends Command {
         let row = new ActionRowBuilder<ButtonBuilder>().addComponents(prev, buy, next);
 
         let image = await getImage();
-
-        user.storeDate = new Date();
-        user = await UserController.updateUser(String(user.userId), user);
 
         let response = await interaction.editReply({ content: getText(), components: [row], files: [image] });
 
