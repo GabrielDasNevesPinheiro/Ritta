@@ -30,8 +30,17 @@ const assignVoted = async (userId: string) => {
         let player = await UserController.getUserById(userId);
         if(!player) return;
         
-        let transaction = (await TransactionController.getAllTransactions(userId))[0];
-        if(!transaction.from.startsWith("votando"))
+        let transaction = (await TransactionController.getAllTransactions(userId)).slice(0,10);
+        let has = false;
+
+        for(let tran of transaction) {
+            if(tran.from.startsWith("votando")) {
+                has = true;
+                break;
+            }
+        }
+
+        if(!has)
             player = await UserController.addCash(player, {
                 from: "votando no top.gg",
                 to: player.userId,
